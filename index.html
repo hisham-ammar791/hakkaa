@@ -3,13 +3,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>حكّاء</title>
 <meta name="description" content="حكّاء: اكتب السيناريو والرواية بالعربية، دون إنترنت، مع حفظ في Google Drive">
-<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#1E2A44">
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#2B1A4A">
+<script>try{var __t=localStorage.getItem('hasp:theme');if(__t&&__t!=='auto')document.documentElement.setAttribute('data-theme',__t)}catch(e){}</script>
 <link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
 <style>
-:root{--ink:#1E2A44;--bg:#ECEEF2;--paper:#FFFFFF;--fg:#1B2130;--mu:#646C82;--bd:#D7DBE3;--bar:#F7F8FA;--amber:#C27C14;--teal:#1C7A73;--ok:#2E8F57;--bad:#BF4237;--ac:var(--amber);
+:root{--ink:#2B1A4A;--bg:#EFECF4;--paper:#FFFFFF;--fg:#1B2130;--mu:#646C82;--bd:#D7DBE3;--bar:#F7F8FA;--amber:#B8862B;--teal:#1C7A73;--ok:#2E8F57;--bad:#BF4237;--ac:var(--amber);
  --sh:0 1px 2px rgba(30,42,68,.07),0 10px 30px rgba(30,42,68,.07);--ui:"Noto Sans Arabic","Segoe UI","Noto Kufi Arabic",Tahoma,sans-serif;--wr:"Noto Naskh Arabic","Sakkal Majalla","Traditional Arabic",Amiri,"Times New Roman",serif;color-scheme:light}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ink:#C9D3EC;--bg:#0F131B;--paper:#191F2C;--fg:#E5E8EF;--mu:#98A0B4;--bd:#2B3345;--bar:#141925;--amber:#E6A548;--teal:#3DB2A8;--ok:#55C083;--bad:#E9786C;--sh:0 1px 2px rgba(0,0,0,.4);color-scheme:dark}}
-:root[data-theme="dark"]{--ink:#C9D3EC;--bg:#0F131B;--paper:#191F2C;--fg:#E5E8EF;--mu:#98A0B4;--bd:#2B3345;--bar:#141925;--amber:#E6A548;--teal:#3DB2A8;--ok:#55C083;--bad:#E9786C;--sh:0 1px 2px rgba(0,0,0,.4);color-scheme:dark}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]):not([data-theme="paper"]){--ink:#D9D0F2;--bg:#0F131B;--paper:#191F2C;--fg:#E5E8EF;--mu:#98A0B4;--bd:#2B3345;--bar:#141925;--amber:#E6A548;--teal:#3DB2A8;--ok:#55C083;--bad:#E9786C;--sh:0 1px 2px rgba(0,0,0,.4);color-scheme:dark}}
+:root[data-theme="dark"]{--ink:#D9D0F2;--bg:#0F131B;--paper:#191F2C;--fg:#E5E8EF;--mu:#98A0B4;--bd:#2B3345;--bar:#141925;--amber:#E6A548;--teal:#3DB2A8;--ok:#55C083;--bad:#E9786C;--sh:0 1px 2px rgba(0,0,0,.4);color-scheme:dark}
+:root[data-theme="paper"]{--bg:#E8DFCB;--paper:#F8F0DC;--fg:#2B2418;--mu:#6E6450;--bd:#D6CAAC;--bar:#F1E8D0;--sh:0 1px 2px rgba(60,40,10,.08),0 10px 30px rgba(60,40,10,.08);color-scheme:light}
 body.nv{--ac:var(--teal)}
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--ui);-webkit-tap-highlight-color:transparent}
@@ -20,7 +22,7 @@ svg.i{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 /* home */
 #home{min-height:100vh;padding:calc(env(safe-area-inset-top,0px) + 30px) 16px calc(env(safe-area-inset-bottom,0px) + 28px)}
 .hw{max-width:640px;margin:0 auto}
-.brand{display:flex;align-items:center;gap:14px;margin-bottom:30px}.brand svg{width:60px;height:60px;flex:none;border-radius:16px;box-shadow:var(--sh)}
+.brand{display:flex;align-items:center;gap:14px;margin-bottom:30px}.brand img{width:64px;height:64px;flex:none;border-radius:16px;box-shadow:var(--sh)}
 .name{margin:0;font-size:42px;line-height:1.05;font-weight:800;color:var(--ink)}.tag{margin:6px 0 0;color:var(--mu);font-size:15px}
 .kinds{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .kind{--k:var(--amber);display:flex;flex-direction:column;align-items:flex-start;gap:6px;text-align:start;padding:18px 16px 16px;min-height:208px;border:1.5px solid var(--bd);border-radius:18px;background:var(--paper);cursor:pointer;box-shadow:var(--sh)}
@@ -107,14 +109,14 @@ textarea.np{margin-top:60px}.flash{background:color-mix(in srgb,var(--ac) 22%,tr
 .chip{display:inline-block;padding:0 9px;border-radius:11px;border:1px solid var(--bd);background:var(--bg);font-size:13.5px;font-weight:700;line-height:22px;white-space:nowrap}
 </style></head><body class="home">
 <section id="home"><div class="hw">
-<div class="brand"><svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="15" fill="#1E2A44"/><path d="M14 11h36a8 8 0 018 8v20a8 8 0 01-8 8H31l-9.5 8.5V47H14a8 8 0 01-8-8V19a8 8 0 018-8z" fill="#FBF7EE"/><path d="M32 43.5L23 30l3.6-13h10.8L41 30z" fill="#D48B1F"/><path d="M32 28.5v13" stroke="#1E2A44" stroke-width="1.8" stroke-linecap="round"/><circle cx="32" cy="26.5" r="2.5" fill="#1E2A44"/></svg>
+<div class="brand"><img src="icon-192.png" alt="">
 <div><h1 class="name">حكّاء</h1><p class="tag">اكتب حكايتك: سيناريو أو رواية</p></div></div>
 <div class="kinds">
 <button class="kind sp" data-k="sp"><svg class="art" viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="18" width="36" height="22" rx="3"/><path d="M6 18l2-8h34l-2 8"/><path d="M15 10l-3 8M24 10l-3 8M33 10l-3 8"/><path d="M13 27h14M13 33h9"/></svg><b>سيناريو</b><span>مشاهد وحوار بتنسيق الصفحة السينمائية</span><em id="n-sp"></em></button>
 <button class="kind nv" data-k="nv"><svg class="art" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 13c-5-3-11-4-17-3v26c6-1 12 0 17 3 5-3 11-4 17-3V10c-6-1-12 0-17 3z"/><path d="M24 13v26"/><path d="M11 18h8M11 23h8M29 18h8M29 23h8"/></svg><b>رواية</b><span>فصول وسرد متصل مع عدّاد للكلمات وهدف يومي</span><em id="n-nv"></em></button>
 </div>
 <div id="hlist"></div>
-<div class="hfoot"><span id="hsync" class="hs" data-st="local">على هذا الجهاز</span><button id="hguide">دليل الاستخدام</button><button id="hdrive">Google Drive</button><button id="hinst" hidden>تثبيت التطبيق</button></div>
+<div class="hfoot"><span id="hsync" class="hs" data-st="local">على هذا الجهاز</span><button id="hguide">دليل الاستخدام</button><button id="hdrive">Google Drive</button><button id="htheme">المظهر</button><button id="hinst" hidden>تثبيت التطبيق</button></div>
 </div></section>
 <div id="ed">
 <header id="hdr"><div class="top">
@@ -662,6 +664,13 @@ function openGuide(k){menu.hidden=true;closePanel();guide.hidden=false;gTab(k||l
 function closeGuide(){if(history.state&&history.state.g)history.back();else guide.hidden=true}
 guide.querySelectorAll('.gtabs button').forEach(b=>b.onclick=()=>gTab(b.dataset.g));document.getElementById('gclose').onclick=closeGuide;
 document.getElementById('hguide').onclick=()=>openGuide();btn('دليل الاستخدام',()=>openGuide(MODE));
+const THEMES=[['auto','تلقائي (حسب الهاتف)'],['light','فاتح'],['paper','ورقي (كريمي)'],['dark','داكن']];
+function themeNow(){let t='auto';try{t=localStorage.getItem('hasp:theme')||'auto'}catch(e){}return THEMES.some(x=>x[0]===t)?t:'auto'}
+function themeLabel(){return 'المظهر: '+THEMES.find(x=>x[0]===themeNow())[1]}
+let thb=null;
+function applyTheme(t){const r=document.documentElement;if(t==='auto')r.removeAttribute('data-theme');else r.setAttribute('data-theme',t);const dk=t==='dark'||(t==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches);const m=document.querySelector('meta[name=theme-color]');if(m)m.content=dk?'#0F131B':'#2B1A4A';if(thb)thb.textContent=themeLabel();const h=document.getElementById('htheme');if(h)h.textContent=themeLabel()}
+function cycleTheme(){const i=THEMES.findIndex(x=>x[0]===themeNow()),n=THEMES[(i+1)%THEMES.length][0];try{localStorage.setItem('hasp:theme',n)}catch(e){}applyTheme(n)}
+thb=btn(themeLabel(),()=>cycleTheme());document.getElementById('htheme').onclick=cycleTheme;applyTheme(themeNow());
 addEventListener('keydown',e=>{if(e.key==='Escape'&&!guide.hidden)closeGuide()});
 addEventListener('popstate',()=>{if(!guide.hidden){guide.hidden=true;return}if(!document.body.classList.contains('home'))goHome(true)});
 document.getElementById('back').onclick=()=>goHome();document.getElementById('more').onclick=()=>{menu.hidden=!menu.hidden};
