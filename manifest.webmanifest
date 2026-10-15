@@ -1,0 +1,20 @@
+{
+  "name": "حكّاء",
+  "short_name": "حكّاء",
+  "description": "اكتب السيناريو والرواية بالعربية، دون إنترنت، مع حفظ في Google Drive",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "dir": "rtl",
+  "lang": "ar",
+  "background_color": "#ECEEF2",
+  "theme_color": "#1E2A44",
+  "categories": ["productivity", "books", "entertainment"],
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
