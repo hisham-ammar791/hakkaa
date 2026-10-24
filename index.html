@@ -1131,9 +1131,10 @@ function insertSpeech(txt){txt=txt.trim();if(!txt)return;let ta=curLine()||root.
   /* نص عادي */
   let x=v;
   if(pendCmd==='note'){pendCmd=null;const p=NT();p.notes[ta.p.id]=(p.notes[ta.p.id]?p.notes[ta.p.id]+' ':'')+x;savePlan();markLines();note('📝 أضيفت ملاحظة على السطر');continue}
+  if(pendCmd==='scene'&&!/(داخلي|داخلى|خارجي|خارجى|نهار|ليل|صباح|مساء|فجر|غروب|شروق)/.test(x)&&(x.split(/\s+/).length>4||/[؟?!]/.test(x)||isVerb(x))){pendCmd=null;ta.value=ta.value.replace(/\s*-\s*$/,'');ta.p.x=ta.value;fit(ta);ta=newLineAfter(ta,'action')}
   if(pendCmd==='scene'){pendCmd=null;x=x.replace(/\s+(داخلي|داخلى|خارجي|خارجى|نهار|ليل|صباح|مساء|فجر|غروب|شروق)(?=\s|$)/g,' - $1').replace(/^(داخلي|داخلى|خارجي|خارجى)\s+/,'$1 - ');appendText(ta,x);ta.value=ta.value.replace(/-\s+-/g,'-').replace(/\s+-\s*$/,'');ta.p.x=ta.value;fit(ta);ta=newLineAfter(ta,'action');continue}
   if(pendCmd==='paren'){pendCmd=null;ta.value='('+x.replace(/^\(|\)$/g,'')+')';ta.p.x=ta.value;fit(ta);ta=newLineAfter(ta,'dialogue');continue}
-  if(pendCmd==='char'){pendCmd=null;const w=x.split(/\s+/),nm=N().find(n=>x===n||x.startsWith(n+' '));const name=nm||w.slice(0,Math.min(2,w.length>2?1:w.length)).join(' '),rest=x.slice(name.length).trim();{const sm=splitManner(rest);if(sm){chars.add(name);wr('hasp:chars',chars);if(ta.p.t!=='action'){beginStruct();retype(ta,'action')}ta=makeCue(ta,name,sm.man,sm.after);forced=name;continue}}forced=name;
+  if(pendCmd==='char'){pendCmd=null;const w=x.split(/\s+/),nm=N().find(n=>x===n||x.startsWith(n+' '));const name=nm||w[0],rest=x.slice(name.length).trim();{const sm=splitManner(rest);if(sm){chars.add(name);wr('hasp:chars',chars);if(ta.p.t!=='action'){beginStruct();retype(ta,'action')}ta=makeCue(ta,name,sm.man,sm.after);forced=name;continue}}forced=name;
    ta.value=name+': '+rest;ta.setSelectionRange(ta.value.length,ta.value.length);ta.dispatchEvent(new Event('input',{bubbles:true}));ta=cur()||ta;continue}
   if(MODE==='sp'&&smart){const w0=x.split(/\s+/),kk=w0[0]==='رقم'?1:0,nn=toNum(w0[kk]);if(nn&&nn<=9&&(kk||dset().nums)){const L=sceneCast(ta).L;if(L[nn-1]){forced=L[nn-1];sayAs(forced,w0.slice(kk+1).join(' '));ta=cur()||ta;if(!dbar.hidden)dbarDraw();continue}}}
   if(MODE==='sp'&&smart){const nm=N().find(n=>x===n||x.startsWith(n+' ')||x.startsWith(n+'،'));
@@ -1474,6 +1475,7 @@ insertSpeech=function(txt){txt=applyFix(String(txt||'').trim());if(!txt)return;c
  if(/^(وقف|اوقف|أوقف)\s+(الإملاء|الاملاء)$/.test(txt)){stopRec();fb();return}
  if(MODE==='sp'){const w=txt.split(/\s+/);let k=0;if(w[0]==='رقم')k=1;const n=toNum(w[k]);
   if(n&&(k===1||dset().nums)&&n<=9){const L=sceneCast().L;if(L[n-1]){forced=L[n-1];fb();if(!dbar.hidden)dbarDraw();const rest=w.slice(k+1).join(' ');sayAs(forced,rest);lastIns=before;return}}}
+ if(/^(مشهد جديد|نهاية المشهد|نهايه المشهد|سطر جديد|شخصية|شخصيه|ملاحظة|ملاحظه|وصف|حوار|انتقال|تعليق|امسح السطر|تراجع)(\s|$)/.test(txt)){if(/^(مشهد جديد|نهاية المشهد|نهايه المشهد|شخصية|شخصيه)/.test(txt)){forced=null;if(!dbar.hidden)dbarDraw()}baseIns(txt);lastIns=before;fb();return}
  if(forced==='#act'){sayAction(txt);lastIns=before;return}
  if(forced&&MODE==='sp'){const hit=knownNames().find(n=>txt.startsWith(n+' ')||txt===n);if(!hit){sayAs(forced,txt);lastIns=before;return}forced=hit;if(!dbar.hidden)dbarDraw()}
  baseIns(txt);lastIns=before;fb()};
@@ -1556,7 +1558,7 @@ body.focus #fexit{display:none!important}body.focus #wrap{padding-top:calc(var(-
 const ftool=$('div',{id:'ftool'});document.body.append(ftool);
 if(window.ResizeObserver)new ResizeObserver(()=>document.documentElement.style.setProperty('--ft',ftool.offsetHeight+'px')).observe(ftool);
 /* 🎬 ابدأ مشهد */
-const SC={ie:'',tm:'',loc:'',init:false};
+const SC={ie:'',tm:'',loc:'',init:false,err:''};
 const sceneBtn=$('button',{title:'ابدأ مشهدًا',onmousedown(e){e.preventDefault()},onclick(){openTool('newscene')}},'🎬');nb.after(sceneBtn);sceneBtn.hidden=MODE!=='sp';
 const toolsB=$('button',{onmousedown(e){e.preventDefault()},onclick(){openTool('pro')}},'أدوات+'),exitB=$('button',{title:'خروج من التركيز',onmousedown(e){e.preventDefault()},onclick(){setFocus(false)}},'✕');
 ftool.append(toolsB,exitB);
@@ -1564,21 +1566,25 @@ const barEl=document.getElementById('bar');
 const _sf=setFocus;setFocus=function(on){_sf(on);if(on){ftool.prepend(mic,nb,sceneBtn);ftool.append(dbar,dwrap);dbar.style.flexBasis=dwrap.style.flexBasis='100%'}else{barEl.prepend(mic);mic.after(nb);nb.after(sceneBtn);barEl.after(dbar);dbar.after(dwrap);dbar.style.flexBasis=dwrap.style.flexBasis=''}};
 const _sm=setMode;setMode=function(k){const r=_sm(k);sceneBtn.hidden=MODE!=='sp';return r};
 const _cp=closePanel;closePanel=function(){SC.init=false;return _cp()};
-function recentLocs(){const S=scenesOf(model()),seen=[];for(let i=S.length-1;i>=0;i--){const hp=headParts(S[i].x);if(hp.loc&&!seen.some(x=>x.loc===hp.loc))seen.push({loc:hp.loc,ie:hp.ie,tm:hp.tm})}return seen.slice(0,8)}
-function addScene(){const ie=SC.ie,tm=SC.tm,loc=(SC.loc||'').trim();if(!ie||!tm||!loc){fb(false);note('اختر داخلي أو خارجي، ثم الوقت، ثم المكان');return}
+function recentLocs(){const S=scenesOf(model()),seen=[];for(let i=S.length-1;i>=0;i--){const hp=headParts(S[i].x);if(hp.loc&&hp.loc.length<=28&&!/[؟?!.…]/.test(hp.loc)&&(hp.ie||hp.tm)&&!seen.some(x=>x.loc===hp.loc))seen.push({loc:hp.loc,ie:hp.ie,tm:hp.tm})}return seen.slice(0,8)}
+function parseLocInput(x){let t=' '+norm(String(x||'')).replace(/^مشهد\s*[\d٠-٩]*\s*[-–—:.]?\s*/,'')+' ',ie='',tm='';
+ t=t.replace(/\s(داخلي|داخلى)(?=\s)/,()=>{ie='داخلي';return''}).replace(/\s(خارجي|خارجى)(?=\s)/,()=>{ie='خارجي';return''}).replace(/\s(نهار|ليل|غروب|شروق)(?=\s)/,(m,w)=>{tm=w;return''}).replace(/\s(صباح|ظهر|عصر)(?=\s)/,()=>{tm='نهار';return''}).replace(/\s(مساء|فجر)(?=\s)/,()=>{tm='ليل';return''});
+ return{ie,tm,loc:t.replace(/\s*[-–—،,]\s*/g,' ').trim()}}
+function addScene(){const pr=parseLocInput(SC.loc),ie=pr.ie||SC.ie,tm=pr.tm||SC.tm,loc=pr.loc;
+ if(!ie||!tm||!loc){const m=[];if(!ie)m.push('داخلي أو خارجي');if(!tm)m.push('الوقت (نهار/ليل…)');if(!loc)m.push('المكان');SC.err='ينقصك: '+m.join('، ');if(ie)SC.ie=ie;if(tm)SC.tm=tm;SC.loc=loc;fb(false);renderTool();return}SC.err='';
  const E=allEls(),ta=curLine()||E[E.length-1],hd=sceneHead(ta);let after=ta;if(hd){const blk=blockOf(hd);after=blk[blk.length-1]}else after=E[E.length-1];
  const n=E.slice(0,E.indexOf(hd||after)+1).filter(e=>e.p.t==='scene').length+1,txt='مشهد '+fmt(n)+' - '+ie+' - '+loc+' - '+tm;
  beginStruct();let sc;if(after.p.t==='action'&&!after.value.trim()&&after===E[E.length-1]){sc=after;sc.value=txt;sc.p.x=txt;retype(sc,'scene')}else{sc=mk({t:'scene',x:txt});after.after(sc)}fit(sc);
- const ac=mk({t:'action',x:''});sc.after(ac);fit(ac);SC.init=false;SC.loc='';closePanel();ac.focus();sync();save();fb();tipOnce('scn','تقدر تقول بالميكروفون: «مشهد جديد داخلي البيت ليل» بدل هذه الأزرار.')}
+ const ac=mk({t:'action',x:''});sc.after(ac);fit(ac);SC.init=false;SC.loc='';SC.err='';closePanel();ac.focus();sync();save();fb();tipOnce('scn','تقدر تقول بالميكروفون: «مشهد جديد داخلي البيت ليل» بدل هذه الأزرار.')}
 function rNewScene(b){if(spOnly(b))return;const R=recentLocs();
  if(!SC.init){SC.init=true;const l=R[0];SC.ie=l?l.ie:'';SC.tm=l?l.tm:'';SC.loc=''}
  const bb=(lab,on,fn)=>$('button',{className:'bigb'+(on?' on':''),onclick(){fn();renderTool()}},lab);
  b.append($('div',{className:'hsec'},'أين؟'),$('div',{className:'r'},bb('🏠 داخلي',SC.ie==='داخلي',()=>SC.ie='داخلي'),bb('🌳 خارجي',SC.ie==='خارجي',()=>SC.ie='خارجي')),
   $('div',{className:'hsec'},'متى؟'),$('div',{className:'r',style:'flex-wrap:wrap'},...['نهار','ليل','غروب','شروق'].map(t=>bb((t==='ليل'?'🌙 ':t==='نهار'?'☀️ ':'🌅 ')+t,SC.tm===t,()=>SC.tm=t))),
   $('div',{className:'hsec'},'المكان'),
-  R.length?$('div',{className:'r',style:'flex-wrap:wrap'},...R.map((x,i)=>$('button',{className:'bigb'+(SC.loc===x.loc?' on':''),style:'flex:none;font-size:15px;padding:10px 14px',onclick(){SC.loc=x.loc;SC.ie=SC.ie||x.ie;SC.tm=SC.tm||x.tm;renderTool()}},(i===0?'نفس المكان: ':'')+x.loc))):'',
-  $('input',{type:'text',placeholder:'أو اكتب مكانًا جديدًا (مثال: بيت يارا)',value:R.some(x=>x.loc===SC.loc)?'':SC.loc,style:'width:100%;margin-top:6px;font-size:17px;padding:12px',oninput(e){SC.loc=e.target.value}}),
-  $('button',{className:'bigb on',style:'width:100%;margin-top:12px',onclick:addScene},'ابدأ المشهد'))}
+  R.length?$('div',{className:'r',style:'flex-wrap:wrap'},...R.map((x,i)=>$('button',{className:'bigb'+(SC.loc===x.loc?' on':''),style:'flex:none;font-size:15px;padding:10px 14px',onclick(){SC.loc=x.loc;SC.ie=SC.ie||x.ie;SC.tm=SC.tm||x.tm;renderTool()}},(i===0?'نفس المكان: ':'')+(x.loc.length>22?x.loc.slice(0,22)+'…':x.loc)))):'',
+  $('input',{type:'text',placeholder:'أو اكتب مكانًا جديدًا (مثال: بيت يارا)',value:R.some(x=>x.loc===SC.loc)?'':SC.loc,style:'width:100%;margin-top:6px;font-size:17px;padding:12px',oninput(e){SC.loc=e.target.value;SC.err=''},onchange(e){const r=parseLocInput(e.target.value);if(r.ie)SC.ie=r.ie;if(r.tm)SC.tm=r.tm;SC.loc=r.loc;renderTool()}}),
+  SC.err?$('div',{style:'color:#b5301f;font-weight:700;margin-top:10px'},'⚠️ '+SC.err):'',$('button',{className:'bigb on',style:'width:100%;margin-top:12px',onclick:addScene},'ابدأ المشهد'))}
 TOOLS.newscene=['newscene','ابدأ مشهدًا',rNewScene];
 /* 🎓 تجربة تعليمية */
 function startLearn(){lsSet('hasp:tip:learn','1');newWork('sp','تجربة حكّاء');root.textContent='';[{t:'scene',x:'مشهد ١ - داخلي - الصالة - ليل'},{t:'action',x:'يدخل هشام الصالة المظلمة ويجد يارا جالسة'},{t:'character',x:'يارا'},{t:'dialogue',x:'إنت لسه صاحي يا بابا؟'}].forEach(q=>root.append(mk(q)));[...root.children].forEach(fit);flush();save();showEditor();setTimeout(()=>openTool('learn'),350)}
