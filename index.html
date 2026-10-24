@@ -115,6 +115,14 @@ textarea.np{margin-top:60px}.flash{background:color-mix(in srgb,var(--ac) 22%,tr
 .tip{margin:12px 0;padding:10px 14px;border-inline-start:4px solid var(--gk,var(--ink));background:var(--paper);border-radius:8px}
 .flow{width:100%;border-collapse:collapse;background:var(--paper);border-radius:12px;overflow:hidden;margin:8px 0;font-size:14.5px}.flow td{padding:8px 12px;border-bottom:1px solid var(--bd)}.flow td:last-child{color:var(--mu)}
 .chip{display:inline-block;padding:0 9px;border-radius:11px;border:1px solid var(--bd);background:var(--bg);font-size:13.5px;font-weight:700;line-height:22px;white-space:nowrap}
+.sb-day{background:linear-gradient(180deg,#fff3c4,#fffaf0)!important;color:#3b2f12}
+.sb-dusk{background:linear-gradient(180deg,#ffc89a,#fbe3d3)!important;color:#3b2015}
+.sb-night{background:linear-gradient(180deg,#18203a,#2b3763)!important;color:#e9edf7}
+.sb-night .mu,.sb-night .lk,.sb-night b{color:#dfe5f5!important}.sb-night .chip{background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.35)}
+.sb-night textarea,.sb-night button,.sb-night input{color:#fff!important;background:rgba(255,255,255,.1)!important;border-color:rgba(255,255,255,.3)!important}.sb-night textarea::placeholder{color:#b9c2dc}
+.sb-day .chip,.sb-dusk .chip{background:rgba(255,255,255,.6)}
+.sb-in{border-radius:18px!important;border-width:2px!important;border-style:solid!important}
+.sb-ex{border-radius:2px!important;border-width:2px!important;border-style:dashed!important}
 </style></head><body class="home">
 <section id="home"><div class="hw">
 <div class="brand"><img src="icon-192.png" alt="">
@@ -180,7 +188,7 @@ textarea.np{margin-top:60px}.flash{background:color-mix(in srgb,var(--ac) 22%,tr
 <p>إن أردت التحكم الكامل بنفسك: قائمة <span class="chip">⋮</span> ← «التعرف الذكي» لإيقافه.</p></div></div>
 <div class="step"><i>٨</i><div><b>الملاحظة والانتقال</b><p>«ملاحظة» لتوجيه الممثل داخل الحوار، مثل <span class="chip">(بصوت منخفض)</span>. و«انتقال» لكلمات مثل <span class="chip">قطع إلى:</span> أو <span class="chip">مزج إلى:</span>.</p></div></div>
 <h3>ثالثًا: المراجعة</h3>
-<div class="step"><i>★</i><div><b>Story OS</b><p>أداة <span class="chip">Story OS</span> تبني <b>بطاقة مشروع</b> من فكرتك وشخصياتك ومشاهدك ومحطاتك، لتلصقها أول محادثة مع مساعد Story OS (Gemini أو ChatGPT أو Claude). حدّد المرحلة وحالة النص والقرارات المقفلة، ثم اضغط اسم المساعد، فتُنسخ البطاقة ويفتح المساعد. يمكنك لصق رابط الـGem أو الـGPT الخاص بك ليفتح مباشرة.</p></div></div><div class="step"><i>★</i><div><b>أعمال مشابهة</b><p>في أداة <span class="chip">الفكرة</span> اكتب النوع الفني، ثم اضغط اسم مساعد (Gemini أو ChatGPT أو Claude) أو «نسخ الطلب». يُنسخ طلب بحث جاهز يتضمن فكرتك، فيبحث لك المساعد عن أعمال قريبة منها بأسمائها وسنواتها وملخصاتها وما يميّز فكرتك عنها. الصق النتيجة في حقل «أعمال مشابهة»، وتحقق من الأسماء قبل اعتمادها.</p></div></div><div class="step"><i>★</i><div><b>المعالجة والمشاركة الجزئية والبحث والترتيب والتركيز وصفحة العنوان</b><p>أداة <span class="chip">المعالجة</span> لكتابة حكاية العمل بالنثر، وزر «ابنِ من ملخصات المشاهد» يجمعها لك. وزر <span class="chip">مشاركة</span> موجود في الفكرة والشخصية والمشهد والمعالجة، وفي قائمة المشاركة خياران: «الصفحة الحالية» و«المشهد/الفصل الحالي»، فترسل جزءًا من العمل دون كله. أداة <span class="chip">ستوري بورد</span> تعرض بطاقة مصورة لكل مشهد فيها: المكان، وداخلي أو خارجي، ونهار أو ليل، وطول المشهد بالصفحات، والشحنة العاطفية، ومن فيه من الشخصيات، والهدف والصراع والتحول إن كتبتها في أداة المشاهد. أضف صورة مرجعية، واكتب ملخصًا يشرح المشهد (ماذا يحدث؟ من يريد ماذا؟ ما الذي تغيّر؟)، واسحب ⠿ لإعادة ترتيب المشاهد. أداة <span class="chip">بحث</span> تجد كلمة في كل النص وتستبدلها في موضع واحد أو في الكل، مع تجاهل التشكيل وتنويعات الهمزة، ويمكنك التراجع. في أداة المشاهد (أو الفهرس) أزرار ▲ ▼ لتقديم المشهد أو الفصل بكل محتواه وتأخيره. و«وضع التركيز» من قائمة ⋮ يخفي الأدوات ويخفّت ما حول السطر الذي تكتب فيه. وفي أداة <span class="chip">الفكرة</span> حقلا «البريمس» (ماذا لو؟) و«المختصر» (السينوبسس في صفحة)، ثم قسم «صفحة العنوان» لاسم المؤلف والمسودة وبيانات التواصل، فتظهر في PDF وWord.</p></div></div>
+<div class="step"><i>★</i><div><b>أدوات+</b><p>زر <span class="chip">أدوات+</span> في الشريط الجانبي يفتح لوحة فيها: القراءة بالصوت بصوت لكل شخصية، والملاحظات والصيغ البديلة لأي سطر (زر 📝)، وبصمة اللهجة، ومؤقت الكتابة وسلسلة الأيام، والخطوط الدرامية، والقوالب المصرية، وتقارير الإنتاج، وأيام القصة والاستمرارية، والميزانية التقريبية، وبرومبتات الفيديو مع التكلفة، وورقة البيع، وختم الملكية وPDF بعلامة مائية، ومقارنة المسودات، واستيراد وتصدير Final Draft وFountain. وزر 🎤 أعلى الصفحة للإملاء بالصوت: ابدأ الجملة باسم الشخصية («هشام إنت فين؟») فتتحول إلى حوار.</p></div></div><div class="step"><i>★</i><div><b>Story OS</b><p>أداة <span class="chip">Story OS</span> تبني <b>بطاقة مشروع</b> من فكرتك وشخصياتك ومشاهدك ومحطاتك، لتلصقها أول محادثة مع مساعد Story OS (Gemini أو ChatGPT أو Claude). حدّد المرحلة وحالة النص والقرارات المقفلة، ثم اضغط اسم المساعد، فتُنسخ البطاقة ويفتح المساعد. يمكنك لصق رابط الـGem أو الـGPT الخاص بك ليفتح مباشرة.</p></div></div><div class="step"><i>★</i><div><b>أعمال مشابهة</b><p>في أداة <span class="chip">الفكرة</span> اكتب النوع الفني، ثم اضغط اسم مساعد (Gemini أو ChatGPT أو Claude) أو «نسخ الطلب». يُنسخ طلب بحث جاهز يتضمن فكرتك، فيبحث لك المساعد عن أعمال قريبة منها بأسمائها وسنواتها وملخصاتها وما يميّز فكرتك عنها. الصق النتيجة في حقل «أعمال مشابهة»، وتحقق من الأسماء قبل اعتمادها.</p></div></div><div class="step"><i>★</i><div><b>المعالجة والمشاركة الجزئية والبحث والترتيب والتركيز وصفحة العنوان</b><p>أداة <span class="chip">المعالجة</span> لكتابة حكاية العمل بالنثر، وزر «ابنِ من ملخصات المشاهد» يجمعها لك. وزر <span class="chip">مشاركة</span> موجود في الفكرة والشخصية والمشهد والمعالجة، وفي قائمة المشاركة خياران: «الصفحة الحالية» و«المشهد/الفصل الحالي»، فترسل جزءًا من العمل دون كله. أداة <span class="chip">ستوري بورد</span> تعرض بطاقة مصورة لكل مشهد فيها: المكان، وداخلي أو خارجي، ونهار أو ليل، وطول المشهد بالصفحات، والشحنة العاطفية، ومن فيه من الشخصيات، والهدف والصراع والتحول إن كتبتها في أداة المشاهد. أضف صورة مرجعية، واكتب ملخصًا يشرح المشهد (ماذا يحدث؟ من يريد ماذا؟ ما الذي تغيّر؟)، واسحب ⠿ لإعادة ترتيب المشاهد. أداة <span class="chip">بحث</span> تجد كلمة في كل النص وتستبدلها في موضع واحد أو في الكل، مع تجاهل التشكيل وتنويعات الهمزة، ويمكنك التراجع. في أداة المشاهد (أو الفهرس) أزرار ▲ ▼ لتقديم المشهد أو الفصل بكل محتواه وتأخيره. و«وضع التركيز» من قائمة ⋮ يخفي الأدوات ويخفّت ما حول السطر الذي تكتب فيه. وفي أداة <span class="chip">الفكرة</span> حقلا «البريمس» (ماذا لو؟) و«المختصر» (السينوبسس في صفحة)، ثم قسم «صفحة العنوان» لاسم المؤلف والمسودة وبيانات التواصل، فتظهر في PDF وWord.</p></div></div>
 <div class="step"><i>٩</i><div><b>المشاهد والإيقاع</b><p>في أداة <span class="chip">المشاهد</span> اكتب لكل مشهد هدفه وصراعه وتحوّله، وحدد شحنته العاطفية. ثم افتح <span class="chip">اللوحة</span>: ففيها ملاحظات الإيقاع، فتنبهك إلى المشاهد الطويلة جدًا، وتتابع المشاهد الوصفية أو الحوارية، والمشاعر التي لا تتغير.</p></div></div>
 <div class="step"><i>١٠</i><div><b>الأسماء</b><p>أداة <span class="chip">الأسماء</span> تريك أين ظهرت كل شخصية: في أي صفحة وأي مشهد، وتنقلك إليها بضغطة. مفيدة جدًا لاكتشاف شخصية اختفت طويلًا، أو اسم كُتب بطريقتين.</p></div></div>
 <div class="tip"><b>فيلم أم مسلسل؟</b> عند إنشاء سيناريو جديد اختر «فيلم» (عمود واحد) أو «مسلسل» (عمودان: الوصف وعنوان المشهد والانتقال على اليمين، واسم الشخصية والحوار على اليسار). ويمكنك تغييره في أي وقت من قائمة ⋮ ← «شكل الصفحة»، وكلامك لا يتأثر، إنما تتغير الصفحة وعدد الصفحات.</div>
@@ -212,7 +220,7 @@ textarea.np{margin-top:60px}.flash{background:color-mix(in srgb,var(--ac) 22%,tr
 <div class="step"><i>٦</i><div><b>الفاصل والاقتباس</b><p>«فاصل» يضع <span class="chip">* * *</span> للانتقال داخل الفصل نفسه: قفزة في الزمن أو تغيير المكان أو الراوي. و«اقتباس» لرسالة أو قصيدة أو مذكرات، يظهر مائلًا ومزاحًا عن الهامش.</p></div></div>
 <div class="step"><i>٧</i><div><b>الهدف اليومي</b><p>من أداة <span class="chip">الإنجاز</span> حدد هدف الرواية (مثلًا ٦٠ ألف كلمة) وهدفًا يوميًا صغيرًا (٥٠٠–١٠٠٠ كلمة). يعرض لك التطبيق ما كتبته اليوم، وطول كل باب وكل فصل.</p></div></div>
 <h3>ثالثًا: المراجعة</h3>
-<div class="step"><i>★</i><div><b>Story OS</b><p>أداة <span class="chip">Story OS</span> تبني <b>بطاقة مشروع</b> من فكرتك وشخصياتك ومشاهدك ومحطاتك، لتلصقها أول محادثة مع مساعد Story OS (Gemini أو ChatGPT أو Claude). حدّد المرحلة وحالة النص والقرارات المقفلة، ثم اضغط اسم المساعد، فتُنسخ البطاقة ويفتح المساعد. يمكنك لصق رابط الـGem أو الـGPT الخاص بك ليفتح مباشرة.</p></div></div><div class="step"><i>★</i><div><b>أعمال مشابهة</b><p>في أداة <span class="chip">الفكرة</span> اكتب النوع الفني، ثم اضغط اسم مساعد (Gemini أو ChatGPT أو Claude) أو «نسخ الطلب». يُنسخ طلب بحث جاهز يتضمن فكرتك، فيبحث لك المساعد عن أعمال قريبة منها بأسمائها وسنواتها وملخصاتها وما يميّز فكرتك عنها. الصق النتيجة في حقل «أعمال مشابهة»، وتحقق من الأسماء قبل اعتمادها.</p></div></div><div class="step"><i>★</i><div><b>المعالجة والمشاركة الجزئية والبحث والترتيب والتركيز وصفحة العنوان</b><p>أداة <span class="chip">المعالجة</span> لكتابة حكاية العمل بالنثر، وزر «ابنِ من ملخصات المشاهد» يجمعها لك. وزر <span class="chip">مشاركة</span> موجود في الفكرة والشخصية والمشهد والمعالجة، وفي قائمة المشاركة خياران: «الصفحة الحالية» و«المشهد/الفصل الحالي»، فترسل جزءًا من العمل دون كله. أداة <span class="chip">ستوري بورد</span> تعرض بطاقة مصورة لكل مشهد فيها: المكان، وداخلي أو خارجي، ونهار أو ليل، وطول المشهد بالصفحات، والشحنة العاطفية، ومن فيه من الشخصيات، والهدف والصراع والتحول إن كتبتها في أداة المشاهد. أضف صورة مرجعية، واكتب ملخصًا يشرح المشهد (ماذا يحدث؟ من يريد ماذا؟ ما الذي تغيّر؟)، واسحب ⠿ لإعادة ترتيب المشاهد. أداة <span class="chip">بحث</span> تجد كلمة في كل النص وتستبدلها في موضع واحد أو في الكل، مع تجاهل التشكيل وتنويعات الهمزة، ويمكنك التراجع. في أداة المشاهد (أو الفهرس) أزرار ▲ ▼ لتقديم المشهد أو الفصل بكل محتواه وتأخيره. و«وضع التركيز» من قائمة ⋮ يخفي الأدوات ويخفّت ما حول السطر الذي تكتب فيه. وفي أداة <span class="chip">الفكرة</span> حقلا «البريمس» (ماذا لو؟) و«المختصر» (السينوبسس في صفحة)، ثم قسم «صفحة العنوان» لاسم المؤلف والمسودة وبيانات التواصل، فتظهر في PDF وWord.</p></div></div>
+<div class="step"><i>★</i><div><b>أدوات+</b><p>زر <span class="chip">أدوات+</span> في الشريط الجانبي يفتح لوحة فيها: القراءة بالصوت بصوت لكل شخصية، والملاحظات والصيغ البديلة لأي سطر (زر 📝)، وبصمة اللهجة، ومؤقت الكتابة وسلسلة الأيام، والخطوط الدرامية، والقوالب المصرية، وتقارير الإنتاج، وأيام القصة والاستمرارية، والميزانية التقريبية، وبرومبتات الفيديو مع التكلفة، وورقة البيع، وختم الملكية وPDF بعلامة مائية، ومقارنة المسودات، واستيراد وتصدير Final Draft وFountain. وزر 🎤 أعلى الصفحة للإملاء بالصوت: ابدأ الجملة باسم الشخصية («هشام إنت فين؟») فتتحول إلى حوار.</p></div></div><div class="step"><i>★</i><div><b>Story OS</b><p>أداة <span class="chip">Story OS</span> تبني <b>بطاقة مشروع</b> من فكرتك وشخصياتك ومشاهدك ومحطاتك، لتلصقها أول محادثة مع مساعد Story OS (Gemini أو ChatGPT أو Claude). حدّد المرحلة وحالة النص والقرارات المقفلة، ثم اضغط اسم المساعد، فتُنسخ البطاقة ويفتح المساعد. يمكنك لصق رابط الـGem أو الـGPT الخاص بك ليفتح مباشرة.</p></div></div><div class="step"><i>★</i><div><b>أعمال مشابهة</b><p>في أداة <span class="chip">الفكرة</span> اكتب النوع الفني، ثم اضغط اسم مساعد (Gemini أو ChatGPT أو Claude) أو «نسخ الطلب». يُنسخ طلب بحث جاهز يتضمن فكرتك، فيبحث لك المساعد عن أعمال قريبة منها بأسمائها وسنواتها وملخصاتها وما يميّز فكرتك عنها. الصق النتيجة في حقل «أعمال مشابهة»، وتحقق من الأسماء قبل اعتمادها.</p></div></div><div class="step"><i>★</i><div><b>المعالجة والمشاركة الجزئية والبحث والترتيب والتركيز وصفحة العنوان</b><p>أداة <span class="chip">المعالجة</span> لكتابة حكاية العمل بالنثر، وزر «ابنِ من ملخصات المشاهد» يجمعها لك. وزر <span class="chip">مشاركة</span> موجود في الفكرة والشخصية والمشهد والمعالجة، وفي قائمة المشاركة خياران: «الصفحة الحالية» و«المشهد/الفصل الحالي»، فترسل جزءًا من العمل دون كله. أداة <span class="chip">ستوري بورد</span> تعرض بطاقة مصورة لكل مشهد فيها: المكان، وداخلي أو خارجي، ونهار أو ليل، وطول المشهد بالصفحات، والشحنة العاطفية، ومن فيه من الشخصيات، والهدف والصراع والتحول إن كتبتها في أداة المشاهد. أضف صورة مرجعية، واكتب ملخصًا يشرح المشهد (ماذا يحدث؟ من يريد ماذا؟ ما الذي تغيّر؟)، واسحب ⠿ لإعادة ترتيب المشاهد. أداة <span class="chip">بحث</span> تجد كلمة في كل النص وتستبدلها في موضع واحد أو في الكل، مع تجاهل التشكيل وتنويعات الهمزة، ويمكنك التراجع. في أداة المشاهد (أو الفهرس) أزرار ▲ ▼ لتقديم المشهد أو الفصل بكل محتواه وتأخيره. و«وضع التركيز» من قائمة ⋮ يخفي الأدوات ويخفّت ما حول السطر الذي تكتب فيه. وفي أداة <span class="chip">الفكرة</span> حقلا «البريمس» (ماذا لو؟) و«المختصر» (السينوبسس في صفحة)، ثم قسم «صفحة العنوان» لاسم المؤلف والمسودة وبيانات التواصل، فتظهر في PDF وWord.</p></div></div>
 <div class="step"><i>٨</i><div><b>الفهرس</b><p>أداة <span class="chip">الفهرس</span> تعرض الفصول تحت أبوابها، ولكل فصل هدفه وصراعه وتحوّله. اضغط اسم أي فصل لتنتقل إليه. ومن أداة الإنجاز تكتشف الفصول الأطول من غيرها بكثير.</p></div></div>
 <div class="step"><i>٩</i><div><b>المسودات</b><p>قبل أي مراجعة كبيرة احفظ مسودة باسم واضح من أداة <span class="chip">المسودات</span>، مثل «المسودة الأولى كاملة». هكذا تجرّب بحرية، وترجع إليها متى شئت.</p></div></div>
 <div class="step"><i>١٠</i><div><b>الإخراج النهائي</b><p>تصدير Word يعطيك ملفًا جاهزًا للناشر: صفحة عنوان، كل باب في صفحة، كل فصل يبدأ في صفحة جديدة، وأرقام الصفحات أسفل كل صفحة.</p></div></div>
@@ -554,7 +562,8 @@ function headParts(x){let t=norm(String(x||'')).replace(/^مشهد\s*[\d٠-٩]*\
 function rStory(b){const PR=presenceOf(model()),S=PR.S,CC={};PR.N.forEach((n,i)=>CC[n]=CPAL[i%CPAL.length]);const sc=(n,i)=>{const c=PR.M[n][i];return c.w+c.cue*5+c.ment};
  if(!S.length){b.append(h('p',{className:'mu'},'لا توجد '+WD().us+' بعد. أنشئ بعض '+WD().us+' لتظهر في اللوحة.'));return}
  if(PR.N.length)b.append(h('div',{className:'r'},...PR.N.map(n=>h('span',{className:'chip',style:'border-inline-start:8px solid '+CC[n]},n))));
- b.append(h('p',{className:'mu'},'بطاقة لكل '+WD().u+'. لون البطاقة للشخصية الأكثر حضورًا فيها. اسحب ⠿ لإعادة الترتيب، واضغط الصورة لإضافة رسم أو صورة مرجعية، واكتب ملخصًا قصيرًا.'));
+ if(MODE==='sp')b.append(h('div',{className:'r',style:'flex-wrap:wrap;gap:6px;font-size:12px;margin:6px 0'},h('span',{className:'chip sb-day',style:'margin:0'},'☀️ نهار'),h('span',{className:'chip sb-dusk',style:'margin:0'},'🌅 شروق/غروب'),h('span',{className:'chip sb-night',style:'margin:0'},'🌙 ليل'),h('span',{className:'chip sb-in',style:'margin:0'},'🏠 داخلي: حواف مستديرة'),h('span',{className:'chip sb-ex',style:'margin:0'},'🌳 خارجي: حواف متقطعة')));
+ b.append(h('p',{className:'mu'},'بطاقة لكل '+WD().u+'. لون الشريط الجانبي للشخصية الأكثر حضورًا، ولون البطاقة لوقت المشهد، وشكل حوافها للمكان. اسحب ⠿ لإعادة الترتيب، واضغط الصورة لإضافة رسم أو صورة مرجعية، واكتب ملخصًا قصيرًا.'));
  const g=h('div',{style:'display:grid;grid-template-columns:repeat(2,1fr);gap:10px'});let lp='';
  const finish=(sid,tid)=>{if(!tid||tid===sid)return;const si=S.findIndex(x=>x.id===sid),ti=S.findIndex(x=>x.id===tid);moveSceneTo(sid,tid,ti>si)};
  S.forEach((s,i)=>{const o=plan.sc[s.id]=plan.sc[s.id]||{},inp=h('input',{type:'file',accept:'image/*',hidden:true}),
@@ -564,8 +573,9 @@ function rStory(b){const PR=presenceOf(model()),S=PR.S,CC={};PR.N.forEach((n,i)=
   inp.onchange=async()=>{const f=inp.files[0];if(!f)return;try{o.img=await imgSmall(f);savePlan();renderTool()}catch(e){note('تعذر قراءة الصورة')}};
   const ps=PR.N.map(n=>[n,sc(n,i)]).filter(x=>x[1]>0).sort((p,q)=>q[1]-p[1]),dc=ps.length?CC[ps[0][0]]:'var(--bd)',hp=MODE==='sp'?headParts(s.x):{loc:s.x||''};
   const bdg=(t,ttl)=>h('span',{className:'chip',style:'font-size:12px;padding:2px 8px;margin:0',title:ttl||''},t),EM={'-3':'−٣','-2':'−٢','-1':'−١','0':'٠','1':'+١','2':'+٢','3':'+٣'},sm=(l,v)=>String(v||'').trim()?h('div',{style:'font-size:12px;line-height:1.5'},h('b',{},l+': '),v):'';
-  const tags=[hp.ie?bdg(hp.ie==='داخلي'?'🏠 داخلي':'🌳 خارجي'):'',hp.tm?bdg((/ليل|مساء|غروب|فجر/.test(hp.tm)?'🌙 ':'☀️ ')+hp.tm):'',bdg('≈ '+fmt(+(s.h/PL).toFixed(1))+' ص','الطول التقريبي بالصفحات'),o.e!==undefined&&o.e!==''?bdg('شحنة '+(EM[o.e]||o.e),'الشحنة العاطفية من أداة المشاهد'):''].filter(Boolean);
-  const card=h('div',{className:'card',style:'margin:0;padding:8px;border-inline-start:6px solid '+dc+';background:'+(ps.length?'color-mix(in srgb,'+dc+' 12%,var(--paper))':'')},h('div',{className:'r',style:'align-items:center'},hd,h('b',{className:'lk',style:'flex:1;font-size:14px',onclick(){jump(s.e)}},s.n+'. '+(hp.loc||s.x||'(بدون عنوان)'))),
+  const tags=[hp.ie?bdg(hp.ie==='داخلي'?'🏠 داخلي':'🌳 خارجي'):'',hp.tm?bdg((/ليل|مساء|فجر/.test(hp.tm)?'🌙 ':/غروب|شروق/.test(hp.tm)?'🌅 ':'☀️ ')+hp.tm):'',bdg('≈ '+fmt(+(s.h/PL).toFixed(1))+' ص','الطول التقريبي بالصفحات'),o.e!==undefined&&o.e!==''?bdg('شحنة '+(EM[o.e]||o.e),'الشحنة العاطفية من أداة المشاهد'):''].filter(Boolean);
+  const tc=!hp.tm?'':/ليل|مساء|فجر/.test(hp.tm)?' sb-night':/غروب|شروق/.test(hp.tm)?' sb-dusk':' sb-day',ic=hp.ie==='داخلي'?' sb-in':hp.ie==='خارجي'?' sb-ex':'';
+  const card=h('div',{className:'card'+tc+ic,style:'margin:0;padding:8px;border-inline-start:6px solid '+dc+'!important;background:'+(ps.length&&!tc?'color-mix(in srgb,'+dc+' 12%,var(--paper))':'')},h('div',{className:'r',style:'align-items:center'},hd,h('b',{className:'lk',style:'flex:1;font-size:14px',onclick(){jump(s.e)}},s.n+'. '+(hp.loc||s.x||'(بدون عنوان)'))),
    tags.length?h('div',{className:'r',style:'flex-wrap:wrap;gap:4px'},...tags):'',
    ps.length?h('div',{className:'r',style:'flex-wrap:wrap'},...ps.map(x=>h('span',{className:'mu',style:'font-size:12px;border-inline-start:6px solid '+CC[x[0]]+';padding-inline-start:4px'},x[0]))):h('div',{className:'mu',style:'font-size:12px'},'لا شخصيات بعد'),img,inp,
    o.img?h('button',{onclick(){delete o.img;savePlan();renderTool()}},'حذف الصورة'):'',
@@ -1016,4 +1026,334 @@ addEventListener('appinstalled',()=>{ib.hidden=hinst.hidden=true});
 if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{});
 addEventListener('beforeunload',flush);
 document.fonts&&document.fonts.ready.then(()=>{if(!document.body.classList.contains('home'))[...root.children].forEach(fit)});
+</script>
+<script>
+/* ===================== حكّاء برو: أدوات إضافية ===================== */
+(function(){
+const $=(t,a,...k)=>h(t,a||{},...k);
+const P=()=>{plan.pro=plan.pro||{};return plan.pro};
+const allEls=()=>[...root.children];
+let lastTa=null;root.addEventListener('focusin',e=>{if(e.target&&e.target.p)lastTa=e.target});
+const curLine=()=>cur()||(lastTa&&lastTa.isConnected?lastTa:null);
+const back=b=>b.append($('button',{className:'pback',onclick(){openTool('pro')}},'→ كل الأدوات'));
+const card=(...k)=>$('div',{className:'card'},...k);
+const mu=t=>$('div',{className:'mu'},t);
+const num=(lab,o,k,def,step)=>$('label',{className:'f'},$('b',{},lab),$('input',{type:'number',min:0,step:step||1,value:o[k]!==undefined?o[k]:def,onchange(e){o[k]=+e.target.value||0;savePlan();renderTool()}}));
+const hpOf=s=>headParts(s.x||'');
+const spOnly=b=>{if(MODE!=='sp'){b.append(mu('هذه الأداة للسيناريو فقط.'));return true}return false};
+const css=document.createElement('style');css.textContent=`
+.pback{margin-bottom:8px}.hub{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.hub button{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:right;padding:10px;border-radius:12px;min-height:64px}
+.hub button small{color:var(--mu);font-size:12px;line-height:1.5}.hsec{font-weight:700;margin:14px 0 6px}
+textarea[data-note]{box-shadow:inset -4px 0 0 #e0962b}textarea[data-alt]{text-decoration:underline dotted #2a7de1 2px;text-underline-offset:6px}
+textarea.speaking{background:color-mix(in srgb,#2a7de1 14%,transparent)!important}
+#mic.on{background:#d6453d;color:#fff}.tbl{width:100%;border-collapse:collapse;font-size:13px}.tbl td,.tbl th{border-bottom:1px solid var(--bd);padding:4px;text-align:right;vertical-align:top}
+.add{color:#1f7a44;background:color-mix(in srgb,#2e9e5b 14%,transparent)}.del{color:#a33;text-decoration:line-through;background:color-mix(in srgb,#d6453d 12%,transparent)}
+.dline{padding:2px 6px;border-radius:4px;margin:2px 0;font-size:14px;white-space:pre-wrap}.warn{color:#b5581a}.bar14{display:flex;gap:3px;align-items:flex-end;height:60px}.bar14 i{flex:1;background:var(--ac);border-radius:3px 3px 0 0;min-height:2px}
+.big{font-size:34px;font-weight:700;text-align:center;font-variant-numeric:tabular-nums}`;document.head.append(css);
+
+/* ---------- 0) لوحة الأدوات ---------- */
+const HUB=[['الكتابة',[['read','القراءة بالصوت','صوت مختلف لكل شخصية'],['notes','الملاحظات والبدائل','ملاحظة على أي سطر وصيغ بديلة للحوار'],['dial','بصمة اللهجة','تنبيه حين تخرج الشخصية عن لهجتها'],['sprint','مؤقت الكتابة','جلسات مركزة وسلسلة أيام'],['lines','الخطوط الدرامية','الحبكة الرئيسية والفرعية بالألوان'],['tpl','قوالب مصرية','رمضان، سيت كوم، فيلم عيد، ميكرودراما']]],
+ ['الإنتاج',[['rep','تقارير الإنتاج','الأماكن، ليل ونهار، الشخصيات في كل مشهد'],['days','أيام القصة والاستمرارية','يوم الحكاية لكل مشهد وكشف الأخطاء'],['budget','الميزانية التقريبية','تكلفة التصوير بالجنيه'],['vid','برومبتات الفيديو','لقطات جاهزة لـ Flow وVeo مع التكلفة']]],
+ ['المشاركة والحماية',[['pitch','ورقة البيع','صفحة واحدة لشركة الإنتاج'],['stamp','ختم الملكية','بصمة رقمية وتاريخ للنص'],['diff','مقارنة المسودات','ما الذي تغيّر بين نسختين'],['xfer','Final Draft وFountain','استيراد وتصدير بصيغ البرامج العالمية']]]];
+function rHub(b){b.append(mu('أدوات إضافية لحكّاء. اضغط أي أداة لتفتحها.'));
+ for(const[sec,L]of HUB){b.append($('div',{className:'hsec'},sec),$('div',{className:'hub'},...L.map(([k,t,d])=>$('button',{onclick(){openTool(k)}},$('b',{},t),$('small',{},d)))))}}
+TOOLS.pro=['pro','أدوات+',rHub];
+IC.pro='<rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><path d="M17 13.5v7M13.5 17h7"/>';
+RAIL.sp.splice(1,0,'pro');RAIL.nv.splice(1,0,'pro');
+
+/* ---------- 1) القراءة بالصوت ---------- */
+const TT={on:false,q:[],i:0};
+function arVoices(){const V=(speechSynthesis&&speechSynthesis.getVoices())||[];const a=V.filter(v=>/^ar/i.test(v.lang));return a.length?a:V}
+if(window.speechSynthesis)speechSynthesis.onvoiceschanged=()=>{if(curTool==='read')renderTool()};
+function ttsCfg(){const p=P();p.tts=p.tts||{chars:{},nar:{r:1,p:1},act:true,par:false};return p.tts}
+function speakerList(){const s=new Set();let sp=null;for(const e of allEls()){if(e.p.t==='character'){sp=cue(e.value);if(sp)s.add(sp)}}return[...s]}
+function chCfg(n,i){const c=ttsCfg();if(!c.chars[n]){const pit=[1,.8,1.25,.9,1.15,.7,1.35][i%7];c.chars[n]={p:pit,r:1,v:''}}return c.chars[n]}
+function buildQueue(start){const c=ttsCfg(),E=allEls(),q=[];let sp=null;
+ for(let k=0;k<E.length;k++){const e=E[k],t=e.p.t,x=e.value.trim();if(t==='character'){sp=cue(x);continue}
+  if(k<start||!x)continue;
+  if(t==='dialogue'){q.push({e,x,who:sp})}else if(t==='parenthetical'){if(c.par)q.push({e,x,who:null})}
+  else if(t==='scene'||t==='transition'||t==='chapter'||t==='part'){if(c.act)q.push({e,x,who:null});sp=null}
+  else{if(c.act||MODE==='nv')q.push({e,x,who:null});sp=null}}return q}
+function stopRead(){TT.on=false;try{speechSynthesis.cancel()}catch(e){}allEls().forEach(e=>e.classList.remove('speaking'));if(curTool==='read')renderTool()}
+function playNext(){if(!TT.on)return;allEls().forEach(e=>e.classList.remove('speaking'));const it=TT.q[TT.i];if(!it){stopRead();note('انتهت القراءة');return}
+ const c=ttsCfg(),cfg=it.who?chCfg(it.who,speakerList().indexOf(it.who)):c.nar,u=new SpeechSynthesisUtterance(it.x),V=arVoices();
+ u.lang=(V[0]&&V[0].lang)||'ar-EG';const v=V.find(v=>v.name===cfg.v);if(v){u.voice=v;u.lang=v.lang}u.pitch=cfg.p||1;u.rate=(cfg.r||1)*(c.speed||1);
+ it.e.classList.add('speaking');it.e.scrollIntoView({block:'center',behavior:'smooth'});
+ u.onend=()=>{TT.i++;playNext()};u.onerror=()=>{TT.i++;playNext()};speechSynthesis.speak(u)}
+function startRead(from){if(!window.speechSynthesis){note('هذا المتصفح لا يدعم القراءة بالصوت');return}speechSynthesis.cancel();
+ const E=allEls();let s=0;const c=curLine();if(from==='line'&&c)s=E.indexOf(c);if(from==='scene'&&c){let k=E.indexOf(c);while(k>0&&!isHead(E[k].p.t))k--;s=k}
+ TT.q=buildQueue(s);TT.i=0;if(!TT.q.length){note('لا يوجد نص للقراءة');return}TT.on=true;closePanel();playNext();showStop()}
+let stopB=null;function showStop(){if(!stopB){stopB=$('button',{id:'ttsstop',style:'position:fixed;bottom:18px;inset-inline-end:18px;z-index:40;padding:10px 16px;border-radius:24px;background:#d6453d;color:#fff;border:0;font-weight:700',onclick(){stopRead();stopB.hidden=true}},'■ إيقاف القراءة');document.body.append(stopB)}stopB.hidden=false;
+ const w=setInterval(()=>{if(!TT.on){stopB.hidden=true;clearInterval(w)}},500)}
+function rRead(b){back(b);if(!window.speechSynthesis){b.append(mu('هذا المتصفح لا يدعم القراءة بالصوت. جرّب Chrome.'));return}
+ const c=ttsCfg(),V=arVoices(),N=speakerList();
+ b.append(mu('اسمع حوارك يُقرأ بصوت مختلف لكل شخصية، فتكتشف الجملة غير الطبيعية فورًا. الأصوات المتاحة من جهازك'+(V.some(v=>/^ar/i.test(v.lang))?'':' (لا يوجد صوت عربي مثبت: ثبّت «العربية» من إعدادات تحويل النص إلى كلام في الهاتف)')+'.'),
+  $('div',{className:'r',style:'flex-wrap:wrap'},$('button',{onclick(){startRead('line')}},'▶ من السطر الحالي'),$('button',{onclick(){startRead('scene')}},'▶ من أول المشهد'),$('button',{onclick(){startRead('all')}},'▶ من البداية'),TT.on?$('button',{onclick:stopRead},'■ إيقاف'):''),
+  $('label',{className:'r'},$('input',{type:'checkbox',checked:c.act,onchange(e){c.act=e.target.checked;savePlan()}}),$('span',{},'اقرأ الوصف وعناوين المشاهد')),
+  $('label',{className:'r'},$('input',{type:'checkbox',checked:c.par,onchange(e){c.par=e.target.checked;savePlan()}}),$('span',{},'اقرأ الملاحظات بين القوسين')),
+  $('label',{className:'f'},$('b',{},'السرعة العامة'),$('input',{type:'range',min:.6,max:1.6,step:.1,value:c.speed||1,onchange(e){c.speed=+e.target.value;savePlan()}})));
+ const vsel=(o)=>$('select',{onchange(e){o.v=e.target.value;savePlan()}},$('option',{value:''},'الصوت الافتراضي'),...V.map(v=>$('option',{value:v.name,selected:o.v===v.name},v.name+' ('+v.lang+')')));
+ const row=(lab,o)=>card($('b',{},lab),$('div',{className:'r',style:'flex-wrap:wrap;align-items:center'},vsel(o),$('span',{className:'mu'},'الطبقة'),$('input',{type:'range',min:.5,max:1.6,step:.05,value:o.p||1,style:'width:110px',onchange(e){o.p=+e.target.value;savePlan()}}),
+  $('button',{onclick(){if(!window.speechSynthesis)return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(lab==='الراوي (الوصف)'?'تدخل يارا الغرفة ببطء':'إزيك؟ عامل إيه النهارده؟');const vv=V.find(v=>v.name===o.v);if(vv){u.voice=vv;u.lang=vv.lang}else u.lang='ar-EG';u.pitch=o.p||1;speechSynthesis.speak(u)}},'جرّب')));
+ b.append(row('الراوي (الوصف)',c.nar));N.forEach((n,i)=>b.append(row(n,chCfg(n,i))));if(!N.length)b.append(mu('اكتب حوارًا بأسماء شخصيات لتظهر هنا.'))}
+TOOLS.read=['read','القراءة بالصوت',rRead];
+
+/* ---------- 2) الإملاء الذكي ---------- */
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;let rec=null,recOn=false;
+const mic=$('button',{id:'mic',title:'الإملاء بالصوت',onmousedown(e){e.preventDefault()},onclick(){recOn?stopRec():startRec()}},'🎤');
+document.getElementById('bar').prepend(mic);
+function insertSpeech(txt){txt=txt.trim();if(!txt)return;let ta=curLine()||root.lastElementChild;if(!ta)return;
+ const N=[...chars].concat(speakerList()).filter(Boolean).sort((a,b)=>b.length-a.length);
+ if(MODE==='sp'&&smart){const nm=N.find(n=>txt===n||txt.startsWith(n+' ')||txt.startsWith(n+'،'));
+  if(nm){const rest=txt.slice(nm.length).replace(/^[\s،:]+/,'');
+   if(ta.value.trim()){ta.value+='\n';ta.dispatchEvent(new Event('input',{bubbles:true}));ta=cur()||ta}
+   if(ta.p.t!=='action'){beginStruct();retype(ta,'action')}
+   ta.value=nm+': '+rest;ta.setSelectionRange(ta.value.length,ta.value.length);ta.dispatchEvent(new Event('input',{bubbles:true}));return}}
+ ta.focus();const sp=ta.value&&!/\s$/.test(ta.value)?' ':'';ta.value+=sp+txt;ta.setSelectionRange(ta.value.length,ta.value.length);ta.dispatchEvent(new Event('input',{bubbles:true}))}
+function startRec(){if(!SR){note('الإملاء غير مدعوم في هذا المتصفح. استخدم Chrome على الهاتف.');return}
+ rec=new SR();rec.lang=(P().lang)||'ar-EG';rec.continuous=true;rec.interimResults=false;
+ rec.onresult=e=>{for(let i=e.resultIndex;i<e.results.length;i++)if(e.results[i].isFinal)insertSpeech(e.results[i][0].transcript)};
+ rec.onerror=e=>{if(e.error==='not-allowed')note('اسمح للتطبيق باستخدام الميكروفون من إعدادات المتصفح');stopRec()};
+ rec.onend=()=>{if(recOn)try{rec.start()}catch(e){stopRec()}};
+ try{rec.start();recOn=true;mic.classList.add('on');note('تكلّم الآن. ابدأ الجملة باسم الشخصية لتتحول إلى حوار: «هشام إنت فين؟». اضغط 🎤 للإيقاف.')}catch(e){note('تعذّر تشغيل الميكروفون')}}
+function stopRec(){recOn=false;mic.classList.remove('on');try{rec&&rec.stop()}catch(e){}}
+
+/* ---------- 3) تقارير الإنتاج ---------- */
+function sceneData(){const PR=presenceOf(model()),S=PR.S;return S.map((s,i)=>{const hp=hpOf(s);return{s,i,hp,loc:(hp.loc||'(بدون مكان)').trim(),pages:s.h/PL,who:PR.N.filter(n=>{const c=PR.M[n][i];return c.cue||c.w}),ment:PR.N.filter(n=>{const c=PR.M[n][i];return!c.cue&&!c.w&&c.ment})}})}
+const tcat=t=>!t?'—':/ليل|مساء|فجر/.test(t)?'ليل':/غروب|شروق/.test(t)?'شروق/غروب':'نهار';
+function repText(D){const L=[projName()+' — تقرير الإنتاج',''];const loc={};D.forEach(d=>{(loc[d.loc]=loc[d.loc]||[]).push(d)});
+ L.push('الأماكن:');for(const k in loc)L.push('• '+k+': '+loc[k].length+' مشهد ('+loc[k].map(d=>d.s.n).join('، ')+')');L.push('','الشخصيات في كل مشهد:');D.forEach(d=>L.push(d.s.n+'. '+(d.s.x||'')+' — '+(d.who.join('، ')||'لا أحد')));return L.join('\n')}
+function rRep(b){back(b);if(spOnly(b))return;const D=sceneData();if(!D.length){b.append(mu('لا توجد مشاهد بعد.'));return}
+ const cnt=f=>D.filter(f).length,pg=f=>D.filter(f).reduce((a,d)=>a+d.pages,0),f1=n=>fmt(+n.toFixed(1));
+ b.append(card($('b',{},'نظرة عامة'),$('table',{className:'tbl'},...[['المشاهد',fmt(D.length)],['الصفحات التقريبية',f1(pg(()=>1))],['داخلي',fmt(cnt(d=>d.hp.ie==='داخلي'))],['خارجي',fmt(cnt(d=>d.hp.ie==='خارجي'))],['نهار',fmt(cnt(d=>tcat(d.hp.tm)==='نهار'))],['ليل',fmt(cnt(d=>tcat(d.hp.tm)==='ليل'))],['شروق/غروب',fmt(cnt(d=>tcat(d.hp.tm)==='شروق/غروب'))],['بلا وقت أو مكان محدد',fmt(cnt(d=>!d.hp.tm||!d.hp.ie))]].map(([a,v])=>$('tr',{},$('td',{},a),$('td',{},v))))));
+ const loc={};D.forEach(d=>{(loc[d.loc]=loc[d.loc]||[]).push(d)});
+ b.append(card($('b',{},'الأماكن (مرتبة بعدد المشاهد)'),mu('مفيد لترتيب التصوير: كل مشاهد المكان الواحد تُصوَّر معًا.'),$('table',{className:'tbl'},$('tr',{},$('th',{},'المكان'),$('th',{},'مشاهد'),$('th',{},'ص'),$('th',{},'ليل')),
+  ...Object.entries(loc).sort((a,b)=>b[1].length-a[1].length).map(([k,L])=>$('tr',{},$('td',{},k+(L[0].hp.ie?' ('+L[0].hp.ie+')':'')),$('td',{},...L.map(d=>$('span',{className:'lk',onclick(){jump(d.s.e)}},d.s.n+' '))),$('td',{},f1(L.reduce((a,d)=>a+d.pages,0))),$('td',{},fmt(L.filter(d=>tcat(d.hp.tm)==='ليل').length)))))));
+ const N={};D.forEach(d=>d.who.forEach(n=>{(N[n]=N[n]||[]).push(d)}));
+ b.append(card($('b',{},'الشخصيات'),mu('عدد المشاهد = أيام التصوير التقريبية لكل ممثل.'),$('table',{className:'tbl'},$('tr',{},$('th',{},'الشخصية'),$('th',{},'مشاهد'),$('th',{},'الأماكن')),
+  ...Object.entries(N).sort((a,b)=>b[1].length-a[1].length).map(([n,L])=>$('tr',{},$('td',{},n),$('td',{},fmt(L.length)+' ('+L.map(d=>d.s.n).join('، ')+')'),$('td',{},[...new Set(L.map(d=>d.loc))].join('، ')))))));
+ b.append(card($('b',{},'كشف المشاهد (Breakdown)'),$('table',{className:'tbl'},$('tr',{},$('th',{},'#'),$('th',{},'المكان'),$('th',{},'د/خ'),$('th',{},'الوقت'),$('th',{},'الشخصيات')),
+  ...D.map(d=>$('tr',{},$('td',{className:'lk',onclick(){jump(d.s.e)}},d.s.n),$('td',{},d.loc),$('td',{},d.hp.ie||'—'),$('td',{},d.hp.tm||'—'),$('td',{},d.who.join('، ')+(d.ment.length?' (ذكر: '+d.ment.join('، ')+')':'')))))),
+  $('div',{className:'r'},shBtn(()=>projName()+' — تقرير الإنتاج',()=>repText(D))))}
+TOOLS.rep=['rep','تقارير الإنتاج',rRep];
+
+/* ---------- 4) الملاحظات والبدائل ---------- */
+const NT=()=>{const p=P();p.notes=p.notes||{};p.alts=p.alts||{};return p};
+function markLines(){const p=NT();for(const k in p.alts)if(!p.alts[k]||!p.alts[k].length)delete p.alts[k];allEls().forEach(e=>{const id=e.p.id;if(p.notes[id])e.dataset.note='1';else delete e.dataset.note;if(p.alts[id]&&p.alts[id].length)e.dataset.alt='1';else delete e.dataset.alt})}
+const _mk=mk;mk=function(q){const ta=_mk(q);try{const p=plan&&plan.pro;if(p&&p.notes&&p.notes[q.id])ta.dataset.note='1';if(p&&p.alts&&p.alts[q.id]&&p.alts[q.id].length)ta.dataset.alt='1'}catch(e){}return ta};
+const _op=openProj;openProj=function(...a){const r=_op.apply(this,a);setTimeout(markLines,0);return r};
+const nb=$('button',{title:'ملاحظة أو بديل للسطر الحالي',onmousedown(e){e.preventDefault()},onclick(){openTool('notes')}},'📝');mic.after(nb);
+function rNotes(b){back(b);const p=NT(),ta=curLine();
+ if(ta){const id=ta.p.id;b.append(card($('b',{},'السطر الحالي ('+(ALLT[ta.p.t]||'')+')'),$('div',{className:'dline'},ta.value||'(فارغ)'),
+   $('label',{className:'f'},$('b',{},'ملاحظة على هذا السطر'),$('textarea',{rows:2,placeholder:'مثال: الجملة طويلة، أو راجع المعلومة',value:p.notes[id]||'',oninput(e){if(e.target.value.trim())p.notes[id]=e.target.value;else delete p.notes[id];savePlan();markLines()}}))));
+  const getA=()=>(p.alts[id]=p.alts[id]||[]),A=getA();
+  b.append(card($('b',{},'صيغ بديلة'),mu('احتفظ بأكثر من صيغة للجملة، واختر الأفضل لاحقًا. البدائل لا تظهر في PDF أو Word.'),
+   ...A.map((x,i)=>$('div',{className:'r',style:'align-items:center'},$('div',{className:'dline',style:'flex:1'},x),$('button',{onclick(){beginStruct();const old=ta.value;ta.value=x;ta.p.x=x;fit(ta);getA()[i]=old;savePlan();save();markLines();renderTool()}},'اجعلها الأساسية'),$('button',{onclick(){getA().splice(i,1);savePlan();markLines();renderTool()}},'حذف'))),
+   (()=>{const inp=$('textarea',{rows:2,placeholder:'اكتب صيغة بديلة'});return $('div',{},inp,$('div',{className:'r'},$('button',{onclick(){if(inp.value.trim()){getA().push(inp.value.trim());savePlan();markLines();renderTool()}}},'أضف البديل'),$('button',{onclick(){if(ta.value.trim()){getA().push(ta.value.trim());savePlan();markLines();renderTool()}}},'احفظ الصيغة الحالية كبديل')))})()));
+}
+ else b.append(mu('اضغط على أي سطر في النص أولًا، ثم افتح هذه الأداة (أو زر 📝).'));
+ const E=allEls(),L=E.filter(e=>p.notes[e.p.id]||(p.alts[e.p.id]&&p.alts[e.p.id].length));
+ b.append($('div',{className:'hsec'},'كل الملاحظات والبدائل ('+fmt(L.length)+')'),...L.map(e=>card($('div',{className:'lk',onclick(){jump(e);e.focus()}},(e.value||'(فارغ)').slice(0,70)),p.notes[e.p.id]?$('div',{},'📝 '+p.notes[e.p.id]):'',p.alts[e.p.id]&&p.alts[e.p.id].length?mu(fmt(p.alts[e.p.id].length)+' صيغة بديلة'):'')));
+ if(L.length)b.append(shBtn(()=>projName()+' — ملاحظات',()=>L.map(e=>'• '+e.value.slice(0,80)+(p.notes[e.p.id]?'\n  ملاحظة: '+p.notes[e.p.id]:'')).join('\n')))}
+TOOLS.notes=['notes','الملاحظات والبدائل',rNotes];
+
+/* ---------- 5) بصمة اللهجة ---------- */
+const DL={'قاهري':'دلوقتي دلوقت عايز عايزة عايزين إزاي ازاي فين كده كدا إيه ايه بتاع بتاعة أوي اوي امبارح إمبارح ده دي دول بقى خالص يعني مش هنا فاكر لسه',
+ 'صعيدي':'دلوك دلوكيت إكده اكده كيف عاد عاوز عاوزة عاوزين وِلد يابوي ياما حداك حدايا ليش مِش إيش هِمّ أباي',
+ 'فصحى':'سوف لماذا ماذا الذي التي الذين هذا هذه ذلك تلك ليس لست لقد إنّ إن أريد نريد الآن كيف لكنّ لكن أين حسنًا نعم أجل إذن',
+ 'إسكندراني':'نروح نيجي نعمل نقول بيس يا ولا ياض يا عم أصلًا خلاص بقى'};
+const DLX={'قاهري':['صعيدي','فصحى'],'صعيدي':['قاهري','فصحى'],'فصحى':['قاهري','صعيدي','إسكندراني'],'إسكندراني':['صعيدي','فصحى']};
+function dlWords(k){const p=P();p.dlw=p.dlw||{};const base=(DL[k]||'').split(' '),own=(p.dlw[k]||'').split(/[\s،,]+/);return new Set(base.concat(own).filter(Boolean).map(w=>zn(norm(w))))}
+function dlScan(){const p=P(),D=p.dl||{},out=[];let sp=null;const sets={};Object.keys(DL).forEach(k=>sets[k]=dlWords(k));
+ for(const e of allEls()){if(e.p.t==='character'){sp=cue(e.value);continue}if(e.p.t!=='dialogue'||!sp||!D[sp])continue;const mine=sets[D[sp]],ws=flat(e.value).trim().split(' ').map(zn);
+  for(const o of DLX[D[sp]]||[]){const hit=ws.filter(w=>sets[o].has(w)&&!mine.has(w));if(hit.length){out.push({e,sp,d:D[sp],o,w:[...new Set(hit)]});break}}}return out}
+function rDial(b){back(b);if(spOnly(b))return;const p=P();p.dl=p.dl||{};p.dlw=p.dlw||{};const N=speakerList();
+ b.append(mu('حدد لهجة كل شخصية، فينبهك حكّاء إلى الجمل التي خرجت فيها عن لهجتها (مثل صعيدي يقول «دلوقتي» بدل «دلوك»). الكلمات المرجعية قابلة للزيادة.'));
+ if(!N.length){b.append(mu('اكتب حوارًا بأسماء شخصيات أولًا.'));return}
+ b.append(card(...N.map(n=>$('div',{className:'r',style:'align-items:center'},$('b',{style:'flex:1'},n),$('select',{onchange(e){if(e.target.value)p.dl[n]=e.target.value;else delete p.dl[n];savePlan();renderTool()}},$('option',{value:''},'بلا تحديد'),...Object.keys(DL).map(k=>$('option',{value:k,selected:p.dl[n]===k},k)))))));
+ const R=dlScan();b.append($('div',{className:'hsec'},R.length?'⚠️ '+fmt(R.length)+' جملة خارج اللهجة':'✓ لا توجد جمل خارج اللهجة'),...R.slice(0,80).map(r=>card($('div',{className:'lk',onclick(){jump(r.e);r.e.focus()}},r.sp+': '+r.e.value.slice(0,80)),$('div',{className:'warn'},'لهجتها '+r.d+'، وفي الجملة كلمات '+r.o+': '+r.w.join('، ')))));
+ b.append($('div',{className:'hsec'},'كلماتك الخاصة لكل لهجة'),...Object.keys(DL).map(k=>$('label',{className:'f'},$('b',{},k),$('input',{type:'text',value:p.dlw[k]||'',placeholder:'كلمات إضافية مفصولة بمسافة',onchange(e){p.dlw[k]=e.target.value;savePlan();renderTool()}}),mu('الأساسية: '+DL[k]))))}
+TOOLS.dial=['dial','بصمة اللهجة',rDial];
+
+/* ---------- 6) مؤقت الكتابة والسلسلة ---------- */
+const today=()=>new Date().toLocaleDateString('sv');
+function dayLog(){try{return JSON.parse(lget('hasp:days'))||{}}catch(e){return{}}}
+let lastW=null;
+function tickWords(){const w=allEls().reduce((a,e)=>a+wc(e.value),0);const k=pid+'';if(lastW===null||lastW.k!==k){lastW={k,w};return}const d=w-lastW.w;lastW.w=w;if(d>0&&d<400){const L=dayLog(),t=today();L[t]=(L[t]||0)+d;const hr='h'+new Date().getHours();L._h=L._h||{};L._h[hr]=(L._h[hr]||0)+d;lsSet('hasp:days',JSON.stringify(L))}}
+setInterval(()=>{if(!document.body.classList.contains('home'))tickWords()},5000);
+function streaks(L){const ds=Object.keys(L).filter(k=>/^\d{4}-/.test(k)&&L[k]>0).sort();let best=0,run=0,prev=null;for(const d of ds){const t=new Date(d);run=prev&&(t-prev)/864e5===1?run+1:1;best=Math.max(best,run);prev=t}
+ let cur0=0;const ds0=i=>new Date(Date.now()-i*864e5).toLocaleDateString('sv');let i=L[ds0(0)]>0?0:1;while(L[ds0(i)]>0){cur0++;i++}return{best,cur:cur0}}
+const SP0={end:0,w0:0,len:0,t:null};
+function rSprint(b){back(b);const L=dayLog(),s=streaks(L),tot=allEls().reduce((a,e)=>a+wc(e.value),0);
+ const big=$('div',{className:'big'},'--:--'),info=mu('');
+ const upd=()=>{if(!SP0.end){big.textContent='--:--';return}const r=Math.max(0,SP0.end-Date.now()),w=allEls().reduce((a,e)=>a+wc(e.value),0)-SP0.w0;big.textContent=String(Math.floor(r/6e4)).padStart(2,'0')+':'+String(Math.floor(r/1e3)%60).padStart(2,'0');info.textContent='كتبت في هذه الجلسة '+fmt(Math.max(0,w))+' كلمة';
+  if(r<=0){clearInterval(SP0.t);SP0.end=0;note('انتهت الجلسة! كتبت '+fmt(Math.max(0,w))+' كلمة 👏');try{navigator.vibrate&&navigator.vibrate([200,100,200])}catch(e){}}};
+ b.append(mu('جلسة كتابة مركزة: اختر المدة واكتب بلا توقف ولا تصحيح.'),big,info,$('div',{className:'r',style:'flex-wrap:wrap;justify-content:center'},...[10,15,25,45].map(m=>$('button',{onclick(){SP0.end=Date.now()+m*6e4;SP0.w0=allEls().reduce((a,e)=>a+wc(e.value),0);clearInterval(SP0.t);SP0.t=setInterval(()=>{upd();if(!SP0.end)clearInterval(SP0.t)},1000);closePanel();note('بدأت جلسة '+fmt(m)+' دقيقة. افتح «مؤقت الكتابة» لترى الوقت المتبقي.')}},fmt(m)+' دقيقة')),SP0.end?$('button',{onclick(){SP0.end=0;clearInterval(SP0.t);renderTool()}},'إنهاء'):''));
+ if(SP0.end){upd();const t=setInterval(()=>{if(curTool!=='sprint'){clearInterval(t);return}upd()},1000)}
+ const days=[...Array(14)].map((_,i)=>new Date(Date.now()-(13-i)*864e5).toLocaleDateString('sv')),mx=Math.max(1,...days.map(d=>L[d]||0));
+ const H=L._h||{},bh=Object.entries(H).sort((a,b)=>b[1]-a[1])[0];
+ b.append(card($('b',{},'🔥 السلسلة'),$('div',{},'السلسلة الحالية: '+fmt(s.cur)+' يوم — أطول سلسلة: '+fmt(s.best)+' يوم'),$('div',{},'اليوم: '+fmt(L[today()]||0)+' كلمة — إجمالي هذا العمل: '+fmt(tot)+' كلمة'),bh?mu('أكثر ساعة تكتب فيها: '+fmt(+bh[0].slice(1))+':00'):'',
+  mu('آخر ١٤ يومًا:'),$('div',{className:'bar14'},...days.map(d=>$('i',{title:d+': '+(L[d]||0),style:'height:'+Math.round(100*(L[d]||0)/mx)+'%'})))))}
+TOOLS.sprint=['sprint','مؤقت الكتابة',rSprint];
+
+/* ---------- 7) الخطوط الدرامية ---------- */
+const LC=['#d6453d','#2a7de1','#2e9e5b','#e0962b','#8e55c7','#0f9aa8'];
+function rLines(b){back(b);const p=P();p.lines=p.lines||[];const S=scenesOf(model());
+ const inp=$('input',{type:'text',placeholder:'اسم الخط (مثال: قصة الحب، الجريمة، صراع الأب)'});
+ b.append(mu('قسّم حكايتك إلى خطوط (رئيسية وفرعية)، وعلّم كل مشهد بالخط الذي يخدمه. ثم اختر خطًا لترى مساره وحده، وهل اختفى طويلًا.'),$('div',{className:'r'},inp,$('button',{onclick(){const n=inp.value.trim();if(!n)return;p.lines.push({id:Math.random().toString(36).slice(2,8),n,c:LC[p.lines.length%LC.length]});savePlan();renderTool()}},'أضف خطًا')));
+ if(!p.lines.length)return;
+ b.append($('div',{className:'r',style:'flex-wrap:wrap'},$('button',{className:!p.lsel?'on':'',onclick(){p.lsel='';savePlan();renderTool()}},'الكل'),...p.lines.map(l=>$('button',{className:p.lsel===l.id?'on':'',style:'border-inline-start:8px solid '+l.c,onclick(){p.lsel=l.id;savePlan();renderTool()}},l.n,' ',$('small',{onclick(e){e.stopPropagation();if(confirm('حذف الخط «'+l.n+'»؟')){p.lines=p.lines.filter(x=>x!==l);Object.values(plan.sc).forEach(o=>{if(o.pl)o.pl=o.pl.filter(x=>x!==l.id)});savePlan();renderTool()}}},'✕')))));
+ const sel=p.lines.find(l=>l.id===p.lsel);
+ if(sel){const has=S.map(s=>((plan.sc[s.id]||{}).pl||[]).includes(sel.id)),idxs=has.map((v,i)=>v?i:-1).filter(i=>i>=0);let gap=0,ga=0;for(let k=1;k<idxs.length;k++){const g=idxs[k]-idxs[k-1]-1;if(g>gap){gap=g;ga=idxs[k-1]}}
+  b.append(card($('b',{},'مسار «'+sel.n+'»: '+fmt(idxs.length)+' من '+fmt(S.length)+' مشهد'),$('div',{style:'display:flex;gap:2px;height:22px;margin:6px 0'},...has.map((v,i)=>$('i',{title:S[i].n+'. '+S[i].x,style:'flex:1;border-radius:2px;background:'+(v?sel.c:'var(--bd)'),onclick(){jump(S[i].e)}}))),
+   gap>=4?$('div',{className:'warn'},'⚠️ يختفي هذا الخط '+fmt(gap)+' مشاهد متتالية بعد المشهد '+fmt(S[ga].n)+'.'):mu('توزيع الخط متوازن.')))}
+ S.forEach(s=>{const o=plan.sc[s.id]=plan.sc[s.id]||{};o.pl=o.pl||[];if(sel&&!o.pl.includes(sel.id))return;
+  b.append(card($('div',{className:'lk',onclick(){jump(s.e)}},s.n+'. '+(s.x||'')),$('div',{className:'r',style:'flex-wrap:wrap'},...p.lines.map(l=>$('label',{className:'r',style:'border-inline-start:6px solid '+l.c+';padding-inline-start:4px'},$('input',{type:'checkbox',checked:o.pl.includes(l.id),onchange(e){o.pl=e.target.checked?[...o.pl,l.id]:o.pl.filter(x=>x!==l.id);savePlan();if(sel)renderTool()}}),$('span',{},l.n))))))})}
+TOOLS.lines=['lines','الخطوط الدرامية',rLines];
+
+/* ---------- 8) قوالب مصرية ---------- */
+const TPL=[
+ ['مسلسل رمضان (٣٠ حلقة)','tv',()=>{const a=[];for(let i=1;i<=30;i++){a.push({t:'scene',x:'الحلقة '+i+' - مشهد ١ - داخلي - '+(i%2?'نهار':'ليل')},{t:'action',x:i===1?'افتتاحية: اعرض البطل وعالمه، والحدث الذي يقلب حياته.':i===15?'منتصف الموسم: انقلاب كبير يغيّر فهم الجمهور.':i===30?'الحلقة الأخيرة: الإجابة عن السؤال الكبير، وصدى أخير.':'هدف الحلقة: … — تنتهي بسؤال أو قرار أو كارثة تشد للحلقة التالية.'})}return a}],
+ ['مسلسل قصير (١٥ حلقة)','tv',()=>{const a=[];for(let i=1;i<=15;i++)a.push({t:'scene',x:'الحلقة '+i+' - مشهد ١ - داخلي - نهار'},{t:'action',x:i===8?'منتصف المسلسل: كشف يقلب الحكاية.':'هدف الحلقة: … — نهاية تشد للحلقة التالية.'});return a}],
+ ['سيت كوم (حلقة ٢٥ دقيقة)','tv',()=>[{t:'scene',x:'مشهد ١ - داخلي - الشقة - نهار'},{t:'action',x:'الافتتاحية (دقيقتان): موقف مضحك يعرّف بالشخصيات ويزرع المشكلة.'},{t:'scene',x:'مشهد ٢ - داخلي - الشقة - نهار'},{t:'action',x:'الفصل الأول: الشخصية تريد شيئًا وتختار طريقة خاطئة للحصول عليه.'},{t:'scene',x:'مشهد ٣ - خارجي - الشارع - نهار'},{t:'action',x:'التصعيد: كل حل يجعل الورطة أكبر (قاعدة الثلاثة).'},{t:'scene',x:'مشهد ٤ - داخلي - الشقة - ليل'},{t:'action',x:'الذروة والحل: انفجار الموقف ثم عودة للتوازن مع درس صغير بلا وعظ، وإفيه أخير (callback).'}]],
+ ['فيلم عيد (كوميدي)','film',()=>['الافتتاحية: البطل في عالمه وعيبه المضحك','الحدث المحفز: ورطة لا يستطيع رفضها','دخول الفصل الثاني: يقبل المهمة بطريقته الخاطئة','المرح واللعب: مواقف كوميدية متصاعدة','المنتصف: نجاح زائف أو انقلاب','الأشرار يقتربون: كل شيء يسوء','كل شيء ضاع: أسوأ لحظة','الحل: يواجه عيبه ويتغير','الختام: صورة معاكسة للافتتاحية'].flatMap((x,i)=>[{t:'scene',x:'مشهد '+(i+1)+' - داخلي - … - '+(i===6?'ليل':'نهار')},{t:'action',x}])],
+ ['ميكرودراما رأسية (حلقة ٦٠ ثانية)','film',()=>[{t:'scene',x:'مشهد ١ - داخلي - … - ليل'},{t:'action',x:'الهوك (٠–٣ ثوانٍ): صورة أو جملة صادمة تجعل المشاهد لا يمرر.'},{t:'scene',x:'مشهد ٢ - داخلي - … - ليل'},{t:'action',x:'التصعيد (٣–٤٥ ثانية): صراع واحد واضح، ولقطات قريبة لأن الشاشة رأسية.'},{t:'scene',x:'مشهد ٣ - خارجي - … - ليل'},{t:'action',x:'النهاية (٤٥–٦٠ ثانية): كشف أو قرار أو منحدر يجبره على الحلقة التالية.'}]],
+ ['فيلم طويل (٣ فصول)','film',()=>[['الفصل الأول: العالم العادي والحدث المحفز','نهار'],['نقطة التحول الأولى: البطل يدخل عالمًا جديدًا','نهار'],['الفصل الثاني: عقبات متصاعدة وحلفاء وأعداء','نهار'],['المنتصف: انقلاب أو كشف كبير','ليل'],['الأزمة: كل شيء ضاع','ليل'],['الفصل الثالث: المواجهة الكبرى','ليل'],['الختام: العالم الجديد','نهار']].flatMap(([x,t],i)=>[{t:'scene',x:'مشهد '+(i+1)+' - داخلي - … - '+t},{t:'action',x}])]];
+function rTpl(b){back(b);b.append(mu('ابدأ عملًا جديدًا من قالب جاهز بتقسيمه. القالب يُنشئ سيناريو منفصلًا، ولا يمس عملك الحالي.'));
+ TPL.forEach(([n,form,gen])=>b.append(card($('b',{},n),mu(form==='tv'?'شكل مسلسل (عمودان)':'شكل فيلم'),$('button',{onclick(){const d=gen();newWork('sp',n,form);root.textContent='';d.forEach(q=>{const e=mk(q);root.append(e)});flush();save();showEditor();note('أُنشئ «'+n+'». استبدل النقاط (…) بتفاصيل حكايتك.')}},'ابدأ بهذا القالب'))))}
+TOOLS.tpl=['tpl','قوالب مصرية',rTpl];
+
+/* ---------- 9) أيام القصة والاستمرارية ---------- */
+function autoDays(S){let d=1,prev=null;return S.map(s=>{const o=plan.sc[s.id]||{},c=tcat(headParts(s.x).tm);if(o.day)d=+o.day;else if(prev==='ليل'&&c==='نهار')d++;prev=c;return d})}
+function contIssues(){const S=scenesOf(model()),D=autoDays(S),out=[],ORD={'نهار':1,'شروق/غروب':2,'ليل':3};
+ S.forEach((s,i)=>{const hp=headParts(s.x);if(!hp.ie)out.push([s,'العنوان بلا «داخلي/خارجي»']);if(!hp.tm)out.push([s,'العنوان بلا وقت (نهار/ليل)']);if(!hp.loc)out.push([s,'العنوان بلا مكان']);
+  if(i>0&&D[i]===D[i-1]){const a=ORD[tcat(headParts(S[i-1].x).tm)],c=ORD[tcat(hp.tm)];if(a&&c&&c<a&&!/صباح|فجر|شروق/.test(hp.tm))out.push([s,'نفس يوم القصة لكن الوقت رجع من '+headParts(S[i-1].x).tm+' إلى '+hp.tm+'. هل بدأ يوم جديد؟'])}});
+ const N=namesOf(model()),seen={};N.forEach(n=>{const k=zn(n).replace(/^ال/,'').replace(/[هة]$/,'');(seen[k]=seen[k]||[]).push(n)});Object.values(seen).filter(v=>v.length>1).forEach(v=>out.push([null,'اسم مكتوب بأكثر من طريقة: '+v.join(' / ')]));
+ return{S,D,out}}
+function rDays(b){back(b);if(spOnly(b))return;const{S,D,out}=contIssues();if(!S.length){b.append(mu('لا توجد مشاهد بعد.'));return}
+ b.append(mu('لكل مشهد «يوم» في زمن الحكاية. يحسبه حكّاء تلقائيًا (يبدأ يوم جديد حين ينتقل الوقت من ليل إلى نهار)، ويمكنك تعديله بيدك.'));
+ b.append($('div',{className:'hsec'},out.length?'⚠️ '+fmt(out.length)+' ملاحظة استمرارية':'✓ لا توجد أخطاء استمرارية ظاهرة'),...out.slice(0,60).map(([s,m])=>card(s?$('div',{className:'lk',onclick(){jump(s.e)}},s.n+'. '+s.x):'',$('div',{className:'warn'},m))));
+ let lastD=0;S.forEach((s,i)=>{const o=plan.sc[s.id]=plan.sc[s.id]||{};if(D[i]!==lastD){b.append($('div',{className:'hsec'},'اليوم '+fmt(D[i])));lastD=D[i]}
+  b.append($('div',{className:'r',style:'align-items:center'},$('span',{className:'lk',style:'flex:1',onclick(){jump(s.e)}},s.n+'. '+s.x),$('input',{type:'number',min:1,style:'width:64px',title:'يوم القصة',value:o.day||'',placeholder:String(D[i]),onchange(e){o.day=e.target.value?+e.target.value:undefined;savePlan();renderTool()}})))})}
+TOOLS.days=['days','أيام القصة والاستمرارية',rDays];
+
+/* ---------- 10) الميزانية التقريبية ---------- */
+function rBudget(b){back(b);if(spOnly(b))return;const D=sceneData();if(!D.length){b.append(mu('لا توجد مشاهد بعد.'));return}
+ const p=P(),o=p.bud=p.bud||{};const g=(k,d)=>o[k]!==undefined?o[k]:d;
+ const pages=D.reduce((a,d)=>a+d.pages,0),locs=[...new Set(D.map(d=>d.loc))],night=D.filter(d=>tcat(d.hp.tm)==='ليل').length,ext=D.filter(d=>d.hp.ie==='خارجي').length,cast=new Set(D.flatMap(d=>d.who));
+ const ppd=Math.max(.5,g('ppd',4)),days=Math.max(1,Math.ceil(pages/ppd)),nightDays=Math.ceil(night/Math.max(1,D.length)*days);
+ const crew=days*g('crew',40000),loc=locs.length*g('loc',8000),nt=nightDays*g('crew',40000)*g('npct',25)/100,ex=ext*g('extc',0),castC=[...cast].length*days*g('actor',0),extras=days*g('xtr',0)*g('xtrc',500),post=g('post',0),tot=crew+loc+nt+ex+castC+extras+post,cont=tot*g('cont',10)/100;
+ const L=n=>fmt(Math.round(n))+' ج.م';
+ b.append(mu('تقدير أولي سريع من بيانات السيناريو نفسه. الأرقام الافتراضية للتجربة فقط: غيّرها بأسعار السوق والفريق الذي ستعمل معه.'),
+  card($('b',{},'من السيناريو'),$('div',{},'≈ '+fmt(+pages.toFixed(1))+' صفحة، '+fmt(D.length)+' مشهد، '+fmt(locs.length)+' مكان، '+fmt(night)+' مشهد ليلي، '+fmt(ext)+' مشهد خارجي، '+fmt(cast.size)+' شخصية ناطقة'),$('div',{},'أيام التصوير التقريبية: '+fmt(days)+' يوم (منها نحو '+fmt(nightDays)+' ليلي)')),
+  card($('b',{},'المدخلات'),num('صفحات تُصوَّر في اليوم',o,'ppd',4,.5),num('تكلفة يوم التصوير (فريق ومعدات) ج.م',o,'crew',40000,1000),num('إيجار المكان الواحد ج.م',o,'loc',8000,500),num('زيادة التصوير الليلي ٪',o,'npct',25),num('تكلفة إضافية لكل مشهد خارجي (تصاريح…) ج.م',o,'extc',0,500),num('أجر الممثل الواحد في اليوم ج.م',o,'actor',0,500),num('عدد الكومبارس في اليوم',o,'xtr',0),num('أجر الكومبارس في اليوم ج.م',o,'xtrc',500,50),num('ما بعد الإنتاج (مونتاج، صوت، لون) ج.م',o,'post',0,1000),num('احتياطي للطوارئ ٪',o,'cont',10)),
+  card($('b',{},'التقدير'),$('table',{className:'tbl'},...[['أيام التصوير',crew],['الأماكن',loc],['زيادة الليل',nt],['المشاهد الخارجية',ex],['الممثلون',castC],['الكومبارس',extras],['ما بعد الإنتاج',post],['الاحتياطي',cont]].map(([a,v])=>$('tr',{},$('td',{},a),$('td',{},L(v))))),$('div',{className:'big',style:'font-size:24px'},L(tot+cont))),
+  shBtn(()=>projName()+' — ميزانية تقريبية',()=>'ميزانية تقريبية — '+projName()+'\nأيام التصوير: '+days+'\nالأماكن: '+locs.join('، ')+'\nالإجمالي التقريبي: '+L(tot+cont)+'\n(تقدير أولي من حكّاء، يُراجع مع منتج)'))}
+TOOLS.budget=['budget','الميزانية التقريبية',rBudget];
+
+/* ---------- 11) برومبتات الفيديو ---------- */
+const VM={omni:['Omni Flash (720p)',10],fast:['Veo 3.1 Fast',20]};
+function shotsOf(s){const els=sceneEls(s.id),hp=headParts(s.x),sh=[],where=(hp.ie==='خارجي'?'EXT':hp.ie==='داخلي'?'INT':'')+' '+(hp.loc||'')+(hp.tm?' — '+hp.tm:''),st=P().vstyle||'cinematic, realistic, Egyptian setting, natural light';
+ sh.push({k:'تأسيسية',p:'Establishing wide shot. '+where+'. '+st+'. No text on screen.'});let sp=null;
+ for(const e of els.slice(1)){const t=e.p.t,x=e.value.trim();if(!x)continue;
+  if(t==='action')sh.push({k:'وصف',p:'Medium shot. '+where+'. Action: '+x+'. '+st+'.'});
+  else if(t==='character')sp=cue(x);
+  else if(t==='dialogue')sh.push({k:'حوار: '+(sp||''),p:'Close-up of '+(sp||'the character')+' speaking in Egyptian Arabic: "'+x+'". '+where+'. '+st+'. Lip-sync, natural expression.'})}return sh}
+function rVid(b){back(b);if(spOnly(b))return;const p=P(),o=p.vid=p.vid||{m:'omni',tries:3};const S=scenesOf(model());if(!S.length){b.append(mu('لا توجد مشاهد بعد.'));return}
+ b.append(mu('يحوّل كل مشهد إلى لقطات، ولكل لقطة برومبت جاهز للنسخ إلى Google Flow أو Veo، مع حساب التكلفة. التكلفة = اللقطات × المحاولات × سعر التوليد. طابق الأسعار مع صفحة Google الرسمية قبل أي إنفاق (آخر تحقق في Story OS: ١٧ أكتوبر ٢٠٢٦).'),
+  $('label',{className:'f'},$('b',{},'الأسلوب البصري (بالإنجليزية أفضل)'),$('input',{type:'text',value:p.vstyle||'cinematic, realistic, Egyptian setting, natural light',onchange(e){p.vstyle=e.target.value;savePlan();renderTool()}})),
+  $('div',{className:'r',style:'flex-wrap:wrap;align-items:center'},$('select',{onchange(e){o.m=e.target.value;savePlan();renderTool()}},...Object.entries(VM).map(([k,[n,c]])=>$('option',{value:k,selected:o.m===k},n+' — '+c+' ائتمان'))),$('span',{},'محاولات لكل لقطة'),$('input',{type:'number',min:1,max:10,style:'width:60px',value:o.tries||3,onchange(e){o.tries=Math.max(1,+e.target.value||1);savePlan();renderTool()}}),$('span',{},'سعر مخصص'),$('input',{type:'number',min:0,style:'width:70px',value:o.price||'',placeholder:String(VM[o.m][1]),onchange(e){o.price=+e.target.value||0;savePlan();renderTool()}})));
+ const price=o.price||VM[o.m][1];let all=0,txt=[];
+ const sel=o.sc&&S.find(s=>s.id===o.sc)?o.sc:S[0].id;
+ S.forEach(s=>{all+=shotsOf(s).length});
+ b.append(card($('b',{},'العمل كله: '+fmt(all)+' لقطة × '+fmt(o.tries)+' × '+fmt(price)+' = '+fmt(all*o.tries*price)+' ائتمان')));
+ b.append($('select',{onchange(e){o.sc=e.target.value;savePlan();renderTool()}},...S.map(s=>$('option',{value:s.id,selected:s.id===sel},s.n+'. '+s.x.slice(0,40)))));
+ const s=S.find(x=>x.id===sel),SH=shotsOf(s);
+ b.append(card($('b',{},'المشهد '+fmt(s.n)+': '+fmt(SH.length)+' لقطة × '+fmt(o.tries)+' × '+fmt(price)+' = '+fmt(SH.length*o.tries*price)+' ائتمان')));
+ SH.forEach((x,i)=>{txt.push('لقطة '+(i+1)+' ('+x.k+'):\n'+x.p);b.append(card($('b',{},'لقطة '+fmt(i+1)+' — '+x.k),$('div',{className:'dline',dir:'ltr',style:'text-align:left;unicode-bidi:plaintext'},x.p),$('button',{async onclick(){note(await copyText(x.p)?'نُسخ البرومبت':'تعذّر النسخ')}},'نسخ')))});
+ b.append($('button',{async onclick(){note(await copyText(txt.join('\n\n'))?'نُسخت كل برومبتات المشهد':'تعذّر النسخ')}},'نسخ كل لقطات المشهد'))}
+TOOLS.vid=['vid','برومبتات الفيديو',rVid];
+
+/* ---------- 12) ورقة البيع ---------- */
+async function pitchPdf(){const o=plan.idea||{},W=1240,H=1754,FAM=FMT.font+',Tahoma,Arial,sans-serif',cv=document.createElement('canvas');cv.width=W;cv.height=H;const c=cv.getContext('2d');await(document.fonts&&document.fonts.ready);
+ c.fillStyle='#fff';c.fillRect(0,0,W,H);c.fillStyle='#2b2140';c.fillRect(0,0,W,250);c.direction='rtl';let y=0;
+ const wrap=(t,x,w,sz,col,b,lh)=>{c.font=(b?'bold ':'')+sz+'px '+FAM;c.fillStyle=col;c.textAlign='right';let line='';for(const d of String(t||'').split(/\s+/)){const tt=line?line+' '+d:d;if(c.measureText(tt).width>w&&line){y+=lh;c.fillText(line,x,y);line=d}else line=tt}if(line){y+=lh;c.fillText(line,x,y)}};
+ y=40;wrap(projName(),W-90,W-180,64,'#fff',1,90);wrap((sosType?sosType():'')+(o.by?' — تأليف: '+o.by:''),W-90,W-180,30,'#d9cff0',0,50);
+ y=290;const sec=(h1,t)=>{if(!String(t||'').trim())return;y+=30;wrap(h1,W-90,W-180,34,'#b8862b',1,50);wrap(t,W-90,W-180,28,'#222',0,46)};
+ sec('اللوغ لاين',o.log||o.idea);sec('الفرضية',o.prem);sec('التيمة',o.theme);sec('الحكاية باختصار',String(o.syn||o.dev||'').slice(0,700));
+ const C=Object.entries(plan.chars||{}).slice(0,5);if(C.length){y+=30;wrap('الشخصيات الرئيسية',W-90,W-180,34,'#b8862b',1,50);for(const[n,v]of C)wrap(n+(v.w?': يريد '+v.w:'')+(v.n?'، ويحتاج '+v.n:''),W-90,W-180,26,'#222',0,42)}
+ const img=Object.values(plan.sc||{}).map(x=>x.img).find(Boolean);if(img&&y<H-520){const im=new Image();await new Promise(r=>{im.onload=r;im.onerror=r;im.src=img});if(im.width){const w=W-180,hh=Math.min(420,w*im.height/im.width);c.drawImage(im,90,y+40,w,hh);y+=hh+40}}
+ const m=model();c.font='24px '+FAM;c.fillStyle='#666';c.textAlign='center';c.fillText('≈ '+m.pages+' صفحة'+(o.contact?' — '+String(o.contact).split('\n')[0]:''),W/2,H-70);
+ const bl=await new Promise(r=>cv.toBlob(r,'image/jpeg',.92));const f=pdfFrom([{b:new Uint8Array(await bl.arrayBuffer()),w:W,h:H}]);return f}
+function rPitch(b){back(b);const o=plan.idea||{};const miss=[['اللوغ لاين',o.log],['الفرضية',o.prem],['المختصر',o.syn]].filter(x=>!String(x[1]||'').trim()).map(x=>x[0]);
+ b.append(mu('صفحة واحدة أنيقة تلخص عملك لشركة إنتاج: العنوان، واللوغ لاين، والفرضية، والتيمة، والمختصر، والشخصيات الرئيسية، وأول صورة مرجعية من الستوري بورد.'),miss.length?$('div',{className:'warn'},'ينقصها: '+miss.join('، ')+' (املأها من أداة «الفكرة»).'):'',
+  $('div',{className:'r'},$('button',{async onclick(){const bl=await pitchPdf(),nm=projName()+' - ورقة البيع.pdf',f=new File([bl],nm,{type:'application/pdf'});if(navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({files:[f],title:nm});return}catch(e){if(e&&e.name==='AbortError')return}}await saveFile(nm,bl)}},'إنشاء ورقة البيع PDF'),$('button',{onclick(){openTool('idea')}},'افتح «الفكرة»')))}
+TOOLS.pitch=['pitch','ورقة البيع',rPitch];
+
+/* ---------- 13) ختم الملكية + علامة مائية ---------- */
+async function sha(t){const d=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t));return[...new Uint8Array(d)].map(x=>x.toString(16).padStart(2,'0')).join('')}
+const docText=()=>allEls().map(e=>e.p.t+'|'+e.value).join('\n');
+function rStamp(b){back(b);const p=P();p.stamps=p.stamps||[];
+ b.append(mu('الختم بصمة رقمية (SHA-256) فريدة لنص عملك في لحظة معينة: أي تغيير ولو حرف واحد يغيّر البصمة. أرسل الختم لنفسك على البريد أو واتساب، فيصبح عندك دليل مؤرخ من طرف ثالث على أن النص كان معك في هذا اليوم. للحماية القانونية الكاملة سجّل العمل رسميًا (مثل جمعية المؤلفين أو الشهر العقاري).'),
+  $('button',{async onclick(){if(!crypto.subtle){note('الختم يحتاج اتصالًا آمنًا (https)');return}const hs=await sha(docText()),w=allEls().reduce((a,e)=>a+wc(e.value),0),s={t:Date.now(),h:hs,w};p.stamps.unshift(s);savePlan();renderTool();
+   shareText('ختم ملكية — '+projName(),stampTxt(s))}},'ختم النص الآن وإرساله لنفسي'));
+ const verify=$('div');b.append($('button',{async onclick(){const hs=await sha(docText()),m=p.stamps.find(s=>s.h===hs);verify.textContent=m?'✓ النص الحالي مطابق للختم بتاريخ '+new Date(m.t).toLocaleString('ar-EG'):'النص الحالي تغيّر منذ آخر ختم (طبيعي إن واصلت الكتابة).'}},'تحقق: هل النص الحالي مطابق لختم سابق؟'),verify);
+ p.stamps.forEach(s=>b.append(card($('b',{},new Date(s.t).toLocaleString('ar-EG',{dateStyle:'full',timeStyle:'short'})),mu(fmt(s.w)+' كلمة'),$('div',{style:'font-family:monospace;font-size:11px;direction:ltr;word-break:break-all'},s.h),shBtn('ختم ملكية — '+projName(),()=>stampTxt(s)))));
+ b.append($('div',{className:'hsec'},'PDF بعلامة مائية'),mu('عند إرسال النص لأي شخص، اطبع اسمه على كل صفحة. لو تسرب النص تعرف من أين.'),(()=>{const i=$('input',{type:'text',placeholder:'اسم المستلم (مثال: شركة … / أ. …)'});return $('div',{className:'r'},i,$('button',{onclick(){if(i.value.trim())wmPdf(i.value.trim())}},'إنشاء PDF'))})())}
+function stampTxt(s){const o=plan.idea||{};return'ختم ملكية عمل فني\nالعمل: '+projName()+(o.by?'\nالمؤلف: '+o.by:'')+'\nالتاريخ: '+new Date(s.t).toLocaleString('ar-EG',{dateStyle:'full',timeStyle:'short'})+'\nعدد الكلمات: '+s.w+'\nالبصمة الرقمية SHA-256:\n'+s.h+'\n(أُنشئ بتطبيق حكّاء)'}
+async function wmPdf(who){flush();const nm=projName(),pgs=await renderPages(nm),js=[];
+ pgs.forEach(cv=>{const g=cv.getContext('2d');g.save();g.translate(cv.width/2,cv.height/2);g.rotate(-Math.PI/5);g.globalAlpha=.12;g.fillStyle='#000';g.textAlign='center';g.direction='rtl';g.font='bold 64px '+FMT.font+',Tahoma,Arial,sans-serif';g.fillText('نسخة خاصة بـ: '+who,0,0);g.font='34px '+FMT.font+',Tahoma,Arial';g.fillText(new Date().toLocaleDateString('ar-EG')+' — لا يجوز النسخ أو التداول',0,70);g.restore();g.globalAlpha=1;g.font='20px Tahoma';g.fillStyle='#777';g.textAlign='center';g.fillText('نسخة خاصة بـ '+who,cv.width/2,40)});
+ for(const cv of pgs){const bl=await new Promise(r=>cv.toBlob(r,'image/jpeg',.9));js.push({b:new Uint8Array(await bl.arrayBuffer()),w:cv.width,h:cv.height})}
+ const bl=pdfFrom(js),fn=nm.replace(/[\\/:*?"<>|]/g,'-')+' - '+who.replace(/[\\/:*?"<>|]/g,'-')+'.pdf',f=new File([bl],fn,{type:'application/pdf'});
+ if(navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({files:[f],title:fn});return}catch(e){if(e&&e.name==='AbortError')return}}await saveFile(fn,bl)}
+TOOLS.stamp=['stamp','ختم الملكية',rStamp];
+
+/* ---------- 14) مقارنة المسودات ---------- */
+function diffLines(A,B){let s=0;while(s<A.length&&s<B.length&&A[s]===B[s])s++;let ea=A.length,eb=B.length;while(ea>s&&eb>s&&A[ea-1]===B[eb-1]){ea--;eb--}
+ const a=A.slice(s,ea),b=B.slice(s,eb),n=a.length,m=b.length;if(n*m>4e6)return{s,ops:[...a.map(x=>['-',x]),...b.map(x=>['+',x])]};
+ const T=new Uint16Array((n+1)*(m+1));for(let i=n-1;i>=0;i--)for(let j=m-1;j>=0;j--)T[i*(m+1)+j]=a[i]===b[j]?T[(i+1)*(m+1)+j+1]+1:Math.max(T[(i+1)*(m+1)+j],T[i*(m+1)+j+1]);
+ const ops=[];let i=0,j=0;while(i<n&&j<m){if(a[i]===b[j]){ops.push(['=',a[i]]);i++;j++}else if(T[(i+1)*(m+1)+j]>=T[i*(m+1)+j+1])ops.push(['-',a[i++]]);else ops.push(['+',b[j++]])}while(i<n)ops.push(['-',a[i++]]);while(j<m)ops.push(['+',b[j++]]);return{s,ops}}
+async function rDiff(b){back(b);const L=vList(pid).sort((x,y)=>y.t-x.t);if(!L.length){b.append(mu('لا توجد مسودات بعد. احفظ مسودة من أداة «المسودات» أولًا.'));return}
+ const p=P(),sel=$('select',{onchange(e){p.dv=e.target.value;renderTool()}},...L.map(m=>$('option',{value:m.id,selected:p.dv===m.id},(m.auto?'⏱ ':'📌 ')+m.label+' — '+new Date(m.t).toLocaleString('ar-EG',{dateStyle:'short',timeStyle:'short'}))));
+ b.append(mu('اختر مسودة لتقارنها بالنص الحالي: الأخضر أُضيف، والأحمر المشطوب حُذف.'),sel);const box=$('div');b.append(box);
+ const m=L.find(x=>x.id===p.dv)||L[0];let d=null;try{d=await enq(()=>getVersion(pid,m))}catch(e){}if(!d||!Array.isArray(d.doc)){box.append(mu('تعذّر فتح هذه المسودة.'));return}
+ const A=d.doc.map(q=>String(q.x||'')),B=allEls().map(e=>e.value),{ops}=diffLines(A,B);const add=ops.filter(o=>o[0]==='+').length,del=ops.filter(o=>o[0]==='-').length;
+ box.append(card($('b',{},'+'+fmt(add)+' سطر مضاف، −'+fmt(del)+' سطر محذوف'),mu((add||del)?'التغييرات مع سطر سياق قبلها وبعدها:':'لا فرق بين المسودة والنص الحالي.')));
+ const show=new Set();ops.forEach((o,k)=>{if(o[0]!=='='){show.add(k-1);show.add(k);show.add(k+1)}});let gap=false;
+ ops.forEach((o,k)=>{if(!show.has(k)){if(!gap){box.append(mu('…'));gap=true}return}gap=false;box.append($('div',{className:'dline '+(o[0]==='+'?'add':o[0]==='-'?'del':'')},(o[0]==='='?'  ':o[0]+' ')+(o[1]||'(سطر فارغ)')))})}
+TOOLS.diff=['diff','مقارنة المسودات',(b)=>{rDiff(b)}];
+
+/* ---------- 15) Final Draft وFountain ---------- */
+const FD={scene:'Scene Heading',action:'Action',character:'Character',dialogue:'Dialogue',parenthetical:'Parenthetical',transition:'Transition'},FDR=Object.fromEntries(Object.entries(FD).map(([a,b])=>[b,a]));
+const xesc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+function toFdx(){return'<?xml version="1.0" encoding="UTF-8" standalone="no" ?>\n<FinalDraft DocumentType="Script" Template="No" Version="5">\n<Content>\n'+allEls().filter(e=>FD[e.p.t]).map(e=>'<Paragraph Type="'+FD[e.p.t]+'"><Text>'+xesc(e.value)+'</Text></Paragraph>').join('\n')+'\n</Content>\n<TitlePage><Content><Paragraph Type="Text" Alignment="Center"><Text>'+xesc(projName())+'</Text></Paragraph></Content></TitlePage>\n</FinalDraft>\n'}
+function toFountain(){const o=plan.idea||{},L=['Title: '+projName()];if(o.by)L.push('Author: '+o.by);L.push('');
+ for(const e of allEls()){const t=e.p.t,x=e.value.trim();if(!x&&t!=='action')continue;
+  if(t==='scene')L.push('','.'+x,'');else if(t==='character'){if(L[L.length-1]!=='')L.push('');L.push('@'+x)}else if(t==='dialogue')L.push(x);else if(t==='parenthetical')L.push(/^\(.*\)$/.test(x)?x:'('+x+')');
+  else if(t==='transition')L.push('','> '+x,'');else{if(L[L.length-1]!=='')L.push('');L.push(/^[@.>!~=#]/.test(x)?'!'+x:x);L.push('')}
+  if(t==='dialogue'||t==='parenthetical'){}}return L.join('\n').replace(/\n{3,}/g,'\n\n')+'\n'}
+function fromFdx(t){const d=new DOMParser().parseFromString(t,'text/xml'),out=[];d.querySelectorAll('Content > Paragraph').forEach(p=>{if(p.closest('TitlePage'))return;const ty=FDR[p.getAttribute('Type')]||'action',x=[...p.querySelectorAll('Text')].map(n=>n.textContent).join('');out.push({t:ty,x})});return out}
+function fromFountain(t){const L=t.replace(/\r/g,'').replace(/\/\*[\s\S]*?\*\//g,'').replace(/\[\[[\s\S]*?\]\]/g,'').split('\n'),out=[];let i=0;
+ if(/^[A-Za-z ]+:/.test(L[0]||'')){while(i<L.length&&L[i].trim())i++}
+ for(;i<L.length;i++){const raw=L[i],x=raw.trim(),prevBlank=i===0||!L[i-1].trim(),nextBlank=i+1>=L.length||!L[i+1].trim();if(!x)continue;
+  if(/^\./.test(x)&&!/^\.\./.test(x)||/^(INT|EXT|EST|INT\.?\/EXT|I\/E)[ .]/i.test(x)||/^(داخلي|خارجي|مشهد)/.test(x)&&prevBlank&&nextBlank){out.push({t:'scene',x:x.replace(/^\./,'')});continue}
+  if(/^>/.test(x)&&!/<$/.test(x)||/TO:$/.test(x)){out.push({t:'transition',x:x.replace(/^>\s*/,'')});continue}
+  if(prevBlank&&!nextBlank&&(/^@/.test(x)||(/^[^a-z]*[A-Z][^a-z]*$/.test(x)&&!/^!/.test(x)))){out.push({t:'character',x:x.replace(/^@/,'').replace(/\s*\^$/,'')});i++;
+   for(;i<L.length&&L[i].trim();i++){const y=L[i].trim();out.push({t:/^\(.*\)$/.test(y)?'parenthetical':'dialogue',x:y})}continue}
+  out.push({t:'action',x:x.replace(/^!/,'')})}return out}
+function importDoc(name,items){if(!items.length){note('لم أجد نصًا في الملف');return}newWork('sp',name);root.textContent='';items.forEach(q=>root.append(mk({t:FD[q.t]?q.t:'action',x:q.x})));
+ items.filter(q=>q.t==='character').forEach(q=>{const n=norm(q.x);if(n&&n.split(' ').length<=4)chars.add(n)});wr('hasp:chars',chars);[...root.children].forEach(fit);flush();save();showEditor();note('استُورد «'+name+'»: '+fmt(items.length)+' سطر')}
+async function dl(name,txt,type){const bl=new Blob([txt],{type}),f=new File([bl],name,{type});if(navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({files:[f],title:name});return}catch(e){if(e&&e.name==='AbortError')return}}await saveFile(name,bl)}
+function rXfer(b){back(b);const nm=projName().replace(/[\\/:*?"<>|]/g,'-');
+ b.append(mu('صيغ البرامج العالمية: FDX يفتحه Final Draft وFade In وWriterDuet وArc Studio، وFountain نص بسيط تفتحه معظم برامج السيناريو. مفيد حين تطلب شركة إنتاج ملف Final Draft.'),
+  card($('b',{},'تصدير'),MODE!=='sp'?mu('التصدير بهذه الصيغ للسيناريو فقط.'):$('div',{className:'r'},$('button',{onclick(){flush();dl(nm+'.fdx',toFdx(),'application/xml')}},'ملف Final Draft (FDX)'),$('button',{onclick(){flush();dl(nm+'.fountain',toFountain(),'text/plain')}},'ملف Fountain'))),
+  card($('b',{},'استيراد'),mu('يُنشئ سيناريو جديدًا من الملف، ولا يمس عملك الحالي. يقبل .fdx و.fountain و.txt'),(()=>{const i=$('input',{type:'file',accept:'.fdx,.fountain,.txt,.spmd,text/plain,application/xml'});i.onchange=async()=>{const f=i.files[0];if(!f)return;const t=await f.text(),base=f.name.replace(/\.[^.]+$/,'');try{importDoc(base,/\.fdx$/i.test(f.name)||/<FinalDraft/.test(t)?fromFdx(t):fromFountain(t))}catch(e){note('تعذّرت قراءة الملف')}};return i})()))}
+TOOLS.xfer=['xfer','Final Draft وFountain',rXfer];
+
+/* ---------- الستوري بورد: إظهار الخطوط الدرامية ويوم القصة ---------- */
+const _rs=TOOLS.story[2];TOOLS.story[2]=function(b){_rs(b);if(MODE!=='sp')return;const p=P(),Ls=p.lines||[];const S=scenesOf(model()),D=autoDays(S);
+ b.querySelectorAll('[data-sid]').forEach(c=>{const id=c.dataset.sid,i=S.findIndex(s=>s.id===id);if(i<0)return;const o=plan.sc[id]||{},tags=$('div',{className:'r',style:'flex-wrap:wrap;gap:4px'},$('span',{className:'chip',style:'font-size:12px;padding:2px 8px;margin:0'},'📅 يوم '+fmt(D[i])),...Ls.filter(l=>(o.pl||[]).includes(l.id)).map(l=>$('span',{className:'chip',style:'font-size:12px;padding:2px 8px;margin:0;border-inline-start:6px solid '+l.c},l.n)));
+  const first=c.children[1];c.insertBefore(tags,first?first.nextSibling:null)})};
+try{if(!document.body.classList.contains('home'))buildRail()}catch(e){}
+})();
 </script></body></html>
