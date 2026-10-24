@@ -1152,12 +1152,19 @@ function rDict(b){back(b);const R=(a,c)=>$('tr',{},$('td',{},$('b',{},a)),$('td'
 TOOLS.dict=['dict','الإملاء بالصوت',rDict];
 let idleT=null;
 function armIdle(){clearTimeout(idleT);const d=(plan.pro&&plan.pro.dic)||{},sec=d.idle===undefined?10:+d.idle;if(!sec||!recOn||pttOn)return;idleT=setTimeout(()=>{if(recOn&&!pttOn){stopRec();fb(false);note('🎤 أُغلق الميكروفون لأنك سكتّ '+fmt(sec)+' ثوانٍ. اضغط 🎤 لتكمل.')}},sec*1000)}
-let seenN=0,lastT='',lastAt=0;
+let seenN=0,lastT='',lastAt=0,srW=[],srAt=0;
+/* أندرويد أحيانًا يرسل الجملة كنتائج نهائية متراكمة: «ازيك» ثم «ازيك يا» ثم «ازيك يا بابا». نكتب الجديد فقط. */
+const srN=w=>w.replace(/[\u064B-\u0652\u0640]/g,'').replace(/[أإآ]/g,'ا').replace(/ى/g,'ي').replace(/ة/g,'ه').replace(/[.,،؟?!]/g,'');
+function srDelta(t){t=String(t||'').trim();if(!t)return'';const w=t.split(/\s+/),n=w.map(srN),now=Date.now(),p=(now-srAt<6000)?srW:[];srAt=now;
+ const pre=(a,b)=>a.length<=b.length&&a.every((x,i)=>x===b[i]);
+ if(p.length&&(n.length>1||n[0]===p[p.length-1]&&p.length===1)&&pre(n,p.slice(p.length-n.length)))return'';   /* تكرار لكلام اتكتب */
+ if(p.length&&pre(p,n)){srW=n;return w.slice(p.length).join(' ')}  /* نفس الجملة وزادت */
+ srW=n;return t}
 function startRec(){try{rec&&rec.abort()}catch(e){}if(!SR){note('الإملاء غير مدعوم في هذا المتصفح. استخدم Chrome على الهاتف.');return}
- rec=new SR();rec.lang=(P().lang)||'ar-EG';rec.continuous=true;rec.interimResults=true;rec.maxAlternatives=1;
- const me=rec;seenN=0;lastT='';lastAt=0;
+ rec=new SR();rec.lang=(P().lang)||'ar-EG';rec.continuous=!/Android/i.test(navigator.userAgent);rec.interimResults=true;rec.maxAlternatives=1;
+ const me=rec;seenN=0;lastT='';lastAt=0;srW=[];srAt=0;
  rec.onspeechstart=()=>{if(me===rec)armIdle()};
- rec.onresult=e=>{if(me!==rec||!recOn)return;armIdle();let tmp='',mf=-1;for(let i=0;i<e.results.length;i++){const r=e.results[i];if(r.isFinal){mf=i;if(i>=seenN){const t=r[0].transcript.trim(),now=Date.now();if(t&&!(t===lastT&&now-lastAt<1500)){cap.hidden=true;insertSpeech(t)}lastT=t;lastAt=now}}else if(i>=seenN)tmp+=r[0].transcript}seenN=Math.max(seenN,mf+1);if(tmp){cap.textContent='🎤 '+tmp;cap.hidden=false}};
+ rec.onresult=e=>{if(me!==rec||!recOn)return;armIdle();let tmp='',mf=-1;for(let i=0;i<e.results.length;i++){const r=e.results[i];if(r.isFinal){mf=i;if(i>=seenN){const d=srDelta(r[0].transcript);if(d){cap.hidden=true;insertSpeech(d)}}}else if(i>=seenN)tmp+=r[0].transcript}seenN=Math.max(seenN,mf+1);if(tmp){cap.textContent='🎤 '+tmp;cap.hidden=false}};
  rec.onerror=e=>{if(e.error==='not-allowed'||e.error==='service-not-allowed'){note('اسمح للتطبيق باستخدام الميكروفون من إعدادات المتصفح');stopRec()}else if(e.error==='audio-capture'){note('الميكروفون مشغول ببرنامج آخر');stopRec()}};
  rec.onend=()=>{seenN=0;lastT='';if(!recOn)return;let n=0;const again=()=>{if(!recOn)return;try{rec.start()}catch(e){if(++n<8)setTimeout(again,300);else stopRec()}};setTimeout(again,150)};
  try{rec.start();recOn=true;armIdle();mic.classList.add('on');try{navigator.wakeLock&&navigator.wakeLock.request('screen').then(l=>{wl=l}).catch(()=>{})}catch(e){}dbarShow();if(!pttOn&&(+(lget('hasp:micn')||0))>=2)miniNote('🎤 يسمعك الآن',1500);else if(!pttOn){lsSet('hasp:micn',String(+(lget('hasp:micn')||0)+1));note('تكلّم الآن. قل اسم الشخصية ثم كلامها، وقل: «علامة استفهام»، «فاصلة»، «نقطة»، «سطر جديد»، «مشهد جديد»، «شخصية»، «ملاحظة»، «تعليق»، «وصف». القائمة كاملة في «أدوات+». اضغط 🎤 للإيقاف.')}}catch(e){note('تعذّر تشغيل الميكروفون')}}
