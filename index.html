@@ -174,9 +174,9 @@ textarea.np{margin-top:60px}.flash{background:color-mix(in srgb,var(--ac) 22%,tr
 <h3>ثانيًا: الكتابة السريعة</h3>
 <div class="step"><i>٥</i><div><b>عنوان المشهد</b><p>في سطر المشهد الفارغ يقترح التطبيق <span class="chip">مشهد ٣</span> بالرقم الصحيح. اضغطه، ثم اختر من الاقتراحات <span class="chip">داخلي</span>/<span class="chip">خارجي</span> و<span class="chip">نهار</span>/<span class="chip">ليل</span> والأماكن التي كتبتها من قبل. وإن كتبت سطرًا يبدأ بكلمة «مشهد» ثم ضغطت Enter، يتحول وحده إلى عنوان مشهد.</p></div></div>
 <div class="step"><i>٦</i><div><b>اسم الشخصية والحوار</b><p>أسرع طريقة أن تكتب الاسم ثم نقطتين: <span class="chip">سامي:</span> فيتحول السطر إلى اسم شخصية في المنتصف، وينتقل المؤشر إلى الحوار. ويمكنك كتابة السطر كله مرة واحدة: <span class="chip">سامي: أين كنت؟</span></p>
-<ul><li>الاسم الذي استخدمته من قبل يُعرف وحده بعد Enter.</li><li>الاسم الجديد يظهر معه سؤال «اسم شخصية؟»، فاضغط «اعتمد» أو «ليس اسمًا».</li><li>في سطر الوصف اكتب أول حرفين من اسم معروف، فيظهر الاسم كاقتراح بضغطة واحدة.</li><li>السطر الذي يبدأ بفعل («يدخل»، «تنظر») يبقى وصفًا دائمًا.</li></ul></div></div>
+<ul><li>الاسم الذي استخدمته من قبل يُعرف وحده بعد Enter.</li><li>الاسم الجديد يظهر معه سؤال «اسم شخصية؟»، فاضغط «اعتمد» أو «ليس اسمًا».</li><li>في سطر الوصف اكتب أول حرفين من اسم معروف، فيظهر الاسم كاقتراح بضغطة واحدة.</li><li>السطر الذي يبدأ بفعل («يدخل»، «تنظر») يبقى وصفًا دائمًا.</li><li>الحوار يبقى حوارًا مهما طال، وEnter بعده يفتح سطر حوار جديدًا. لتنتقل إلى الوصف: ابدأ السطر بفعل («ينظر لها أبوها») فيتحول وحده، أو اضغط Enter مرة ثانية على السطر الفارغ. ولتبدأ شخصية جديدة اكتب الاسم ونقطتين.</li></ul></div></div>
 <div class="step"><i>٧</i><div><b>ماذا يحدث عند Enter؟</b>
-<table class="flow"><tr><td>بعد المشهد</td><td>وصف</td></tr><tr><td>بعد الشخصية</td><td>حوار</td></tr><tr><td>بعد الحوار</td><td>وصف</td></tr><tr><td>بعد الملاحظة</td><td>حوار</td></tr><tr><td>بعد الانتقال</td><td>مشهد جديد</td></tr></table>
+<table class="flow"><tr><td>بعد المشهد</td><td>وصف</td></tr><tr><td>بعد الشخصية</td><td>حوار</td></tr><tr><td>بعد الحوار</td><td>حوار (Enter مرتين = وصف)</td></tr><tr><td>بعد الملاحظة</td><td>حوار</td></tr><tr><td>بعد الانتقال</td><td>مشهد جديد</td></tr></table>
 <p>إن أردت التحكم الكامل بنفسك: قائمة <span class="chip">⋮</span> ← «التعرف الذكي» لإيقافه.</p></div></div>
 <div class="step"><i>٨</i><div><b>الملاحظة والانتقال</b><p>«ملاحظة» لتوجيه الممثل داخل الحوار، مثل <span class="chip">(بصوت منخفض)</span>. و«انتقال» لكلمات مثل <span class="chip">قطع إلى:</span> أو <span class="chip">مزج إلى:</span>.</p></div></div>
 <h3>ثالثًا: المراجعة</h3>
@@ -228,7 +228,7 @@ document.documentElement.style.setProperty('--wr',FMT.font);
 FMT.tw=FMT.pg.w-FMT.m.r-FMT.m.l;
 (function(){let c='';for(const t in FMT.ind){const[r,l]=FMT.ind[t],P=n=>(n/FMT.tw*100).toFixed(3)+'%';c+='textarea.'+t+'{width:'+(100-r/FMT.tw*100-l/FMT.tw*100).toFixed(3)+'%;margin-inline-start:'+P(r)+';margin-inline-end:'+P(l)+'}\n'}
  const st=document.createElement('style');st.textContent=c;document.head.append(st)})();
-const N_SP={scene:'action',action:'action',character:'dialogue',dialogue:'action',parenthetical:'dialogue',transition:'scene'},L_SP={scene:'مشهد',action:'وصف',character:'شخصية',dialogue:'حوار',parenthetical:'ملاحظة',transition:'انتقال'};
+const N_SP={scene:'action',action:'action',character:'dialogue',dialogue:'dialogue',parenthetical:'dialogue',transition:'scene'},L_SP={scene:'مشهد',action:'وصف',character:'شخصية',dialogue:'حوار',parenthetical:'ملاحظة',transition:'انتقال'};
 const N_NV={part:'chapter',chapter:'para',sub:'para',para:'para',sep:'para',quote:'para'},L_NV={part:'باب',chapter:'فصل',sub:'عنوان فرعي',para:'فقرة',sep:'فاصل',quote:'اقتباس'},ALLT=Object.assign({},L_SP,L_NV);
 let NEXT=N_SP,LBL=L_SP,MODE='sp';
 const FIRST=()=>MODE==='nv'?'chapter':'scene',BODYT=()=>MODE==='nv'?'para':'action';
@@ -245,6 +245,7 @@ function mk(p){p.id=p.id||Math.random().toString(36).slice(2,9);const ta=documen
  ta.addEventListener('blur',()=>setTimeout(()=>{if(!cur())acEl.style.display='none'},250));return ta}
 function onInput(e){const ta=e.target;
  if(ta.value.indexOf('\n')>=0||ta.value.indexOf('\r')>=0){split(ta)}
+ else if(smart&&MODE==='sp'&&ta.p.t==='dialogue'&&dlgCont(ta)){}
  else if(smart&&ta.p.t==='action'&&colon(ta)){}
  else{if(ta.p.t==='dialogue'&&/^\s/.test(ta.value)){const k=ta.value.length-ta.value.trimStart().length,c=Math.max(ta.selectionStart-k,0);ta.value=ta.value.trimStart();ta.setSelectionRange(c,c)}
   ta.p.x=ta.value;fit(ta);save();updateAC(ta)}}
@@ -254,6 +255,12 @@ function colon(ta){const m=ta.value.match(/^\s*([^:：\d.،؟?!"«»()]{1,24}?)\
  beginStruct();chars.add(n);wr('hasp:chars',chars);ta.value=n;ta.p.x=n;ta.p.t='character';ta.className='character';ta.placeholder=LBL.character;fit(ta);
  const d=mk({t:'dialogue',x:m[2]});ta.after(d);fit(d);d.focus();const c=d.value.length;d.setSelectionRange(c,c);
  chip.style.display='none';sync();save();return true}
+function retype(ta,t){ta.p.t=t;ta.className=t;ta.placeholder=t==='sep'?'* * *':LBL[t];fit(ta)}
+/* سطر حوار يتبع سطر حوار: يبقى حوارًا مهما طال، إلا إن بدأ بفعل (يصير وصفًا) أو باسم ونقطتين (يصير شخصية) */
+function dlgCont(ta){const pv=ta.previousElementSibling;if(!pv||!pv.p||pv.p.t!=='dialogue'||ta.dataset.manual)return false;const v=ta.value;
+ if(/^\s*[^:：\d.،؟?!"«»()]{1,24}?\s*[:：]/.test(v)){beginStruct();retype(ta,'action');if(colon(ta))return true;retype(ta,'dialogue');return false}
+ if(/^\s*\S+\s/.test(v)&&isVerb(v.trim())){beginStruct();retype(ta,'action');sync()}
+ return false}
 function rd(k){try{return new Set(JSON.parse(localStorage.getItem(k)||'[]'))}catch(e){return new Set()}}
 function wr(k,s){try{localStorage.setItem(k,JSON.stringify([...s]))}catch(e){}}
 const chars=rd('hasp:chars'),rej=rd('hasp:rej'),chip=document.getElementById('chip');
@@ -279,6 +286,7 @@ function showChip(ta,last,n){chip.querySelector('span').textContent='«'+n+'» �
  chip.style.display='flex'}
 function split(ta){beginStruct();chip.style.display='none';const lines=ta.value.split(/\r\n|\r|\n/);let t=ta.p.t,sug=null;
  ta.value=lines[0];ta.p.x=lines[0];
+ if(smart&&MODE==='sp'&&t==='dialogue'&&lines.length===2&&lines[1]===''&&!lines[0].trim()){ta.value='';ta.p.x='';delete ta.dataset.manual;retype(ta,'action');ta.focus();ta.setSelectionRange(0,0);sync();save();return}
  if(smart&&lines.length===2&&lines[1]===''&&t==='action'){const[d,n]=detect(lines[0]);
   if(d==='scene'||d==='character'){t=d;ta.p.t=d;ta.className=d;ta.placeholder=LBL[d];if(d==='character'){ta.value=n;ta.p.x=n;chars.add(n);wr('hasp:chars',chars)}}
   else if(d==='suggest')sug=n}
@@ -292,7 +300,7 @@ function onKey(e){const ta=e.target;
   e.preventDefault();beginStruct();const pv=ta.previousElementSibling,pos=pv.value.length;
   pv.value+=ta.value;pv.p.x=pv.value;ta.remove();fit(pv);pv.focus();pv.setSelectionRange(pos,pos);sync();save()}}
 function cur(){const a=document.activeElement;return a&&a.p?a:null}
-function setType(t){const ta=cur()||root.lastElementChild;beginStruct();ta.p.t=t;ta.className=t;ta.placeholder=t==='sep'?'* * *':LBL[t];
+function setType(t){const ta=cur()||root.lastElementChild;beginStruct();ta.dataset.manual='1';ta.p.t=t;ta.className=t;ta.placeholder=t==='sep'?'* * *':LBL[t];
  if(t==='character'){const n=norm(ta.value);if(n&&n.split(' ').length<=4){chars.add(n);wr('hasp:chars',chars)}toDialogue(ta.nextElementSibling)}
  fit(ta);ta.focus();sync();save()}
 function sync(){const a=cur();bar.querySelectorAll('[data-t]').forEach(b=>b.classList.toggle('on',!!a&&a.p.t===b.dataset.t));updateAC(a)}
