@@ -255,7 +255,7 @@ function onInput(e){const ta=e.target;
  if(ta.value.indexOf('\n')>=0||ta.value.indexOf('\r')>=0){split(ta)}
  else if(smart&&MODE==='sp'&&ta.p.t==='dialogue'&&dlgCont(ta)){}
  else if(smart&&ta.p.t==='action'&&colon(ta)){}
- else{if(ta.p.t==='dialogue'&&/^\s/.test(ta.value)){const k=ta.value.length-ta.value.trimStart().length,c=Math.max(ta.selectionStart-k,0);ta.value=ta.value.trimStart();ta.setSelectionRange(c,c)}
+ else{if(ta.p.t==='dialogue'&&/^\s/.test(ta.value)&&!e.isComposing&&!/omposition/.test(e.inputType||'')){const k=ta.value.length-ta.value.trimStart().length,c=Math.max(ta.selectionStart-k,0);ta.value=ta.value.trimStart();ta.setSelectionRange(c,c)}
   ta.p.x=ta.value;fit(ta);save();updateAC(ta)}}
 function colon(ta){const m=ta.value.match(/^\s*([^:：\d.،؟?!"«»()]{1,24}?)\s*[:：]\s*([\s\S]*)$/);if(!m)return false;
  const n=norm(m[1]);if(!n||n.split(' ').length>3||(!chars.has(n)&&isVerb(n)))return false;
@@ -1145,19 +1145,24 @@ function insertSpeech(txt){txt=txt.trim();if(!txt)return;let ta=curLine()||root.
     ta.value=nm+': '+rest;ta.setSelectionRange(ta.value.length,ta.value.length);ta.dispatchEvent(new Event('input',{bubbles:true}));ta=cur()||ta;continue}}
   appendText(ta,x);ta.dispatchEvent(new Event('input',{bubbles:true}));ta=cur()||ta}}
 function rDict(b){back(b);const R=(a,c)=>$('tr',{},$('td',{},$('b',{},a)),$('td',{},c));
- b.append(mu('اضغط 🎤 أعلى الصفحة وتكلّم. الكلام يُكتب في السطر الذي يقف عنده المؤشر. قل الأوامر التالية في أي مكان من كلامك:'),
+ b.append(mu('اضغط 🎤 أعلى الصفحة وتكلّم. الكلام يُكتب في السطر الذي يقف عنده المؤشر، وإن كنت واقفًا على خانة داخل أي أداة (الفكرة، الشخصيات، المعالجة، الملاحظات…) كُتب فيها هي، مع علامات الترقيم و«سطر جديد» فقط. قل الأوامر التالية في أي مكان من كلامك:'),
   card($('b',{},'علامات الترقيم'),$('table',{className:'tbl'},R('علامة استفهام','؟'),R('علامة تعجب','!'),R('فاصلة','،'),R('فاصلة منقوطة','؛'),R('نقطة','.'),R('نقطتين',':'),R('ثلاث نقط','…'),R('افتح قوس / اقفل قوس','( )'),R('افتح تنصيص / اقفل تنصيص','« »'),R('شرطة','-'))),
   card($('b',{},'السطور والعناصر'),$('table',{className:'tbl'},R('سطر جديد','سطر جديد بالنوع المناسب'),R('مشهد جديد … / نهاية المشهد …','عنوان مشهد مرقم. مثال: «مشهد جديد داخلي بيت يارا ليل»'),R('اسم شخصية معروفة ثم الكلام','حوار مباشر: «يارا أنا جاية»'),R('شخصية … ','شخصية جديدة: «شخصية سامي إنت فين»'),R('اسم الشخصية + طريقة الكلام','«يارا بغضب إنت فين» تصير: يارا، ثم (بغضب)، ثم الحوار'),R('ملاحظة …','ملاحظة للممثل بين قوسين: «ملاحظة بصوت واطي»'),R('وصف / حوار / انتقال','يغيّر نوع السطر'),R('تعليق …','ملاحظة لك على السطر (📝) لا تظهر في الملف'),R('امسح السطر','يمسح السطر الحالي'),R('تراجع','يلغي آخر خطوة'))),
   mu('أوامر «علامة استفهام» و«علامة تعجب» و«سطر جديد» و«مشهد جديد» تعمل أيضًا مع ميكروفون الكيبورد (Gboard)، وهو غالبًا أدق في التعرف على الكلام.'),$('label',{className:'f'},$('b',{},'لغة التعرف على الكلام (لميكروفون حكّاء)'),$('select',{onchange(e){P().lang=e.target.value;savePlan()}},...[['ar-EG','العامية المصرية'],['ar-SA','العربية الفصحى'],['ar-AE','عربي خليجي']].map(([v,l])=>$('option',{value:v,selected:(P().lang||'ar-EG')===v},l)))),mu('مثال كامل: «مشهد جديد خارجي الشارع ليل سطر جديد تمشي يارا وحدها سطر جديد هشام إنتي فين علامة استفهام»'),$('button',{onclick(){closePanel();startRec()}},'🎤 ابدأ الإملاء'))}
 TOOLS.dict=['dict','الإملاء بالصوت',rDict];
-function startRec(){if(!SR){note('الإملاء غير مدعوم في هذا المتصفح. استخدم Chrome على الهاتف.');return}
+let idleT=null;
+function armIdle(){clearTimeout(idleT);const d=(plan.pro&&plan.pro.dic)||{},sec=d.idle===undefined?10:+d.idle;if(!sec||!recOn||pttOn)return;idleT=setTimeout(()=>{if(recOn&&!pttOn){stopRec();fb(false);note('🎤 أُغلق الميكروفون لأنك سكتّ '+fmt(sec)+' ثوانٍ. اضغط 🎤 لتكمل.')}},sec*1000)}
+let seenN=0,lastT='',lastAt=0;
+function startRec(){try{rec&&rec.abort()}catch(e){}if(!SR){note('الإملاء غير مدعوم في هذا المتصفح. استخدم Chrome على الهاتف.');return}
  rec=new SR();rec.lang=(P().lang)||'ar-EG';rec.continuous=true;rec.interimResults=true;rec.maxAlternatives=1;
- rec.onresult=e=>{let tmp='';for(let i=e.resultIndex;i<e.results.length;i++){const r=e.results[i];if(r.isFinal){cap.hidden=true;insertSpeech(r[0].transcript)}else tmp+=r[0].transcript}if(tmp){cap.textContent='🎤 '+tmp;cap.hidden=false}};
+ const me=rec;seenN=0;lastT='';lastAt=0;
+ rec.onspeechstart=()=>{if(me===rec)armIdle()};
+ rec.onresult=e=>{if(me!==rec||!recOn)return;armIdle();let tmp='',mf=-1;for(let i=0;i<e.results.length;i++){const r=e.results[i];if(r.isFinal){mf=i;if(i>=seenN){const t=r[0].transcript.trim(),now=Date.now();if(t&&!(t===lastT&&now-lastAt<1500)){cap.hidden=true;insertSpeech(t)}lastT=t;lastAt=now}}else if(i>=seenN)tmp+=r[0].transcript}seenN=Math.max(seenN,mf+1);if(tmp){cap.textContent='🎤 '+tmp;cap.hidden=false}};
  rec.onerror=e=>{if(e.error==='not-allowed'||e.error==='service-not-allowed'){note('اسمح للتطبيق باستخدام الميكروفون من إعدادات المتصفح');stopRec()}else if(e.error==='audio-capture'){note('الميكروفون مشغول ببرنامج آخر');stopRec()}};
- rec.onend=()=>{if(!recOn)return;let n=0;const again=()=>{if(!recOn)return;try{rec.start()}catch(e){if(++n<8)setTimeout(again,300);else stopRec()}};setTimeout(again,150)};
- try{rec.start();recOn=true;mic.classList.add('on');try{navigator.wakeLock&&navigator.wakeLock.request('screen').then(l=>{wl=l}).catch(()=>{})}catch(e){}dbarShow();if(!pttOn&&(+(lget('hasp:micn')||0))>=2)miniNote('🎤 يسمعك الآن',1500);else if(!pttOn){lsSet('hasp:micn',String(+(lget('hasp:micn')||0)+1));note('تكلّم الآن. قل اسم الشخصية ثم كلامها، وقل: «علامة استفهام»، «فاصلة»، «نقطة»، «سطر جديد»، «مشهد جديد»، «شخصية»، «ملاحظة»، «تعليق»، «وصف». القائمة كاملة في «أدوات+». اضغط 🎤 للإيقاف.')}}catch(e){note('تعذّر تشغيل الميكروفون')}}
+ rec.onend=()=>{seenN=0;lastT='';if(!recOn)return;let n=0;const again=()=>{if(!recOn)return;try{rec.start()}catch(e){if(++n<8)setTimeout(again,300);else stopRec()}};setTimeout(again,150)};
+ try{rec.start();recOn=true;armIdle();mic.classList.add('on');try{navigator.wakeLock&&navigator.wakeLock.request('screen').then(l=>{wl=l}).catch(()=>{})}catch(e){}dbarShow();if(!pttOn&&(+(lget('hasp:micn')||0))>=2)miniNote('🎤 يسمعك الآن',1500);else if(!pttOn){lsSet('hasp:micn',String(+(lget('hasp:micn')||0)+1));note('تكلّم الآن. قل اسم الشخصية ثم كلامها، وقل: «علامة استفهام»، «فاصلة»، «نقطة»، «سطر جديد»، «مشهد جديد»، «شخصية»، «ملاحظة»، «تعليق»، «وصف». القائمة كاملة في «أدوات+». اضغط 🎤 للإيقاف.')}}catch(e){note('تعذّر تشغيل الميكروفون')}}
 let wl=null;document.addEventListener('visibilitychange',()=>{if(recOn&&document.visibilityState==='visible'&&navigator.wakeLock)navigator.wakeLock.request('screen').then(l=>{wl=l}).catch(()=>{})});
-function stopRec(){try{wl&&wl.release()}catch(e){}wl=null;recOn=false;mic.classList.remove('on');cap.hidden=true;dbarHide();try{rec&&rec.stop()}catch(e){}}
+function stopRec(){clearTimeout(idleT);try{wl&&wl.release()}catch(e){}wl=null;recOn=false;mic.classList.remove('on');cap.hidden=true;dbarHide();try{rec&&rec.stop()}catch(e){}}
 
 /* ---------- 3) تقارير الإنتاج ---------- */
 function sceneData(){const PR=presenceOf(model()),S=PR.S;return S.map((s,i)=>{const hp=hpOf(s);return{s,i,hp,loc:(hp.loc||'(بدون مكان)').trim(),pages:s.h/PL,who:PR.N.filter(n=>{const c=PR.M[n][i];return c.cue||c.w}),ment:PR.N.filter(n=>{const c=PR.M[n][i];return!c.cue&&!c.w&&c.ment})}})}
@@ -1414,7 +1419,7 @@ const TYPED=['علامة استفهام','علامه استفهام','علامة
 const TRE=new RegExp('(^|\\s)('+TYPED.join('|')+')(?=\\s|$)');
 let tyT=null,composing=false;root.addEventListener('compositionstart',()=>{composing=true});root.addEventListener('compositionend',e=>{composing=false;schedTyped(e.target)});
 root.addEventListener('input',e=>{if(e.isComposing)return;schedTyped(e.target)});
-function schedTyped(ta){if(!ta||!ta.p)return;clearTimeout(tyT);tyT=setTimeout(()=>doTyped(ta),450)}
+function schedTyped(ta){if(!ta||!ta.p)return;clearTimeout(tyT);tyT=setTimeout(()=>doTyped(ta),1100)}
 function doTyped(ta){if(composing||!ta.isConnected||recOn)return;let v=ta.value;
  if(/\s+[؟!،؛:](?=\s|$)/.test(v)&&document.activeElement===ta&&ta.selectionStart===v.length){v=v.replace(/\s+([؟!،؛:])(?=\s|$)/g,'$1');if(v!==ta.value){ta.value=v;ta.p.x=v;ta.setSelectionRange(v.length,v.length);save()}}
  const m=v.replace(/علامه/g,'علامة').match(TRE);if(!m)return;const k=v.search(TRE)+m[1].length;const before=ta.value.slice(0,k).replace(/\s+$/,''),after=ta.value.slice(k).replace('علامة الاستفهام','علامة استفهام').replace('علامة التعجب','علامة تعجب');
@@ -1487,7 +1492,7 @@ const _rd=TOOLS.dict[2];TOOLS.dict[2]=function(b){_rd(b);const d=dset();
   card($('b',{},'شريط الشخصيات وأرقامها'),mu('أثناء الإملاء يظهر أعلى الصفحة شريط بشخصيات المشهد مرقمة بترتيب ظهورها (١ هشام، ٢ يارا…). اضغط اسمًا فيذهب كلامك له حتى تختار غيره، أو قل الرقم في أول كلامك: «واحد إنتي فين» = هشام، «اتنين كنت برّه» = يارا. زر «+ شخصية» يضيف شخصية للمشهد قبل أن تتكلم، وزر «وصف» يكتب كلامك وصفًا.'),
    $('label',{className:'r'},$('input',{type:'checkbox',checked:d.nums,onchange(e){d.nums=e.target.checked;savePlan()}}),$('span',{},'افهم الرقم وحده (واحد، اتنين…) في أول الكلام. أطفئه لو كثر في حوارك «واحد صاحبي…»، وقتها قل «رقم واحد».'))),
   card($('b',{},'تعليمات للتطبيق (لا تُكتب في النص)'),mu('بالصوت: قل «ملحوظة للتطبيق» فيدخل حكّاء «وضع التعليمات» ويظهر شريط برتقالي، وكل ما تقوله لا يُكتب. قل تعليماتك ثم «ابدأ المشهد» (أو «مشهد جديد …») فيرجع للكتابة. ويمكن في جملة واحدة: «ملحوظة للتطبيق هشام رقم واحد يارا رقم اتنين ابدأ المشهد واحد إنتي فين». بالكتابة: اكتب «للتطبيق: هشام رقم ١، يارا رقم ٢» في سطر لوحده واضغط Enter، فينفذها ويمسح السطر.'),$('table',{className:'tbl'},...[['هشام رقم واحد، يارا رقم اتنين','يثبّت أرقام الشخصيات في هذا المشهد'],['شخصيات المشهد هشام ويارا وسامي','يعطيهم ١ و٢ و٣ بالترتيب'],['لهجة هشام صعيدي','يحدد لهجته لأداة بصمة اللهجة'],['الكلام لهشام / الكلام للوصف','كل ما بعده يذهب له حتى تغيّر'],['اقرأ الأرقام','يقول لك من رقم كم']].map(([x,y])=>$('tr',{},$('td',{},$('b',{},x)),$('td',{},y))))),card($('b',{},'الأرقام بالكتابة'),mu('«قطع»: قلها وحدها، أو اكتبها في سطر لوحده واضغط Enter: تُكتب في منتصف السطر بخط عريض في نهاية المشهد، ويُفتح سطر المشهد التالي.'),mu('بعد تثبيت الأرقام، اكتب الرقم ثم مسافة في أول السطر («١ إنتي فين») فيتحول إلى اسم الشخصية رقم ١ والحوار. لو كان رقمًا في وصف عادي، اضغط تراجع ↶.')),card($('b',{},'أوامر التحكم'),$('table',{className:'tbl'},...[['روح للمشهد ٣','ينقلك للمشهد'],['امسح آخر جملة','يلغي آخر ما أُملي'],['اقرأ آخر سطر','يقرأ السطر الحالي بصوت عالٍ'],['احفظ مسودة','يحفظ نسخة باسم «مسودة بالصوت»'],['وقف الإملاء','يوقف الميكروفون']].map(([x,y])=>$('tr',{},$('td',{},$('b',{},x)),$('td',{},y))))),
-  $('label',{className:'r'},$('input',{type:'checkbox',checked:d.fb,onchange(e){d.fb=e.target.checked;savePlan()}}),$('span',{},'تأكيد بصوت خفيف واهتزاز عند تنفيذ أي أمر')));rFixes(b)};
+  $('label',{className:'f'},$('b',{},'إغلاق الميكروفون تلقائيًا بعد سكوت (ثوانٍ)'),$('input',{type:'number',min:0,max:120,step:1,value:d.idle===undefined?10:d.idle,onchange(e){d.idle=Math.max(0,+e.target.value||0);savePlan()}}),mu('٠ = لا يُغلق أبدًا. لا ينطبق على الضغط المطوّل.')),$('label',{className:'r'},$('input',{type:'checkbox',checked:d.fb,onchange(e){d.fb=e.target.checked;savePlan()}}),$('span',{},'تأكيد بصوت خفيف واهتزاز عند تنفيذ أي أمر')));rFixes(b)};
 
 /* ---------- تعليمات للتطبيق (لا تُكتب في النص): بالصوت أو بالكتابة ---------- */
 const DLN={'قاهري':'قاهري','قاهرى':'قاهري','صعيدي':'صعيدي','صعيدى':'صعيدي','فصحى':'فصحى','فصحي':'فصحى','اسكندراني':'إسكندراني','إسكندراني':'إسكندراني'};
@@ -1606,6 +1611,14 @@ function rHub2(b){const p=P(),U=useC();const tabs=HT.map(([id,n,L])=>[id,n,L.fil
  b.append($('div',{className:'r',style:'margin-top:8px'},...tabs.map(([id,n])=>$('button',{className:'bigb'+(cur0[0]===id?' on':''),style:'padding:10px 4px',onclick(){p.hubTab=id;savePlan();renderTool()}},n))),
   $('div',{className:'hub',style:'margin-top:8px'},...cur0[2].map(k=>$('button',{onclick(){openTool(k)}},$('b',{},HINFO[k][0]),$('small',{},HINFO[k][1])))))}
 TOOLS.pro=['pro','أدوات+',rHub2];
+
+root.addEventListener('focusout',e=>{const t=e.target;if(t&&t.p&&t.p.t==='dialogue'&&/^\s/.test(t.value)){t.value=t.value.trimStart();t.p.x=t.value;fit(t);save()}});
+/* ---------- الإملاء داخل خانات الأدوات (الفكرة، الشخصيات، المعالجة...) ---------- */
+function fieldTarget(){const a=document.activeElement;if(!a||a.p)return null;const ok=a.tagName==='TEXTAREA'||(a.tagName==='INPUT'&&(!a.type||a.type==='text'||a.type==='search'));return ok&&a.closest&&a.closest('#panel,#pj')?a:null}
+function dictField(el,raw){let out='';for(const[k,v]of tokSpeech(raw)){if(k==='t')out+=(out&&!/[\s(«\n]$/.test(out)?' ':'')+v;else if(k==='p'){if(v==='('||v==='«')out+=(out&&!/[\s\n]$/.test(out)?' ':'')+v;else out=out.replace(/[ \t]+$/,'')+v}else if(k==='c'&&v==='nl')out+='\n'}
+ if(!out.trim()&&!/\n/.test(out))return;const st=el.selectionStart==null?el.value.length:el.selectionStart,en=el.selectionEnd==null?st:el.selectionEnd,b4=el.value.slice(0,st),af=el.value.slice(en);
+ const lead=b4&&!/[\s(«\n]$/.test(b4)&&!/^[؟!،؛:.…)»\n]/.test(out)?' ':'';const add=lead+out;el.value=b4+add+af;const c=b4.length+add.length;try{el.setSelectionRange(c,c)}catch(e){}el.dispatchEvent(new Event('input',{bubbles:true}));fb()}
+const _insF=insertSpeech;insertSpeech=function(txt){const el=fieldTarget();if(el){const t=applyFix(String(txt||'').trim());if(/^\s*(وقف|اوقف|أوقف)\s+(الإملاء|الاملاء)\s*$/.test(t)){stopRec();fb();return}dictField(el,t);return}return _insF(txt)};
 
 try{if(!document.body.classList.contains('home'))buildRail()}catch(e){}
 })();

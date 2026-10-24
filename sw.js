@@ -1,7 +1,7 @@
 // Offline cache for حكّاء (Hakkaa).
 // Serves the app from cache (works with no internet) and refreshes the cache in the background,
 // so a new version uploaded to the site appears on the next launch.
-const CACHE = 'hakkaa-v29';
+const CACHE = 'hakkaa-v32';
 const FILES = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png'];
 
 self.addEventListener('install', e => {
