@@ -1647,17 +1647,19 @@ TOOLS.pro=['pro','أدوات+',rHub2];
 (function(){const LAST='hasp:lastok',_st=setSt;
  setSt=function(x){_st.apply(this,arguments);if(x==='ok'){lsSet(LAST,String(Date.now()));hideBk()}};
  const nn=(n,one,pl)=>n+' '+(n>=3&&n<=10?pl:one);const ago=t=>{const m=Math.max(1,Math.round((Date.now()-t)/60000));return m<60?nn(m,'دقيقة','دقايق'):m<1440?nn(Math.round(m/60),'ساعة','ساعات'):nn(Math.round(m/1440),'يوم','أيام')};
- let bar=null;function hideBk(){if(bar)bar.hidden=true}
- function showBk(msg,btn,fn){if(!bar){bar=document.createElement('div');bar.id='bkbar';bar.style.cssText='position:fixed;top:0;inset-inline:0;z-index:60;background:#b3261e;color:#fff;padding:8px 12px;display:flex;gap:8px;align-items:center;font-size:14px;box-shadow:0 2px 6px #0004';document.body.append(bar)}
-  bar.textContent='';const sp=document.createElement('span');sp.style.flex='1';sp.textContent=msg;const b=document.createElement('button');b.textContent=btn;b.style.cssText='background:#fff;color:#b3261e;border:0;border-radius:16px;padding:6px 12px;font-weight:700';b.onclick=()=>{hideBk();fn()};
-  const x=document.createElement('button');x.textContent='✕';x.style.cssText='background:none;border:0;color:#fff;font-size:16px';x.onclick=()=>{hideBk();lsSet('hasp:bksnooze',String(Date.now()))};bar.append(sp,b,x);bar.hidden=false}
+ let bar=null;function hideBk(){if(bar)bar.hidden=true;document.body.classList.remove('hasbk');document.documentElement.style.removeProperty('--bkh')}
+ function showBk(msg,btn,fn){if(!bar){bar=document.createElement('div');bar.id='bkbar';bar.style.cssText='position:relative;z-index:60;background:#b3261e;color:#fff;padding:calc(env(safe-area-inset-top,0px) + 4px) 8px 4px;display:flex;gap:6px;align-items:center;font-size:12.5px;line-height:1.4';document.body.prepend(bar);
+   const st=document.createElement('style');st.textContent='body.hasbk #rail{top:var(--bkh,0px)}body.hasbk #hdr{padding-top:4px}';document.head.append(st)}
+  bar.textContent='';const sp=document.createElement('span');sp.style.flex='1';sp.textContent=msg;const b=document.createElement('button');b.textContent=btn;b.style.cssText='background:#fff;color:#b3261e;border:0;border-radius:14px;padding:3px 10px;font-weight:700;font-size:12.5px;white-space:nowrap';b.onclick=()=>{hideBk();fn()};
+  const x=document.createElement('button');x.textContent='✕';x.style.cssText='background:none;border:0;color:#fff;font-size:15px;padding:2px 6px';x.onclick=()=>{hideBk();lsSet('hasp:bksnooze',String(Date.now()))};bar.append(sp,b,x);bar.hidden=false;
+  document.body.classList.add('hasbk');document.documentElement.style.setProperty('--bkh',bar.offsetHeight+'px')}
  function newestEdit(){try{return Math.max(0,...idx().map(x=>localT(x.id)))}catch(e){return 0}}
  function check(){if(document.body.classList.contains('home')&&!pid)return;const ed=newestEdit();if(!ed)return;
   const last=+lget(LAST)||0,snz=+lget('hasp:bksnooze')||0;if(Date.now()-snz<30*60000)return;
   const behind=ed>last+1000,age=Date.now()-ed;
-  if(!DB.db&&!lget('hasp:gcon')){const day=+lget('hasp:bkday')||0;if(Date.now()-day>86400000&&age<86400000){lsSet('hasp:bkday',String(Date.now()));showBk('⚠️ شغلك محفوظ على التليفون بس. لو مسحت بيانات المتصفح هيضيع.','اربط Drive',()=>openTool('drive'))}return}
+  if(!DB.db&&!lget('hasp:gcon')){const day=+lget('hasp:bkday')||0;if(Date.now()-day>86400000&&age<86400000){lsSet('hasp:bkday',String(Date.now()));showBk('⚠️ شغلك على التليفون بس، ممكن يضيع لو اتمسحت البيانات.','اربط Drive',()=>openTool('drive'))}return}
   if(behind&&age>10*60000||behind&&(DB.st==='auth'||DB.st==='err')&&age>2*60000){
-   showBk('⚠️ آخر حفظ على Drive من '+(last?ago(last):'فترة')+' وفيه تعديلات ما اترفعتش.',DB.st==='err'?'حاول تاني':'احفظ دلوقتي',()=>{if(DB.st==='auth'||!DB.db)connect();else pull().then(()=>pushNow())})}}
+   showBk((last?'⚠️ آخر حفظ على Drive من '+ago(last)+'. فيه تعديلات ما اترفعتش.':'⚠️ شغلك ما اترفعش على Drive لسه.'),DB.st==='err'?'حاول تاني':'احفظ دلوقتي',()=>{if(DB.st==='auth'||!DB.db)connect();else pull().then(()=>pushNow())})}}
  /* نسخة يومية من كل عمل اتعدّل، بتتحفظ في «المسودات» وفي Drive لو متصل */
  function daily(){try{const today=new Date().toISOString().slice(0,10);for(const x of idx()){const k='hasp:bkd:'+x.id;if(lget(k)===today)continue;const t=localT(x.id);if(!t||Date.now()-t>86400000)continue;const d=projData(x.id);if(!hasContent(d))continue;lsSet(k,today);saveVersionData(x.id,'نسخة احتياطية يومية',true,d)}}catch(e){}}
  setInterval(()=>{check();daily()},60000);document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')setTimeout(check,3000)});setTimeout(()=>{check();daily()},8000);
