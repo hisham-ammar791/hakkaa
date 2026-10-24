@@ -374,14 +374,14 @@ const ST={scene:{b:1,j:'left',bf:360},action:{j:'left'},character:{b:1,j:'center
  chapter:{b:1,j:'center',bf:1200,sz:36,pb:1,k:1,af:480},para:{j:'both',fl:567},sep:{j:'center',bf:240,af:240},quote:{j:'both',it:1,ind:900}};
 const SPT=new Set(['scene','action','character','dialogue','parenthetical','transition']),TWc=cm=>Math.round(cm*567);
 function wpSp(t,x,o){const[r,l]=FMT.ind[t],b=t==='scene'||t==='character'||t==='transition',sz=FMT.pt*2,pb=o&&o.pb;
- return '<w:p><w:pPr>'+(t==='scene'||t==='character'?'<w:keepNext/>':'')+(pb?'<w:pageBreakBefore/>':'')+'<w:bidi/><w:spacing w:before="'+(pb?0:Math.round((SP[t]||0)*FMT.lh*20))+'" w:after="0" w:line="'+FMT.lh*20+'" w:lineRule="exact"/>'+(r||l?'<w:ind w:left="'+TWc(r)+'" w:right="'+TWc(l)+'"/>':'')+'<w:jc w:val="'+(t==='transition'?'right':'left')+'"/></w:pPr>'+
+ return '<w:p><w:pPr>'+(t==='scene'||t==='character'?'<w:keepNext/>':'')+(pb?'<w:pageBreakBefore/>':'')+'<w:bidi/><w:spacing w:before="'+(pb?0:Math.round((SP[t]||0)*FMT.lh*20))+'" w:after="0" w:line="'+FMT.lh*20+'" w:lineRule="exact"/>'+(r||l?'<w:ind w:left="'+TWc(r)+'" w:right="'+TWc(l)+'"/>':'')+'<w:jc w:val="'+(t==='transition'?(isCutX(x)?'center':'right'):'left')+'"/></w:pPr>'+
   (x?'<w:r><w:rPr><w:rFonts w:ascii="'+FMT.wordFont+'" w:hAnsi="'+FMT.wordFont+'" w:cs="'+FMT.wordFont+'"/>'+(b?'<w:b/><w:bCs/>':'')+(t==='parenthetical'?'<w:i/><w:iCs/>':'')+'<w:sz w:val="'+sz+'"/><w:szCs w:val="'+sz+'"/><w:rtl/><w:lang w:bidi="ar-SA"/></w:rPr><w:t xml:space="preserve">'+esc(x)+'</w:t></w:r>':'')+'</w:p>'}
 function wp(t,x,o){if(SPT.has(t)&&!(o&&o.legacy))return wpSp(t,x,o);const s=Object.assign({},ST[t]||ST.action,o||{}),sz=s.sz||28;if(t==='sep'&&!String(x||'').trim())x='*     *     *';
  return '<w:p><w:pPr>'+(s.k?'<w:keepNext/>':'')+(s.pb?'<w:pageBreakBefore/>':'')+'<w:bidi/><w:spacing w:before="'+(s.bf||0)+'" w:after="'+(s.af||100)+'" w:line="360" w:lineRule="auto"/>'+(s.ind?'<w:ind w:left="'+s.ind+'" w:right="'+s.ind+'"/>':s.fl?'<w:ind w:firstLine="'+s.fl+'"/>':'')+'<w:jc w:val="'+s.j+'"/></w:pPr>'+
   (x?'<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/>'+(s.b?'<w:b/><w:bCs/>':'')+(s.it?'<w:i/><w:iCs/>':'')+'<w:sz w:val="'+sz+'"/><w:szCs w:val="'+sz+'"/><w:rtl/><w:lang w:bidi="ar-SA"/></w:rPr><w:t xml:space="preserve">'+esc(x)+'</w:t></w:r>':'')+'</w:p>'}
 function tvDocBody(name,items){const F=FMT.wordFont,sz=FMT.pt*2,ln=FMT.lh*20,rows=modelOf(items.map(p=>({t:p.t,x:p.x}))).rows,G=tvGroups(items);
  const run=(t,x)=>x?'<w:r><w:rPr><w:rFonts w:ascii="'+F+'" w:hAnsi="'+F+'" w:cs="'+F+'"/>'+(t==='scene'||t==='character'||t==='transition'?'<w:b/><w:bCs/>':'')+(t==='parenthetical'?'<w:i/><w:iCs/>':'')+'<w:sz w:val="'+sz+'"/><w:szCs w:val="'+sz+'"/><w:rtl/><w:lang w:bidi="ar-SA"/></w:rPr><w:t xml:space="preserve">'+esc(x)+'</w:t></w:r>':'';
- const cell=(a,w,top)=>'<w:tc><w:tcPr><w:tcW w:w="'+w+'" w:type="dxa"/></w:tcPr>'+(a.length?a.map((i,k)=>{const t=items[i].t;return '<w:p><w:pPr><w:bidi/><w:spacing w:before="'+(k?Math.round((SP[t]||0)*ln):(top?0:Math.round(FMT.gap*ln)))+'" w:after="0" w:line="'+ln+'" w:lineRule="exact"/><w:jc w:val="'+(t==='transition'?'right':'left')+'"/></w:pPr>'+run(t,items[i].x)+'</w:p>'}).join(''):'<w:p><w:pPr><w:bidi/></w:pPr></w:p>')+'</w:tc>';
+ const cell=(a,w,top)=>'<w:tc><w:tcPr><w:tcW w:w="'+w+'" w:type="dxa"/></w:tcPr>'+(a.length?a.map((i,k)=>{const t=items[i].t;return '<w:p><w:pPr><w:bidi/><w:spacing w:before="'+(k?Math.round((SP[t]||0)*ln):(top?0:Math.round(FMT.gap*ln)))+'" w:after="0" w:line="'+ln+'" w:lineRule="exact"/><w:jc w:val="'+(t==='transition'?(isCutX(items[i].x)?'center':'right'):'left')+'"/></w:pPr>'+run(t,items[i].x)+'</w:p>'}).join(''):'<w:p><w:pPr><w:bidi/></w:pPr></w:p>')+'</w:tc>';
  const tot=TWc(FMT.tw),gu=TWc(FMT.gut),cw=Math.floor((tot-gu)/2);
  const pgs=new Map();for(const g of G){const f=Math.min(...g.r.concat(g.l)),p=rows[f].pg;if(!pgs.has(p))pgs.set(p,[]);pgs.get(p).push(g)}
  let out='<w:p><w:pPr><w:bidi/><w:spacing w:before="6200" w:after="0"/><w:jc w:val="center"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="'+F+'" w:hAnsi="'+F+'" w:cs="'+F+'"/><w:b/><w:bCs/><w:sz w:val="56"/><w:szCs w:val="56"/><w:rtl/><w:lang w:bidi="ar-SA"/></w:rPr><w:t xml:space="preserve">'+esc(name)+'</w:t></w:r></w:p>';
@@ -408,7 +408,7 @@ function buildDocx(name,items){const X='<?xml version="1.0" encoding="UTF-8" sta
 async function exportDocx(){flush();const nm=(idx().find(x=>x.id===pid)||{}).name||KN[MODE].one;
  await saveFile(nm.replace(/[\\/:*?"<>|]/g,'-')+'.docx',buildDocx(nm,[...root.children].map(e=>({t:e.p.t,x:e.p.x}))))}
 let PL=29;const CPL={dialogue:42,parenthetical:36,character:36,quote:58,chapter:40,part:30,sub:50},SP={scene:1,action:.25,character:.7,dialogue:.2,parenthetical:.2,transition:.9,part:6,chapter:2.5,sub:.8,para:.15,sep:1,quote:.3};
-const isHead=t=>t==='scene'||t==='chapter';
+const isHead=t=>t==='scene'||t==='chapter';const isCutX=x=>/^\s*(قطع|كات)\s*[:.]?\s*$/.test(String(x||''));
 const h=(t,a,...k)=>{const e=document.createElement(t);for(const n in a)n in e?e[n]=a[n]:e.setAttribute(n,a[n]);e.append(...k);return e};
 const wc=x=>x.split(/\s+/).filter(Boolean).length,cue=x=>norm(x.replace(/[:：]+$/,'')),flat=s=>' '+norm(s).replace(/[،,.؟?!:؛;"«»()\-–]/g,' ').replace(/\s+/g,' ').trim()+' ';
 const TVL=new Set(['character','parenthetical','dialogue']),TVF=()=>MODE==='sp'&&!!plan&&plan.form==='tv',CPL_TV=28;
@@ -606,10 +606,10 @@ function pdfFrom(js){const parts=[],offs=[],enc=new TextEncoder();let len=0;cons
 async function renderPagesTv(title){await(document.fonts&&document.fonts.ready);
  const K=150/2.54,W=1240,H=1754,FAM=FMT.font+',Tahoma,Arial,sans-serif',pages=[],Mt=Math.round(FMT.m.t*K),Mb=Math.round(FMT.m.b*K),Mr=Math.round(FMT.m.r*K),Ml=Math.round(FMT.m.l*K),cw=W-Mr-Ml,gut=Math.round(FMT.gut*K),colW=Math.floor((cw-gut)/2),LH=Math.round(FMT.lh*150/72),FS=Math.round(FMT.pt*150/72),bot=H-Mb;
  const ctxOf=n=>{while(pages.length<=n){const cv=document.createElement('canvas');cv.width=W;cv.height=H;const c=cv.getContext('2d');c.fillStyle='#fff';c.fillRect(0,0,W,H);c.fillStyle='#000';c.direction='rtl';pages.push(cv)}return pages[n].getContext('2d')};
- const mx=document.createElement('canvas').getContext('2d'),SD={scene:{b:1},action:{},transition:{b:1,a:'left'},character:{b:1},dialogue:{},parenthetical:{it:1}},fnt=s=>(s.it?'italic ':'')+(s.b?'bold ':'')+FS+'px '+FAM;
+ const mx=document.createElement('canvas').getContext('2d'),SD={scene:{b:1},action:{},transition:{b:1,a:'left'},cut:{b:1,a:'center'},character:{b:1},dialogue:{},parenthetical:{it:1}},fnt=s=>(s.it?'italic ':'')+(s.b?'bold ':'')+FS+'px '+FAM;
  const wrapT=(txt,s)=>{mx.font=fnt(s);const ls=[];let c='';for(const d of String(txt).split(' ')){const t=c?c+' '+d:d;if(mx.measureText(t).width>colW&&c){ls.push(c);c=d}else c=t}ls.push(c);return ls};
  const items=[...root.children].map(e=>({t:e.p.t,x:e.p.x})),rows=model().rows,G=tvGroups(items),put=[];let pg=1,y=Mt;
- const flow=(a,p0,y0,left)=>{let p=p0,yy=y0;a.forEach((i,k)=>{const it=items[i],s=SD[it.t]||SD.action;if(yy>Mt||p>p0)yy+=k?Math.round((SP[it.t]||0)*LH):Math.round(FMT.gap*LH);for(const l of wrapT(it.x,s)){if(yy+LH>bot){p++;yy=Mt}yy+=LH;put.push({p,y:yy,l,s,left,al:s.a||'right'})}});return{p,y:yy}};
+ const flow=(a,p0,y0,left)=>{let p=p0,yy=y0;a.forEach((i,k)=>{const it=items[i],s=(it.t==='transition'&&isCutX(it.x))?SD.cut:(SD[it.t]||SD.action);if(yy>Mt||p>p0)yy+=k?Math.round((SP[it.t]||0)*LH):Math.round(FMT.gap*LH);for(const l of wrapT(it.x,s)){if(yy+LH>bot){p++;yy=Mt}yy+=LH;put.push({p,y:yy,l,s,left,al:s.a||'right'})}});return{p,y:yy}};
  for(const g of G){const f=Math.min(...g.r.concat(g.l)),tp=rows[f]?rows[f].pg:pg;if(tp>pg){pg=tp;y=Mt}
   const a=flow(g.r,pg,y,false),b=flow(g.l,pg,y,true),e=a.p>b.p||(a.p===b.p&&a.y>=b.y)?a:b;pg=e.p;y=e.y}
  const t0=ctxOf(0);t0.font='bold '+Math.round(FS*1.9)+'px '+FAM;t0.textAlign='center';t0.fillText(title,W/2,H*.36);{const cx2=coverX();let yy=H*.36;t0.font=FS+'px '+FAM;for(const l of cx2.mid){yy+=LH*1.6;t0.fillText(l,W/2,yy)}yy=H-Mb-LH*(cx2.foot.length);t0.font=(FS-2)+'px '+FAM;for(const l of cx2.foot){t0.fillText(l,W/2,yy);yy+=LH}}
@@ -630,7 +630,7 @@ async function renderPages(title){if(TVF())return renderPagesTv(title);await(doc
  const cvx=coverX(),cvr=()=>{for(const l of cvx.mid)para(l,{b:0,a:'center',w:1,bf:46},nv?32:FS+2);if(cvx.foot.length){y=H-Mb-LH*(cvx.foot.length+.5)-(nv?40:0);for(const l of cvx.foot)para(l,{b:0,a:'center',w:1,bf:0},nv?26:FS-2)}};
  if(nv){y=H*.36;para(title,TT,60);cvr()}else{y=H*.36;para(title,TT,Math.round(FS*1.9));cvr();np()}
  const rows=nv?null:model().rows;
- [...root.children].forEach((e,i)=>{if(rows&&rows[i]&&rows[i].np&&y>Mt)np();para(e.p.t==='sep'&&!e.p.x.trim()?'*     *     *':e.p.x,PS[e.p.t]||PS.action)});
+ [...root.children].forEach((e,i)=>{if(rows&&rows[i]&&rows[i].np&&y>Mt)np();para(e.p.t==='sep'&&!e.p.x.trim()?'*     *     *':e.p.x,e.p.t==='transition'&&isCutX(e.p.x)?{b:1,a:'center',w:1,bf:Math.round((SP.transition||0)*LH)}:(PS[e.p.t]||PS.action))});
  pages.forEach((cv,i)=>{if(!nv&&i===0)return;const g=cv.getContext('2d');g.fillStyle='#000';g.direction='ltr';g.textAlign='center';g.font='26px '+FAM;g.fillText(String(nv?i+1:i),W/2,H-80)});return pages}
 async function exportPdf(){flush();const nm=(idx().find(x=>x.id===pid)||{}).name||KN[MODE].one,pgs=await renderPages(nm),js=[];
  for(const cv of pgs){const bl=await new Promise(r=>cv.toBlob(r,'image/jpeg',.9));js.push({b:new Uint8Array(await bl.arrayBuffer()),w:cv.width,h:cv.height})}
@@ -1133,12 +1133,14 @@ function insertSpeech(txt){txt=txt.trim();if(!txt)return;let ta=curLine()||root.
   if(pendCmd==='note'){pendCmd=null;const p=NT();p.notes[ta.p.id]=(p.notes[ta.p.id]?p.notes[ta.p.id]+' ':'')+x;savePlan();markLines();note('📝 أضيفت ملاحظة على السطر');continue}
   if(pendCmd==='scene'){pendCmd=null;x=x.replace(/\s+(داخلي|داخلى|خارجي|خارجى|نهار|ليل|صباح|مساء|فجر|غروب|شروق)(?=\s|$)/g,' - $1').replace(/^(داخلي|داخلى|خارجي|خارجى)\s+/,'$1 - ');appendText(ta,x);ta.value=ta.value.replace(/-\s+-/g,'-').replace(/\s+-\s*$/,'');ta.p.x=ta.value;fit(ta);ta=newLineAfter(ta,'action');continue}
   if(pendCmd==='paren'){pendCmd=null;ta.value='('+x.replace(/^\(|\)$/g,'')+')';ta.p.x=ta.value;fit(ta);ta=newLineAfter(ta,'dialogue');continue}
-  if(pendCmd==='char'){pendCmd=null;const w=x.split(/\s+/),nm=N().find(n=>x===n||x.startsWith(n+' '));const name=nm||w.slice(0,Math.min(2,w.length>2?1:w.length)).join(' '),rest=x.slice(name.length).trim();
+  if(pendCmd==='char'){pendCmd=null;const w=x.split(/\s+/),nm=N().find(n=>x===n||x.startsWith(n+' '));const name=nm||w.slice(0,Math.min(2,w.length>2?1:w.length)).join(' '),rest=x.slice(name.length).trim();{const sm=splitManner(rest);if(sm){chars.add(name);wr('hasp:chars',chars);if(ta.p.t!=='action'){beginStruct();retype(ta,'action')}ta=makeCue(ta,name,sm.man,sm.after);forced=name;continue}}forced=name;
    ta.value=name+': '+rest;ta.setSelectionRange(ta.value.length,ta.value.length);ta.dispatchEvent(new Event('input',{bubbles:true}));ta=cur()||ta;continue}
+  if(MODE==='sp'&&smart){const w0=x.split(/\s+/),kk=w0[0]==='رقم'?1:0,nn=toNum(w0[kk]);if(nn&&nn<=9&&(kk||dset().nums)){const L=sceneCast(ta).L;if(L[nn-1]){forced=L[nn-1];sayAs(forced,w0.slice(kk+1).join(' '));ta=cur()||ta;if(!dbar.hidden)dbarDraw();continue}}}
   if(MODE==='sp'&&smart){const nm=N().find(n=>x===n||x.startsWith(n+' ')||x.startsWith(n+'،'));
    if(nm&&(!ta.value.trim()||ta.p.t!=='dialogue'||true)){const rest=x.slice(nm.length).replace(/^[\s،:]+/,'');
     if(ta.value.trim())ta=newLineAfter(ta,'action');
     if(ta.p.t!=='action'){beginStruct();retype(ta,'action')}
+    {const sm=splitManner(rest);if(sm){ta=makeCue(ta,nm,sm.man,sm.after);forced=nm;continue}}forced=nm;
     ta.value=nm+': '+rest;ta.setSelectionRange(ta.value.length,ta.value.length);ta.dispatchEvent(new Event('input',{bubbles:true}));ta=cur()||ta;continue}}
   appendText(ta,x);ta.dispatchEvent(new Event('input',{bubbles:true}));ta=cur()||ta}}
 function rDict(b){back(b);const R=(a,c)=>$('tr',{},$('td',{},$('b',{},a)),$('td',{},c));
@@ -1152,7 +1154,7 @@ function startRec(){if(!SR){note('الإملاء غير مدعوم في هذا �
  rec.onresult=e=>{let tmp='';for(let i=e.resultIndex;i<e.results.length;i++){const r=e.results[i];if(r.isFinal){cap.hidden=true;insertSpeech(r[0].transcript)}else tmp+=r[0].transcript}if(tmp){cap.textContent='🎤 '+tmp;cap.hidden=false}};
  rec.onerror=e=>{if(e.error==='not-allowed'||e.error==='service-not-allowed'){note('اسمح للتطبيق باستخدام الميكروفون من إعدادات المتصفح');stopRec()}else if(e.error==='audio-capture'){note('الميكروفون مشغول ببرنامج آخر');stopRec()}};
  rec.onend=()=>{if(!recOn)return;let n=0;const again=()=>{if(!recOn)return;try{rec.start()}catch(e){if(++n<8)setTimeout(again,300);else stopRec()}};setTimeout(again,150)};
- try{rec.start();recOn=true;mic.classList.add('on');try{navigator.wakeLock&&navigator.wakeLock.request('screen').then(l=>{wl=l}).catch(()=>{})}catch(e){}dbarShow();if(!pttOn)note('تكلّم الآن. قل اسم الشخصية ثم كلامها، وقل: «علامة استفهام»، «فاصلة»، «نقطة»، «سطر جديد»، «مشهد جديد»، «شخصية»، «ملاحظة»، «تعليق»، «وصف». القائمة كاملة في «أدوات+». اضغط 🎤 للإيقاف.')}catch(e){note('تعذّر تشغيل الميكروفون')}}
+ try{rec.start();recOn=true;mic.classList.add('on');try{navigator.wakeLock&&navigator.wakeLock.request('screen').then(l=>{wl=l}).catch(()=>{})}catch(e){}dbarShow();if(!pttOn&&(+(lget('hasp:micn')||0))>=2)miniNote('🎤 يسمعك الآن',1500);else if(!pttOn){lsSet('hasp:micn',String(+(lget('hasp:micn')||0)+1));note('تكلّم الآن. قل اسم الشخصية ثم كلامها، وقل: «علامة استفهام»، «فاصلة»، «نقطة»، «سطر جديد»، «مشهد جديد»، «شخصية»، «ملاحظة»، «تعليق»، «وصف». القائمة كاملة في «أدوات+». اضغط 🎤 للإيقاف.')}}catch(e){note('تعذّر تشغيل الميكروفون')}}
 let wl=null;document.addEventListener('visibilitychange',()=>{if(recOn&&document.visibilityState==='visible'&&navigator.wakeLock)navigator.wakeLock.request('screen').then(l=>{wl=l}).catch(()=>{})});
 function stopRec(){try{wl&&wl.release()}catch(e){}wl=null;recOn=false;mic.classList.remove('on');cap.hidden=true;dbarHide();try{rec&&rec.stop()}catch(e){}}
 
@@ -1482,7 +1484,7 @@ const _rd=TOOLS.dict[2];TOOLS.dict[2]=function(b){_rd(b);const d=dset();
  b.append($('div',{className:'hsec'},'الإملاء الاحترافي'),card($('b',{},'طريقتان للميكروفون'),mu('لمسة قصيرة على 🎤: يفضل مفتوحًا ويسمع حتى توقفه بنفسك (بلمسة على 🎤 أو زر ■ إيقاف)، حتى لو سكتّ طويلًا، والشاشة لا تنطفئ أثناءه. أو قل «قطع» وحدها بعد سكتة قصيرة: يكتب «قطع» كانتقال في نهاية المشهد، ويفتح سطر المشهد التالي، ويطفئ الميكروفون. ضغطة مطولة: يسمع وأنت ضاغط فقط، مثل رسائل واتساب الصوتية، وهي أدق لأن الميكروفون لا ينقطع في منتصف كلامك.')),
   card($('b',{},'شريط الشخصيات وأرقامها'),mu('أثناء الإملاء يظهر أعلى الصفحة شريط بشخصيات المشهد مرقمة بترتيب ظهورها (١ هشام، ٢ يارا…). اضغط اسمًا فيذهب كلامك له حتى تختار غيره، أو قل الرقم في أول كلامك: «واحد إنتي فين» = هشام، «اتنين كنت برّه» = يارا. زر «+ شخصية» يضيف شخصية للمشهد قبل أن تتكلم، وزر «وصف» يكتب كلامك وصفًا.'),
    $('label',{className:'r'},$('input',{type:'checkbox',checked:d.nums,onchange(e){d.nums=e.target.checked;savePlan()}}),$('span',{},'افهم الرقم وحده (واحد، اتنين…) في أول الكلام. أطفئه لو كثر في حوارك «واحد صاحبي…»، وقتها قل «رقم واحد».'))),
-  card($('b',{},'تعليمات للتطبيق قبل المشهد (لا تُكتب في النص)'),mu('قلها بالصوت، أو اكتبها في سطر لوحده واضغط Enter، فينفذها حكّاء ويمسح السطر. للتأكيد ابدأ بـ «ملحوظة للتطبيق» (أو «يا حكّاء»): كل ما بعدها لا يُكتب أبدًا في النص، ويمكنك جمع أكثر من تعليمات: «ملحوظة للتطبيق هشام رقم واحد، يارا رقم اتنين، لهجة هشام صعيدي».'),$('table',{className:'tbl'},...[['هشام رقم واحد، يارا رقم اتنين','يثبّت أرقام الشخصيات في هذا المشهد'],['شخصيات المشهد هشام ويارا وسامي','يعطيهم ١ و٢ و٣ بالترتيب'],['لهجة هشام صعيدي','يحدد لهجته لأداة بصمة اللهجة'],['الكلام لهشام / الكلام للوصف','كل ما بعده يذهب له حتى تغيّر'],['اقرأ الأرقام','يقول لك من رقم كم']].map(([x,y])=>$('tr',{},$('td',{},$('b',{},x)),$('td',{},y))))),card($('b',{},'الأرقام بالكتابة'),mu('بعد تثبيت الأرقام، اكتب الرقم ثم مسافة في أول السطر («١ إنتي فين») فيتحول إلى اسم الشخصية رقم ١ والحوار. لو كان رقمًا في وصف عادي، اضغط تراجع ↶.')),card($('b',{},'أوامر التحكم'),$('table',{className:'tbl'},...[['روح للمشهد ٣','ينقلك للمشهد'],['امسح آخر جملة','يلغي آخر ما أُملي'],['اقرأ آخر سطر','يقرأ السطر الحالي بصوت عالٍ'],['احفظ مسودة','يحفظ نسخة باسم «مسودة بالصوت»'],['وقف الإملاء','يوقف الميكروفون']].map(([x,y])=>$('tr',{},$('td',{},$('b',{},x)),$('td',{},y))))),
+  card($('b',{},'تعليمات للتطبيق (لا تُكتب في النص)'),mu('بالصوت: قل «ملحوظة للتطبيق» فيدخل حكّاء «وضع التعليمات» ويظهر شريط برتقالي، وكل ما تقوله لا يُكتب. قل تعليماتك ثم «ابدأ المشهد» (أو «مشهد جديد …») فيرجع للكتابة. ويمكن في جملة واحدة: «ملحوظة للتطبيق هشام رقم واحد يارا رقم اتنين ابدأ المشهد واحد إنتي فين». بالكتابة: اكتب «للتطبيق: هشام رقم ١، يارا رقم ٢» في سطر لوحده واضغط Enter، فينفذها ويمسح السطر.'),$('table',{className:'tbl'},...[['هشام رقم واحد، يارا رقم اتنين','يثبّت أرقام الشخصيات في هذا المشهد'],['شخصيات المشهد هشام ويارا وسامي','يعطيهم ١ و٢ و٣ بالترتيب'],['لهجة هشام صعيدي','يحدد لهجته لأداة بصمة اللهجة'],['الكلام لهشام / الكلام للوصف','كل ما بعده يذهب له حتى تغيّر'],['اقرأ الأرقام','يقول لك من رقم كم']].map(([x,y])=>$('tr',{},$('td',{},$('b',{},x)),$('td',{},y))))),card($('b',{},'الأرقام بالكتابة'),mu('«قطع»: قلها وحدها، أو اكتبها في سطر لوحده واضغط Enter: تُكتب في منتصف السطر بخط عريض في نهاية المشهد، ويُفتح سطر المشهد التالي.'),mu('بعد تثبيت الأرقام، اكتب الرقم ثم مسافة في أول السطر («١ إنتي فين») فيتحول إلى اسم الشخصية رقم ١ والحوار. لو كان رقمًا في وصف عادي، اضغط تراجع ↶.')),card($('b',{},'أوامر التحكم'),$('table',{className:'tbl'},...[['روح للمشهد ٣','ينقلك للمشهد'],['امسح آخر جملة','يلغي آخر ما أُملي'],['اقرأ آخر سطر','يقرأ السطر الحالي بصوت عالٍ'],['احفظ مسودة','يحفظ نسخة باسم «مسودة بالصوت»'],['وقف الإملاء','يوقف الميكروفون']].map(([x,y])=>$('tr',{},$('td',{},$('b',{},x)),$('td',{},y))))),
   $('label',{className:'r'},$('input',{type:'checkbox',checked:d.fb,onchange(e){d.fb=e.target.checked;savePlan()}}),$('span',{},'تأكيد بصوت خفيف واهتزاز عند تنفيذ أي أمر')));rFixes(b)};
 
 /* ---------- تعليمات للتطبيق (لا تُكتب في النص): بالصوت أو بالكتابة ---------- */
@@ -1509,16 +1511,95 @@ function appCmd(raw){const t=String(raw||'');if(!PFX.test(t))return setupCmd(t);
  const parts=rest.split(/\s*(?:،|,|\.|ثم|وبعدين)\s*/).filter(Boolean),out=[];for(const x of parts){const r=setupCmd(x);if(r)out.push(r)}
  if(!out.length){const r=setupCmd(rest);if(r)return r;return'⚠️ لم أفهم التعليمات: «'+rest.slice(0,40)+'». لم يُكتب شيء في النص.'}return out.join(' — ')}
 const _colon2=colon;colon=function(ta){if(PFX.test(ta.value))return false;return _colon2(ta)};
-function sayCut(){let ta=curLine()||root.lastElementChild;if(!ta)return;if(ta.value.trim()||ta.p.t!=='action')ta=newLineAfter(ta,'transition');else retype(ta,'transition');ta.value='قطع';ta.p.x='قطع';fit(ta);const n=newLineAfter(ta,'scene');save();stopRec();fb();note('✂️ قطع: انتهى المشهد وأُطفئ الميكروفون. اضغط 🎤 للمشهد التالي.')}
-function setupDone(msg){fb();note(msg);if(!dbar.hidden)dbarDraw()}
+function sayCut(){let ta=curLine()||root.lastElementChild;if(!ta)return;if(ta.value.trim()||ta.p.t!=='action')ta=newLineAfter(ta,'transition');else retype(ta,'transition');ta.value='قطع';ta.p.x='قطع';fit(ta);markCut(ta);const n=newLineAfter(ta,'scene');save();stopRec();fb();note('✂️ قطع: انتهى المشهد وأُطفئ الميكروفون. اضغط 🎤 للمشهد التالي.')}
+function miniNote(m,ms){fx.textContent=m;fx.style.display='block';clearTimeout(note.t);note.t=setTimeout(()=>{fx.style.display='none'},ms||1800)}
+function tipOnce(k,m){if(lget('hasp:tip:'+k))return;lsSet('hasp:tip:'+k,'1');note('💡 '+m)}
+function setupDone(msg){fb();const c=+(lget('hasp:nc')||0);if(c<3&&!/^⚠️/.test(msg)){lsSet('hasp:nc',String(c+1));note(msg)}else if(/^⚠️/.test(msg))note(msg);else miniNote(msg,1800);if(!dbar.hidden)dbarDraw()}
 /* بالصوت */
-const _ins2=insertSpeech;insertSpeech=function(txt){if(/^\s*(قطع|اقطع|كات|cut)\s*[.!،]?\s*$/i.test(String(txt||''))){sayCut();return}const r=appCmd(applyFix(String(txt||'')));if(r){setupDone(r);return}return _ins2(txt)};
+const _ins2=insertSpeech;const PFXG=/(?:^|\s)(?:(?:ملحوظ[ةه]|ملاحظ[ةه]|تعليم[ةه]|تعليمات|أمر|امر)\s+(?:لل|ل)\s*تطبيق|يا\s+حكا+ء?|للتطبيق)(?=\s|$|[:،,])/;
+const ENDI=/(?:^|\s)(ابدأ|ابدا|إبدأ|يلا|خلصت|انتهت|إنتهت)\s*(?:ال)?(?:مشهد|ملحوظ[ةه]|ملاحظ[ةه]|تعليمات|كتابة|الكتابة)?(?=\s|$)|(?:^|\s)(?=مشهد جديد)/;
+let instr=false;
+function instrBadge(){const b=document.getElementById('ibadge');if(b)b.hidden=!instr;else if(instr){dwrap.prepend($('div',{id:'ibadge',style:'flex-basis:100%;background:#e0962b;color:#fff;padding:4px 12px;border-radius:12px;margin-top:4px;font-size:14px'},'🛠 وضع التعليمات: ما تقوله الآن لا يُكتب. قل «ابدأ المشهد» للرجوع للكتابة.'))}}
+function runInstr(t){t=t.trim();if(!t)return;const parts=t.split(/\s*(?:،|,|\.|ثم|وبعدين)\s*/).filter(Boolean),out=[],bad=[];
+ for(const x of parts){const r=setupCmd(x);if(r)out.push(r);else{const r2=setupCmd(t);if(r2&&parts.length===1)out.push(r2);else bad.push(x)}}
+ if(!out.length&&bad.length){const r=setupCmd(t);if(r){setupDone(r);return}fb(false);note('⚠️ لم أفهم: «'+t.slice(0,40)+'». لم يُكتب شيء. قل «ابدأ المشهد» للرجوع للكتابة.');return}
+ setupDone(out.join(' — ')+(bad.length?' | لم أفهم: '+bad.join('، '):''))}
+const _insX=insertSpeech;
+insertSpeech=function(txt){txt=applyFix(String(txt||'')).trim();if(!txt)return;
+ if(/^\s*(قطع|اقطع|كات|cut)\s*[.!،]?\s*$/i.test(txt)){instr=false;instrBadge();sayCut();return}
+ if(!instr){const m=txt.match(PFXG);if(!m)return _insX(txt);const k=m.index;const before=txt.slice(0,k).trim();if(before)_insX(before);instr=true;instrBadge();txt=txt.slice(k+m[0].length).replace(/^[\s:،,]+/,'');if(!txt){fb();note('🛠 وضع التعليمات: قل تعليماتك، ثم «ابدأ المشهد».');return}}
+ const e=txt.match(ENDI);if(e){const k=e.index;runInstr(txt.slice(0,k));instr=false;instrBadge();let rest=txt.slice(k).replace(/^\s*(ابدأ|ابدا|إبدأ|يلا|خلصت|انتهت|إنتهت)\s*(?:ال)?(?:مشهد|ملحوظ[ةه]|ملاحظ[ةه]|تعليمات|كتابة|الكتابة)?/,'').trim();fb();if(!rest)note('✍️ رجعنا للكتابة');if(rest)_insX(rest);return}
+ runInstr(txt)};
+const _insY=insertSpeech;insertSpeech=function(txt){const r0=String(txt||'');if(!instr&&!PFXG.test(r0)){const r=setupCmd(applyFix(r0));if(r&&/^\S+(?:\s\S+)?\s+رقم\s+\S+(\s+\S+(?:\s\S+)?\s+رقم\s+\S+)*$|^(شخصيات|ابطال|أبطال|لهج[ةه]|الكلام|اقرأ|اقرا|قول|قل)\s/.test(norm(r0))){setupDone(r);return}}return _insY(txt)};
+insertSpeech=(function(f){return function(txt){return f(txt)}})(insertSpeech);
+const _noop=function(txt){const r=appCmd(applyFix(String(txt||'')));if(r){setupDone(r);return}return _ins2(txt)};
 /* بالكتابة: سطر التعليمات + Enter يُنفّذ ويُمسح */
 const _split2=split;split=function(ta){if(smart&&MODE==='sp'&&(ta.p.t==='action'||ta.p.t==='dialogue'||ta.p.t==='character')){const L=ta.value.split(/\r\n|\r|\n/);if(L.length===2&&L[1]===''){const r=appCmd(L[0]);if(r){beginStruct();ta.value='';ta.p.x='';if(ta.p.t!=='action')retype(ta,'action');fit(ta);save();setupDone(r);return}}}return _split2(ta)};
 /* بالكتابة: «١ » في أول السطر = الشخصية رقم ١ */
 root.addEventListener('input',e=>{const ta=e.target;if(!ta||!ta.p||!smart||MODE!=='sp'||e.isComposing)return;if(ta.p.t!=='action'&&!(ta.p.t==='dialogue'&&ta.value.length<4))return;
  const m=ta.value.match(/^\s*([١-٩1-9])\s+([\s\S]*)$/);if(!m)return;const n=sceneCast(ta).L[toNum(m[1])-1];if(!n)return;
  beginStruct();if(ta.p.t!=='action')retype(ta,'action');ta.value=n+': '+m[2];ta.setSelectionRange(ta.value.length,ta.value.length);ta.dispatchEvent(new Event('input',{bubbles:true}))});
+
+/* ---------- «قطع» في منتصف السطر بخط عريض ---------- */
+css.textContent+='textarea.transition[data-cut]{text-align:center!important;font-weight:700}';
+function markCut(e){if(e.p&&e.p.t==='transition'&&isCutX(e.value))e.dataset.cut='1';else delete e.dataset.cut}
+const _mk2=mk;mk=function(q){const t=_mk2(q);markCut(t);return t};
+root.addEventListener('input',e=>{if(e.target&&e.target.p)markCut(e.target)});
+const _pg=paginate;paginate=function(){allEls().forEach(markCut);return _pg.apply(this,arguments)};
+const _split3=split;split=function(ta){if(smart&&MODE==='sp'){const L=ta.value.split(/\r\n|\r|\n/);if(L.length===2&&L[1]===''&&isCutX(L[0])){beginStruct();ta.value='قطع';ta.p.x='قطع';retype(ta,'transition');markCut(ta);const n=mk({t:'scene',x:''});ta.after(n);fit(n);n.focus();sync();save();if(recOn)stopRec();note('✂️ انتهى المشهد. اكتب عنوان المشهد التالي.');return}}return _split3(ta)};
+
+/* ================== وضع التركيز النظيف + تبسيط ================== */
+css.textContent+=`#ftool{display:none;position:fixed;top:0;inset-inline:0;z-index:35;background:var(--paper);border-bottom:1px solid var(--bd);padding:calc(env(safe-area-inset-top,0px) + 6px) 8px 6px;flex-wrap:wrap;gap:8px;align-items:center}
+body.focus #ftool{display:flex}body.focus #ftool>button{font-size:15px;padding:6px 10px;border-radius:12px;min-height:40px}body.focus #ftool #mic{font-size:22px;padding:6px 16px}
+body.focus #fexit{display:none!important}body.focus #wrap{padding-top:calc(var(--ft,64px) + 10px)}
+#panel .bigb{flex:1;padding:12px 8px;font-size:17px;border-radius:14px;min-height:46px}#panel .bigb.on{background:var(--ac);color:#fff;border-color:var(--ac)}`;
+const ftool=$('div',{id:'ftool'});document.body.append(ftool);
+if(window.ResizeObserver)new ResizeObserver(()=>document.documentElement.style.setProperty('--ft',ftool.offsetHeight+'px')).observe(ftool);
+/* 🎬 ابدأ مشهد */
+const SC={ie:'',tm:'',loc:'',init:false};
+const sceneBtn=$('button',{title:'ابدأ مشهدًا',onmousedown(e){e.preventDefault()},onclick(){openTool('newscene')}},'🎬');nb.after(sceneBtn);sceneBtn.hidden=MODE!=='sp';
+const toolsB=$('button',{onmousedown(e){e.preventDefault()},onclick(){openTool('pro')}},'أدوات+'),exitB=$('button',{title:'خروج من التركيز',onmousedown(e){e.preventDefault()},onclick(){setFocus(false)}},'✕');
+ftool.append(toolsB,exitB);
+const barEl=document.getElementById('bar');
+const _sf=setFocus;setFocus=function(on){_sf(on);if(on){ftool.prepend(mic,nb,sceneBtn);ftool.append(dbar,dwrap);dbar.style.flexBasis=dwrap.style.flexBasis='100%'}else{barEl.prepend(mic);mic.after(nb);nb.after(sceneBtn);barEl.after(dbar);dbar.after(dwrap);dbar.style.flexBasis=dwrap.style.flexBasis=''}};
+const _sm=setMode;setMode=function(k){const r=_sm(k);sceneBtn.hidden=MODE!=='sp';return r};
+const _cp=closePanel;closePanel=function(){SC.init=false;return _cp()};
+function recentLocs(){const S=scenesOf(model()),seen=[];for(let i=S.length-1;i>=0;i--){const hp=headParts(S[i].x);if(hp.loc&&!seen.some(x=>x.loc===hp.loc))seen.push({loc:hp.loc,ie:hp.ie,tm:hp.tm})}return seen.slice(0,8)}
+function addScene(){const ie=SC.ie,tm=SC.tm,loc=(SC.loc||'').trim();if(!ie||!tm||!loc){fb(false);note('اختر داخلي أو خارجي، ثم الوقت، ثم المكان');return}
+ const E=allEls(),ta=curLine()||E[E.length-1],hd=sceneHead(ta);let after=ta;if(hd){const blk=blockOf(hd);after=blk[blk.length-1]}else after=E[E.length-1];
+ const n=E.slice(0,E.indexOf(hd||after)+1).filter(e=>e.p.t==='scene').length+1,txt='مشهد '+fmt(n)+' - '+ie+' - '+loc+' - '+tm;
+ beginStruct();let sc;if(after.p.t==='action'&&!after.value.trim()&&after===E[E.length-1]){sc=after;sc.value=txt;sc.p.x=txt;retype(sc,'scene')}else{sc=mk({t:'scene',x:txt});after.after(sc)}fit(sc);
+ const ac=mk({t:'action',x:''});sc.after(ac);fit(ac);SC.init=false;SC.loc='';closePanel();ac.focus();sync();save();fb();tipOnce('scn','تقدر تقول بالميكروفون: «مشهد جديد داخلي البيت ليل» بدل هذه الأزرار.')}
+function rNewScene(b){if(spOnly(b))return;const R=recentLocs();
+ if(!SC.init){SC.init=true;const l=R[0];SC.ie=l?l.ie:'';SC.tm=l?l.tm:'';SC.loc=''}
+ const bb=(lab,on,fn)=>$('button',{className:'bigb'+(on?' on':''),onclick(){fn();renderTool()}},lab);
+ b.append($('div',{className:'hsec'},'أين؟'),$('div',{className:'r'},bb('🏠 داخلي',SC.ie==='داخلي',()=>SC.ie='داخلي'),bb('🌳 خارجي',SC.ie==='خارجي',()=>SC.ie='خارجي')),
+  $('div',{className:'hsec'},'متى؟'),$('div',{className:'r',style:'flex-wrap:wrap'},...['نهار','ليل','غروب','شروق'].map(t=>bb((t==='ليل'?'🌙 ':t==='نهار'?'☀️ ':'🌅 ')+t,SC.tm===t,()=>SC.tm=t))),
+  $('div',{className:'hsec'},'المكان'),
+  R.length?$('div',{className:'r',style:'flex-wrap:wrap'},...R.map((x,i)=>$('button',{className:'bigb'+(SC.loc===x.loc?' on':''),style:'flex:none;font-size:15px;padding:10px 14px',onclick(){SC.loc=x.loc;SC.ie=SC.ie||x.ie;SC.tm=SC.tm||x.tm;renderTool()}},(i===0?'نفس المكان: ':'')+x.loc))):'',
+  $('input',{type:'text',placeholder:'أو اكتب مكانًا جديدًا (مثال: بيت يارا)',value:R.some(x=>x.loc===SC.loc)?'':SC.loc,style:'width:100%;margin-top:6px;font-size:17px;padding:12px',oninput(e){SC.loc=e.target.value}}),
+  $('button',{className:'bigb on',style:'width:100%;margin-top:12px',onclick:addScene},'ابدأ المشهد'))}
+TOOLS.newscene=['newscene','ابدأ مشهدًا',rNewScene];
+/* 🎓 تجربة تعليمية */
+function startLearn(){lsSet('hasp:tip:learn','1');newWork('sp','تجربة حكّاء');root.textContent='';[{t:'scene',x:'مشهد ١ - داخلي - الصالة - ليل'},{t:'action',x:'يدخل هشام الصالة المظلمة ويجد يارا جالسة'},{t:'character',x:'يارا'},{t:'dialogue',x:'إنت لسه صاحي يا بابا؟'}].forEach(q=>root.append(mk(q)));[...root.children].forEach(fit);flush();save();showEditor();setTimeout(()=>openTool('learn'),350)}
+function rLearn(b){back(b);b.append(mu('تجربة قصيرة على مشهد جاهز، خطوة خطوة. اضغط ✕ لتكتب فوقه بحرية.'),
+ ...[['١','اضغط على سطر الحوار «إنت لسه صاحي يا بابا؟» وغيّر فيه كلمة.'],['٢','اضغط Enter مرتين: يرجع للوصف. اكتب وصفًا يبدأ بفعل مثل «ينظر إليها».'],['٣','اكتب «هشام:» ثم كلامه. الاسم والنقطتان يحوّلانه إلى شخصية وحوار.'],['٤','اضغط 🎤 وقل: «سطر جديد يارا بغضب إنتي كنتي فين علامة استفهام».'],['٥','اضغط 🎬 وابدأ مشهدًا جديدًا بالأزرار: داخلي، ليل، نفس المكان.'],['٦','قل «قطع» لتنهي المشهد. وجرّب «وضع التركيز» من قائمة ⋮.']].map(([n,t])=>card($('b',{},n+'. '),t)))}
+TOOLS.learn=['learn','تجربة تعليمية',rLearn];
+const _se=showEditor;showEditor=function(){const r=_se.apply(this,arguments);setTimeout(()=>tipOnce('learn','جديد على حكّاء؟ افتح «أدوات+» ثم «تجربة تعليمية».'),1500);return r};
+/* ================== لوحة الأدوات: تبويبات، الأكثر استخدامًا، فصل الرواية ================== */
+const HINFO={};HUB.forEach(([sec,L])=>L.forEach(([k,t,d])=>HINFO[k]=[t,d]));
+const HT=[['write','اكتب',['dict','read','notes','dial','sprint','tpl']],['plan','خطّط',['lines','days','rep','budget','vid']],['send','سلّم',['pitch','stamp','diff','xfer']]];
+const NVOK=new Set(['dict','read','notes','sprint','lines','pitch','stamp','diff']);
+const okIn=k=>MODE==='sp'||NVOK.has(k);
+const useC=()=>{try{return JSON.parse(lget('hasp:use'))||{}}catch(e){return{}}};
+const _ot=openTool;openTool=function(k){if(HINFO[k]){const u=useC();u[k]=(u[k]||0)+1;lsSet('hasp:use',JSON.stringify(u))}return _ot.apply(this,arguments)};
+function rHub2(b){const p=P(),U=useC();const tabs=HT.map(([id,n,L])=>[id,n,L.filter(okIn)]).filter(x=>x[2].length);let cur0=tabs.find(x=>x[0]===p.hubTab)||tabs[0];
+ const top=Object.entries(U).filter(([k,v])=>v>0&&HINFO[k]&&okIn(k)).sort((a,c)=>c[1]-a[1]).slice(0,3);
+ if(MODE==='sp')b.append($('button',{style:'width:100%;margin-bottom:8px',onclick:startLearn},'🎓 تجربة تعليمية قصيرة على مشهد جاهز'));
+ if(top.length)b.append($('div',{className:'mu'},'الأكثر استخدامًا'),$('div',{className:'r',style:'flex-wrap:wrap'},...top.map(([k])=>$('button',{onclick(){openTool(k)}},HINFO[k][0]))));
+ b.append($('div',{className:'r',style:'margin-top:8px'},...tabs.map(([id,n])=>$('button',{className:'bigb'+(cur0[0]===id?' on':''),style:'padding:10px 4px',onclick(){p.hubTab=id;savePlan();renderTool()}},n))),
+  $('div',{className:'hub',style:'margin-top:8px'},...cur0[2].map(k=>$('button',{onclick(){openTool(k)}},$('b',{},HINFO[k][0]),$('small',{},HINFO[k][1])))))}
+TOOLS.pro=['pro','أدوات+',rHub2];
 
 try{if(!document.body.classList.contains('home'))buildRail()}catch(e){}
 })();
