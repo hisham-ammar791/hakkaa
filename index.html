@@ -252,6 +252,9 @@ function mk(p){p.id=p.id||Math.random().toString(36).slice(2,9);const ta=documen
  ta.addEventListener('input',onInput);ta.addEventListener('keydown',onKey);ta.addEventListener('focus',sync);
  ta.addEventListener('blur',()=>setTimeout(()=>{if(!cur())acEl.style.display='none'},250));return ta}
 function onInput(e){const ta=e.target;
+ /* كيبورد سامسونج يظل ماسكًا الكلمة (composition) فيعيد كتابتها بعد التحويل: نُنهي الكتابة أولًا ثم نحوّل */
+ if(smart&&MODE==='sp'&&(e.isComposing||/omposition/.test(e.inputType||''))&&(ta.p.t==='action'||ta.p.t==='dialogue')){const cm=ta.value.match(/^\s*([^:：\d.،؟?!"«»()]{1,24}?)\s*[:：]/);
+  if(cm&&ta._cp!==cm[1]){ta._cp=cm[1];ta.blur();setTimeout(()=>{ta.focus();const c=ta.value.length;ta.setSelectionRange(c,c);onInput({target:ta})},0);return}}
  if(ta.value.indexOf('\n')>=0||ta.value.indexOf('\r')>=0){split(ta)}
  else if(smart&&MODE==='sp'&&ta.p.t==='dialogue'&&dlgCont(ta)){}
  else if(smart&&ta.p.t==='action'&&colon(ta)){}
@@ -1124,10 +1127,16 @@ function tokSpeech(t){const out=[];let last=0,m;CRE.lastIndex=0;while((m=CRE.exe
 function newLineAfter(ta,t){beginStruct();const n=mk({t:t||(NEXT[ta.p.t]||BODYT()),x:''});ta.after(n);fit(n);n.focus();sync();save();return n}
 function appendText(ta,txt){const sp=ta.value&&!/[\s(«]$/.test(ta.value)?' ':'';ta.value+=sp+txt;ta.p.x=ta.value;fit(ta);ta.setSelectionRange(ta.value.length,ta.value.length);save()}
 function sceneNo(){return allEls().filter(e=>e.p.t==='scene').length}
-let pendCmd=null;
-function insertSpeech(txt){txt=txt.trim();if(!txt)return;let ta=curLine()||root.lastElementChild;if(!ta)return;ta.focus();
+let pendCmd=null,spPrev=null;
+function insertSpeech(txt){txt=txt.replace(/\s*[:：]\s*/g,' نقطتين ').trim();if(!txt)return;let ta=curLine()||root.lastElementChild;if(!ta)return;ta.focus();
  const N=()=>[...chars].concat(speakerList()).filter(Boolean).sort((a,b)=>b.length-a.length);
- for(const[k,v]of tokSpeech(txt)){
+ for(const[k,v]of tokSpeech(txt)){const pv=spPrev;spPrev=k==='t'?v:null;
+  /* «فهيم نقطتين في ايه» بالإملاء: الكلام قبل النقطتين اسم شخصية، فيبدأ حوار جديد */
+  if(k==='p'&&v===':'&&pv&&MODE==='sp'&&smart){const nm=norm(pv),tv=ta.value.replace(/\s+$/,'');
+   if(nm&&nm.length<=24&&nm.split(' ').length<=3&&!/[\d.،؟?!"«»()]/.test(nm)&&(chars.has(nm)||!isVerb(nm))&&tv.endsWith(pv)){
+    const before=tv.slice(0,tv.length-pv.length).replace(/\s+$/,'');
+    if(before){ta.value=before;ta.p.x=before;fit(ta);save();ta=newLineAfter(ta,'action')}else if(ta.p.t!=='action'){beginStruct();const pr=ta.previousElementSibling;if(ta.p.t==='dialogue'&&pr&&pr.p&&pr.p.t==='character')pr.remove();retype(ta,'action')}
+    ta.value=nm+':';ta.setSelectionRange(ta.value.length,ta.value.length);ta.dispatchEvent(new Event('input',{bubbles:true}));ta=cur()||ta;forced=nm;continue}}
   if(k==='p'){if(v==='('||v==='«'){appendText(ta,v);ta.value=ta.value.replace(/\s$/,'')}else{ta.value=ta.value.replace(/\s+$/,'')+v;ta.p.x=ta.value;fit(ta);save()}continue}
   if(k==='c'){
    if(v==='undo'){try{undo()}catch(e){}ta=cur()||ta;continue}
@@ -1434,7 +1443,7 @@ const _split=split;split=function(ta){if(smart&&MODE==='sp'&&ta.p.t==='action'){
 /* في الإملاء: «يارا بغضب إنت فين» = شخصية + (بغضب) + حوار */
 const _ins=insertSpeech;insertSpeech=function(txt){txt=String(txt||'').trim();if(MODE==='sp'&&smart){const hit=knownNames().find(n=>txt.startsWith(n+' '));if(hit){const sm=splitManner(txt.slice(hit.length));if(sm){let ta=curLine()||root.lastElementChild;if(ta.value.trim())ta=newLineAfter(ta,'action');makeCue(ta,hit,sm.man,'');const rest=sm.after;if(rest)_ins(rest);return}}}return _ins(txt)};
 /* ---------- أوامر تعمل حتى مع ميكروفون الكيبورد (Gboard) ---------- */
-const TYPED=['علامة استفهام','علامه استفهام','علامة الاستفهام','علامة تعجب','علامه تعجب','علامة التعجب','فاصلة منقوطة','فاصله منقوطه','ثلاث نقط','افتح قوس','اقفل قوس','قوس مفتوح','قوس مقفول','افتح تنصيص','اقفل تنصيص','سطر جديد','مشهد جديد','نهاية المشهد','نهايه المشهد'];
+const TYPED=['فاصلة منقوطة','فاصله منقوطه','فاصلة','فاصله','نقطتين','نقطتان','علامة استفهام','علامه استفهام','علامة الاستفهام','علامة تعجب','علامه تعجب','علامة التعجب','فاصلة منقوطة','فاصله منقوطه','ثلاث نقط','افتح قوس','اقفل قوس','قوس مفتوح','قوس مقفول','افتح تنصيص','اقفل تنصيص','سطر جديد','مشهد جديد','نهاية المشهد','نهايه المشهد'];
 const TRE=new RegExp('(^|\\s)('+TYPED.join('|')+')(?=\\s|$)');
 let tyT=null,composing=false;root.addEventListener('compositionstart',()=>{composing=true});root.addEventListener('compositionend',e=>{composing=false;schedTyped(e.target)});
 root.addEventListener('input',e=>{if(e.isComposing)return;schedTyped(e.target)});
