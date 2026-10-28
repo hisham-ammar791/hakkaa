@@ -1685,4 +1685,13 @@ const _insF=insertSpeech;insertSpeech=function(txt){const el=fieldTarget();if(el
 
 try{if(!document.body.classList.contains('home'))buildRail()}catch(e){}
 })();
+
+/* ---------- تنسيق عنوان المشهد: «مشهد ١ - داخلي - الصيدلية - نهار» ---------- */
+function fmtScene(x){const K='داخلي خارجي|داخلى خارجى|داخلي|داخلى|خارجي|خارجى|نهار|نهارا|ليل|ليلا|صباح|صباحا|مساء|مساءا|فجر|غروب|شروق|ظهر|عصر';
+ let v=String(x||'').replace(/\s*[-–—]\s*/g,' - ').replace(/\s+/g,' ').trim();if(!v)return v;
+ v=v.replace(/^(مشهد\s*[\d٠-٩]+)\s*(?!-)/,'$1 - ');
+ v=v.replace(new RegExp('(^|\\s)('+K+')(?=\\s|$)','g'),' - $2 - ');
+ return v.replace(/(\s*-\s*)+/g,' - ').replace(/^\s*-\s*|\s*-\s*$/g,'').trim()}
+{const _splitF=split;split=function(ta){if(MODE==='sp'&&ta&&ta.p&&ta.p.t==='scene'){const L=ta.value.split(/\r\n|\r|\n/);const f=fmtScene(L[0]);if(f!==L[0]){L[0]=f;ta.value=L.join('\n')}}return _splitF(ta)}}
+root.addEventListener('focusout',e=>{const ta=e.target;if(MODE!=='sp'||!ta||!ta.p||ta.p.t!=='scene')return;const f=fmtScene(ta.value);if(f!==ta.value){ta.value=f;ta.p.x=f;fit(ta);save()}});
 </script></body></html>
