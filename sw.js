@@ -1,8 +1,8 @@
 // Offline cache for حكّاء (Hakkaa).
 // Serves the app from cache (works with no internet) and refreshes the cache in the background,
 // so a new version uploaded to the site appears on the next launch.
-const CACHE = 'hakkaa-v44';
-const FILES = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'fonts/hakkaa-naskh.ttf'];
+const CACHE = 'hakkaa-v45';
+const FILES = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'fonts/hakkaa-naskh.ttf', 'guide.html'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)).then(() => self.skipWaiting()));
@@ -32,7 +32,8 @@ self.addEventListener('fetch', e => {
   }
   e.respondWith(
     caches.open(CACHE).then(async cache => {
-      const key = req.mode === 'navigate' ? 'index.html' : req;
+      // The app page is always served from 'index.html'; other pages (the guide) keep their own cache entry.
+      const key = (req.mode === 'navigate' && !/guide\.html$/.test(new URL(req.url).pathname)) ? 'index.html' : req;
       const hit = await cache.match(key, { ignoreSearch: true });
       const net = fetch(req).then(res => {
         if (res && res.ok) cache.put(key, res.clone());

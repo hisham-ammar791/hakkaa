@@ -157,6 +157,7 @@ textarea.np{margin-top:60px}.flash{background:color-mix(in srgb,var(--ac) 22%,tr
 
 <section id="g-start">
 <p class="lead">حكّاء مكتب كتابة في جيبك. تكتب، والتطبيق يرتب الصفحة ويحفظ عملك ويساعدك على بناء الحكاية. هذه أهم الأشياء التي تحتاجها في البداية.</p>
+<p><a href="guide.html" style="display:inline-block;padding:11px 18px;border-radius:12px;background:#2B1A4A;color:#fff;font-weight:700;text-decoration:none">📘 الدليل الشامل بالأمثلة (كل الأدوات)</a></p>
 <div class="step"><i>١</i><div><b>اختر نوع العمل</b><p>من الشاشة الرئيسية اضغط <span class="chip">سيناريو</span> أو <span class="chip">رواية</span>، اكتب اسم العمل، ثم اضغط زر البدء. أعمالك الأخيرة تظهر تحت «تابع من حيث توقفت».</p></div></div>
 <div class="step"><i>٢</i><div><b>اكتب، ودَع الحفظ للتطبيق</b><p>كل حرف يُحفظ على جهازك فورًا، حتى دون إنترنت. لا يوجد زر حفظ لأنك لا تحتاجه.</p></div></div>
 <div class="step"><i>٣</i><div><b>كل سطر له نوع</b><p>الأزرار أعلى الصفحة تحدد نوع السطر الذي يقف عنده المؤشر: مشهد أو حوار في السيناريو، فصل أو فقرة في الرواية. لتغيير نوع أي سطر: اضغط عليه ثم اضغط النوع الصحيح.</p></div></div>
@@ -409,7 +410,7 @@ function buildDocx(name,items){const X='<?xml version="1.0" encoding="UTF-8" sta
   ['word/footer2.xml',X+'<w:ftr xmlns:w="'+W+'"><w:p/></w:ftr>'],...fontParts(X,W),
   ['word/document.xml',X+'<w:document xmlns:w="'+W+'" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><w:body>'+body+sect+'</w:body></w:document>']])}
 async function exportDocx(){flush();await loadFont();const nm=(idx().find(x=>x.id===pid)||{}).name||KN[MODE].one;
- await saveFile(nm.replace(/[\\/:*?"<>|]/g,'-')+'.docx',buildDocx(nm,[...root.children].map(e=>({t:e.p.t,x:e.p.x,r:e.classList.contains('rev')}))))}
+ await saveFile(nm.replace(/[\\/:*?"<>|]/g,'-')+'.docx',buildDocx(nm,nlDocItems()))}
 let PL=29;const CPL={dialogue:42,parenthetical:36,character:36,quote:58,chapter:40,part:30,sub:50},SP={scene:1,action:.25,character:.7,dialogue:.2,parenthetical:.2,transition:.9,part:6,chapter:2.5,sub:.8,para:.15,sep:1,quote:.3};
 const isHead=t=>t==='scene'||t==='chapter';const isCutX=x=>/^\s*(قطع|كات)\s*[:.]?\s*$/.test(String(x||''));
 const h=(t,a,...k)=>{const e=document.createElement(t);for(const n in a)n in e?e[n]=a[n]:e.setAttribute(n,a[n]);e.append(...k);return e};
@@ -440,7 +441,8 @@ function modelOf(items){if(TVF())return tvModel(items);const rows=[],H=items.map
   if(L>0&&(!fits||t==='part'||t==='chapter')){pg++;L=0;np=true}rows.push({e:it.e,id:it.id,t,x,pg,sc,np,h:hh});L+=hh});return{rows,pages:pg}}
 function model(){return modelOf([...root.children].map(e=>({e,t:e.p.t,x:e.value,id:e.p.id})))}
 const WD=()=>MODE==='nv'?{u:'فصل',us:'الفصول',p:'ف',of:'الرواية'}:{u:'مشهد',us:'المشاهد',p:'م',of:'السيناريو'};
-function scenesOf(m){const S=[];let c=null,part='';for(const r of m.rows){if(r.t==='part'){part=r.x||'باب';continue}if(isHead(r.t)){c={n:S.length+1,id:r.id,e:r.e,x:r.x,pg:r.pg,pgEnd:r.pg,w:0,dw:0,h:0,part};S.push(c)}if(c){const w=wc(r.x);c.w+=w;if(r.t==='dialogue'||r.t==='parenthetical')c.dw+=w;c.h+=r.h;c.pgEnd=r.pg}}return S}
+function nlLab(r){try{if(r.t==='scene'&&window.__nl&&__nl.on()){const m=/^\s*مشهد\s*([\d٠-٩]+[A-Za-z]*)/.exec(r.x||'');return m?m[1]:''}}catch(e){}return ''}
+function scenesOf(m){const S=[];let c=null,part='';for(const r of m.rows){if(r.t==='part'){part=r.x||'باب';continue}if(isHead(r.t)){c={n:S.length+1,id:r.id,e:r.e,x:r.x,pg:r.pg,pgEnd:r.pg,w:0,dw:0,h:0,part,lab:nlLab(r)};S.push(c)}if(c){const w=wc(r.x);c.w+=w;if(r.t==='dialogue'||r.t==='parenthetical')c.dw+=w;c.h+=r.h;c.pgEnd=r.pg}}return S}
 const pgl=document.getElementById('pgl');let pgT;
 const cntEl=document.getElementById('cnt'),fmt=n=>n.toLocaleString('ar-EG');
 function paginate(){clearTimeout(pgT);pgT=setTimeout(()=>{tvMark();const m=model();pgl.textContent='';
@@ -452,7 +454,7 @@ const SEQ0=['الإعداد وتقديم العالم','الحدث المحفّ�
 const BEATS=[['الصورة الافتتاحية','1','Opening Image'],['إعلان التيمة','5','Theme Stated'],['الإعداد','1-10','Set-Up'],['المحفّز','12','Catalyst'],['النقاش والتردد','12-25','Debate'],['الدخول إلى الفصل الثاني','25','Break into Two'],['القصة الفرعية B','30','B Story'],['المرح والألعاب','30-55','Fun and Games'],['نقطة المنتصف','55','Midpoint'],['الأشرار يقتربون','55-75','Bad Guys Close In'],['كل شيء ضاع','75','All Is Lost'],['ليلة الروح المظلمة','75-85','Dark Night of the Soul'],['الدخول إلى الفصل الثالث','85','Break into Three'],['النهاية','85-110','Finale'],['الصورة الختامية','110','Final Image']];
 function loadPlan(){try{plan=JSON.parse(localStorage.getItem(KEY+':plan'))||{}}catch(e){plan={}}plan.chars=plan.chars||{};plan.beats=plan.beats||{};plan.sc=plan.sc||{};plan.idea=plan.idea||{};plan.sos=plan.sos||{};plan.seq=plan.seq||SEQ0.map(n=>({name:n,sum:'',a:'',b:''}));try{refreshForm()}catch(e){}}
 function writePlan(){clearTimeout(planT);const s=JSON.stringify(plan),o=lget(KEY+':plan');if(o===s||(o===null&&!planHas(plan)))return;lsSet(KEY+':plan',s);setT(pid);schedulePush()}
-function planHas(p){return!!p&&(p.form==='tv'||!!p.treat||(p.pl||[]).length>0||Object.values(p.idea||{}).some(Boolean)||Object.values(p.sos||{}).some(Boolean)||Object.keys(p.chars||{}).length>0||Object.keys(p.beats||{}).length>0||Object.keys(p.sc||{}).length>0||JSON.stringify(p.seq||[])!==JSON.stringify(SEQ0.map(n=>({name:n,sum:'',a:'',b:''}))))}
+function planHas(p){return!!p&&(p.form==='tv'||!!p.treat||(p.pl||[]).length>0||Object.values(p.idea||{}).some(Boolean)||Object.values(p.sos||{}).some(Boolean)||Object.keys(p.chars||{}).length>0||Object.keys(p.beats||{}).length>0||Object.keys(p.sc||{}).length>0||Object.keys(p.pro||{}).length>0||JSON.stringify(p.seq||[])!==JSON.stringify(SEQ0.map(n=>({name:n,sum:'',a:'',b:''}))))}
 function savePlan(){clearTimeout(planT);planT=setTimeout(writePlan,300)}
 function fld(lab,o,k,rows,ph){return h('label',{className:'f'},h('b',{},lab),h('textarea',{rows:rows||2,placeholder:ph||'',value:o[k]||'',oninput(e){o[k]=e.target.value;savePlan()}}))}
 function coverX(){const o=(plan&&plan.idea)||{},c=v=>String(v||'').trim(),mid=[];if(c(o.by))mid.push((MODE==='nv'?'تأليف: ':'تأليف: ')+c(o.by));if(c(o.base))mid.push(c(o.base));if(c(o.draft))mid.push(c(o.draft));
@@ -469,7 +471,7 @@ function rIdea(b){const o=plan.idea;
  ...simUI(o),h('b',{},'صفحة العنوان'),h('div',{className:'mu'},'تظهر تحت العنوان في PDF وWord. اترك الحقل فارغًا لتخطيه.'),fld('المؤلف',o,'by',1,'الاسم كما يطبع على الغلاف'),fld('مأخوذ عن / ملاحظة',o,'base',1,'مثال: عن رواية …، أو سيناريو أصلي'),fld('المسودة والتاريخ',o,'draft',1,'مثال: المسودة الثانية، أكتوبر ٢٠٢٦'),fld('بيانات التواصل',o,'contact',2,'الهاتف أو البريد، سطر لكل بيان'),h('div',{className:'r'},shBtn(projName,ideaShare)))}
 function rBeats(b){const m=model(),S=scenesOf(m),P=Math.max(m.pages,1);b.append(h('p',{className:'mu'},'طول '+WD().of+' الحالي ≈ '+m.pages+' صفحة. مواضع المحطات مبنية على 110 صفحات ومقاسة على طولك.'));
  BEATS.forEach(([n,rg,en],i)=>{const o=plan.beats[i]=plan.beats[i]||{},z=rg.split('-').map(Number),lo=Math.max(1,Math.round(z[0]*P/110)),hi=Math.max(lo,Math.round((z[1]||z[0])*P/110));
-  const sel=h('select',{onchange(e){o.sc=e.target.value;savePlan();renderTool()}},h('option',{value:''},'اربطه ب'+WD().u),...S.map(s=>h('option',{value:s.id,selected:o.sc===s.id},s.n+'. '+s.x.slice(0,22))));
+  const sel=h('select',{onchange(e){o.sc=e.target.value;savePlan();renderTool()}},h('option',{value:''},'اربطه ب'+WD().u),...S.map(s=>h('option',{value:s.id,selected:o.sc===s.id},(s.lab||s.n)+'. '+s.x.slice(0,22))));
   const s=S.find(q=>q.id===o.sc);let st='';if(s){const tol=Math.ceil(P*.05);st=' — فعليًا ص '+s.pg+(s.pg>=lo-tol&&s.pg<=hi+tol?' ✓':' ⚠ خارج المدى')}
   b.append(h('div',{className:'card'},h('b',{},(i+1)+'. '+n+' ('+en+')'),h('div',{className:'mu'},'المتوقع: ص '+lo+(hi>lo?'–'+hi:'')+st),fld('',o,'t',2),sel))})}
 function rSeq(b){const S=scenesOf(model()),sel=(q,k)=>h('select',{onchange(e){q[k]=e.target.value;savePlan();renderTool()}},h('option',{value:''},'—'),...S.map(s=>h('option',{value:s.id,selected:q[k]===s.id},String(s.n))));
@@ -487,12 +489,12 @@ function moveSceneTo(id,tid,after){const el=[...root.children].find(e=>e.p.id===
  [...root.children].forEach(fit);flush();commit(true);paginate();renderTool()}
 function rScn(b){const S=scenesOf(model());if(!S.length)b.append(h('p',{className:'mu'},'لا توجد '+WD().us+' بعد. اجعل أحد العناوين من نوع «'+WD().u+'».'));
  let lp='';S.forEach((s,i)=>{if(s.part&&s.part!==lp){lp=s.part;b.append(h('div',{className:'grp'},s.part))}const o=plan.sc[s.id]=plan.sc[s.id]||{},emo=h('select',{onchange(e){o.e=e.target.value;savePlan()}},...[['','الشحنة العاطفية'],['-3','−٣ سلبية جدًا'],['-2','−٢'],['-1','−١'],['0','٠ محايد'],['1','+١'],['2','+٢'],['3','+٣ إيجابية جدًا']].map(([v,l])=>h('option',{value:v,selected:(o.e||'')===v},l)));
-  b.append(h('div',{className:'card'},h('div',{className:'r'},h('b',{className:'lk',style:'flex:1',onclick(){jump(s.e)}},s.n+'. '+(s.x||'(بدون عنوان)')),h('button',{title:'تقديم',onclick(){moveScene(s.id,-1)}},'▲'),h('button',{title:'تأخير',onclick(){moveScene(s.id,1)}},'▼')),h('div',{className:'mu'},'ص '+s.pg+'، ≈ '+(s.h/PL).toFixed(1)+' صفحة'),fld('الهدف',o,'g',1),fld('الصراع',o,'c',1),fld('التحول / النتيجة',o,'r',1),emo,shBtn(()=>s.x||WD().u,()=>sceneShare(s.id))))})}
+  b.append(h('div',{className:'card'},h('div',{className:'r'},h('b',{className:'lk',style:'flex:1',onclick(){jump(s.e)}},(s.lab||s.n)+'. '+(s.x||'(بدون عنوان)')),h('button',{title:'تقديم',onclick(){moveScene(s.id,-1)}},'▲'),h('button',{title:'تأخير',onclick(){moveScene(s.id,1)}},'▼')),h('div',{className:'mu'},'ص '+s.pg+'، ≈ '+(s.h/PL).toFixed(1)+' صفحة'),fld('الهدف',o,'g',1),fld('الصراع',o,'c',1),fld('التحول / النتيجة',o,'r',1),emo,shBtn(()=>s.x||WD().u,()=>sceneShare(s.id))))})}
 function rPace(b,c){const m=model(),S=scenesOf(m);if(!S.length){b.append(h('p',{},'أضف مشاهد أولًا.'));return}const P=Math.max(m.pages,1),tot=S.reduce((a,s)=>a+s.h,0)/PL,avg=tot/S.length,dw=S.reduce((a,s)=>a+s.dw,0),aw=S.reduce((a,s)=>a+s.w,0);
  if(!c)b.append(h('div',{className:'card'},'≈ '+m.pages+' صفحة، '+S.length+' مشهد، متوسط المشهد '+avg.toFixed(1)+' ص، الحوار '+Math.round(100*dw/Math.max(aw,1))+'%'));
  const mx=Math.max(...S.map(s=>s.h/PL),.1),ch=h('div',{className:'bars'});S.forEach(s=>ch.append(h('div',{className:'bar',title:s.x,onclick(){jump(s.e)},style:'height:'+Math.max(4,60*s.h/PL/mx)+'px;opacity:'+(.35+.65*s.dw/Math.max(s.w,1))})));
  if(!c)b.append(h('div',{className:'mu'},'طول كل مشهد (الشدة = نسبة الحوار)'),ch,h('div',{className:'mu'},'الشحنة العاطفية لكل مشهد'),h('div',{className:'r'},...S.map(s=>{const e=(plan.sc[s.id]||{}).e;return h('span',{className:'mu',style:'min-width:18px;text-align:center'},e===''||e===undefined?'·':e)})));
- const W=[];let run=0,dr=0,er=0,pe=null;S.forEach(s=>{const p=s.h/PL,q=s.dw/Math.max(s.w,1);if(S.length>3&&p>2*avg)W.push('المشهد '+s.n+' طويل ('+p.toFixed(1)+' ص) مقابل متوسط '+avg.toFixed(1));run=q<.05?run+1:0;if(run===3)W.push('ثلاثة مشاهد وصفية بلا حوار تقريبًا تنتهي عند المشهد '+s.n);dr=q>.7?dr+1:0;if(dr===3)W.push('ثلاثة مشاهد حوارية متتالية تنتهي عند المشهد '+s.n);
+ const W=[];let run=0,dr=0,er=0,pe=null;S.forEach(s=>{const p=s.h/PL,q=s.dw/Math.max(s.w,1);if(S.length>3&&p>2*avg)W.push('المشهد '+(s.lab||s.n)+' طويل ('+p.toFixed(1)+' ص) مقابل متوسط '+avg.toFixed(1));run=q<.05?run+1:0;if(run===3)W.push('ثلاثة مشاهد وصفية بلا حوار تقريبًا تنتهي عند المشهد '+s.n);dr=q>.7?dr+1:0;if(dr===3)W.push('ثلاثة مشاهد حوارية متتالية تنتهي عند المشهد '+s.n);
   const e=(plan.sc[s.id]||{}).e,sg=e===undefined||e===''?null:Math.sign(+e);er=sg!==null&&sg!==0&&sg===pe?er+1:0;pe=sg;if(er===3)W.push('شحنة عاطفية بنفس الاتجاه لأربعة مشاهد عند المشهد '+s.n)});
  BEATS.forEach(([n,rg],i)=>{const o=plan.beats[i],s=o&&S.find(q=>q.id===o.sc);if(!s)return;const z=rg.split('-').map(Number),mid=((z[0]+(z[1]||z[0]))/2)*P/110;if(Math.abs(s.pg-mid)>.1*P)W.push('محطة «'+n+'» في ص '+s.pg+' والمتوقع قرب ص '+Math.round(mid))});
  b.append(h('b',{},W.length?'ملاحظات الإيقاع':'لا ملاحظات ظاهرة ✓'),...W.map(w=>h('div',{className:'card'},w)))}
@@ -517,8 +519,8 @@ function sosCard(){const o=plan.sos,id=plan.idea||{},m=model(),S=scenesOf(m),c=v
  const N=namesOf(m).filter(n=>{const q=plan.chars[n]||{};return q.w||q.n||q.f||q.a||q.role});
  if(N.length)L.push('الشخصيات:',...N.map(n=>{const q=plan.chars[n];return'- '+n+(q.role?' ('+q.role+')':'')+[['يريد',q.w],['يحتاج',q.n],['العيب/الجرح',q.f],['القوس',q.a]].filter(x=>c(x[1])).map(x=>' | '+x[0]+': '+c(x[1])).join('')}));
  if(S.length){const aw=S.reduce((a,s)=>a+s.w,0),dw=S.reduce((a,s)=>a+s.dw,0);L.push('الحجم: ≈ '+m.pages+' صفحة، '+S.length+' '+WD().u+'، الحوار '+Math.round(100*dw/Math.max(aw,1))+'%');
-  L.push(WD().us+':',...S.slice(0,60).map(s=>{const q=plan.sc[s.id]||{},t=c(q.sum)||[q.g,q.c,q.r].filter(x=>c(x)).map(c).join('، ');return s.n+'. '+(s.x||'(بدون عنوان)')+(t?' — '+t.slice(0,160):'')}));if(S.length>60)L.push('… و'+(S.length-60)+' أخرى')}
- const B=BEATS.map(([n],i)=>{const q=plan.beats[i]||{},s=S.find(x=>x.id===q.sc);return(c(q.t)||s)?'- '+n+(s?' ('+WD().p+s.n+')':'')+(c(q.t)?': '+c(q.t).slice(0,120):''):''}).filter(Boolean);
+  L.push(WD().us+':',...S.slice(0,60).map(s=>{const q=plan.sc[s.id]||{},t=c(q.sum)||[q.g,q.c,q.r].filter(x=>c(x)).map(c).join('، ');return (s.lab||s.n)+'. '+(s.x||'(بدون عنوان)')+(t?' — '+t.slice(0,160):'')}));if(S.length>60)L.push('… و'+(S.length-60)+' أخرى')}
+ const B=BEATS.map(([n],i)=>{const q=plan.beats[i]||{},s=S.find(x=>x.id===q.sc);return(c(q.t)||s)?'- '+n+(s?' ('+WD().p+(s.lab||s.n)+')':'')+(c(q.t)?': '+c(q.t).slice(0,120):''):''}).filter(Boolean);
  if(B.length)L.push('المحطات:',...B);
  add('قرارات مقفلة',o.dec);add('مشكلات مفتوحة',o.open);add('الخطوة التالية',o.next);
  return L.join('\n')}
@@ -572,10 +574,15 @@ function rFind(b){const q=h('input',{type:'text',placeholder:'ابحث عن…',
 function imgSmall(f){return new Promise((ok,no)=>{const u=URL.createObjectURL(f),im=new Image();im.onload=()=>{const W=420,r=Math.min(1,W/im.width),cv=document.createElement('canvas');cv.width=Math.round(im.width*r);cv.height=Math.round(im.height*r);cv.getContext('2d').drawImage(im,0,0,cv.width,cv.height);URL.revokeObjectURL(u);ok(cv.toDataURL('image/jpeg',.6))};im.onerror=no;im.src=u})}
 const CPAL=['#d6453d','#2a7de1','#2e9e5b','#e0962b','#8e55c7','#0f9aa8','#d6457f','#7a8a2b','#6b5b4f','#3f56c4'];
 /* تفكيك عنوان المشهد: داخلي/خارجي، المكان، الوقت */
-function headParts(x){let t=norm(String(x||'')).replace(/^مشهد\s*[\d٠-٩]*\s*[-–—:.]?\s*/,'');let ie='',tm='';const parts=t.split(/\s*[-–—/|،,]\s*|\s+(?=(?:داخلي|داخلى|خارجي|خارجى|نهار|ليل|صباح|مساء|فجر|ظهر|عصر|غروب|شروق)(?:\s|$))/).filter(Boolean),rest=[];
+const CLKRE=/(?:^|\s)(?:الساعة\s*)?([\d٠-٩]{1,2})\s*[:٫]\s*([\d٠-٩]{2})(?=\s|$)/;
+const dig=s=>String(s).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d));
+const toAr=s=>String(s).replace(/\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]);
+function clockOf(t){const m=CLKRE.exec(String(t||''));if(!m)return null;const hh=+dig(m[1]),mm=+dig(m[2]);if(hh>23||mm>59)return null;return{hh,mm,raw:m[0],txt:('0'+hh).slice(-2)+':'+('0'+mm).slice(-2)}}
+const tmFromClock=hh=>hh>=19||hh<4?'ليل':hh>=17?'غروب':hh<7?'شروق':'نهار';
+function headParts(x){let t=norm(String(x||'')).replace(/^مشهد\s*[\d٠-٩]*[A-Za-z]*\s*[-–—:.]?\s*/,'');let ie='',tm='',clk='';const ck=clockOf(t);if(ck){clk=ck.txt;t=t.replace(ck.raw,' ')}const parts=t.split(/\s*[-–—/|،,]\s*|\s+(?=(?:داخلي|داخلى|خارجي|خارجى|نهار|ليل|صباح|مساء|فجر|ظهر|عصر|غروب|شروق)(?:\s|$))/).filter(Boolean),rest=[];
  for(const w0 of parts){const w=w0.trim();if(/^(داخلي|داخلى|د)$/.test(w)){ie='داخلي';continue}if(/^(خارجي|خارجى|خ)$/.test(w)){ie='خارجي';continue}if(/^(داخلي|داخلى)\s*\/\s*(خارجي|خارجى)$/.test(w)){ie='داخلي';continue}
   if(/^(نهار|ليل|صباح|مساء|فجر|ظهر|عصر|غروب|شروق)$/.test(w)){tm=w;continue}rest.push(w)}
- return{ie,tm,loc:rest.join(' - ')}}
+ if(!tm&&ck)tm=tmFromClock(ck.hh);return{ie,tm,clk,loc:rest.join(' - ')}}
 function rStory(b){const PR=presenceOf(model()),S=PR.S,CC={};PR.N.forEach((n,i)=>CC[n]=CPAL[i%CPAL.length]);const sc=(n,i)=>{const c=PR.M[n][i];return c.w+c.cue*5+c.ment};
  if(!S.length){b.append(h('p',{className:'mu'},'لا توجد '+WD().us+' بعد. أنشئ بعض '+WD().us+' لتظهر في اللوحة.'));return}
  if(PR.N.length)b.append(h('div',{className:'r'},...PR.N.map(n=>h('span',{className:'chip',style:'border-inline-start:8px solid '+CC[n]},n))));
@@ -590,9 +597,9 @@ function rStory(b){const PR=presenceOf(model()),S=PR.S,CC={};PR.N.forEach((n,i)=
   inp.onchange=async()=>{const f=inp.files[0];if(!f)return;try{o.img=await imgSmall(f);savePlan();renderTool()}catch(e){note('تعذر قراءة الصورة')}};
   const ps=PR.N.map(n=>[n,sc(n,i)]).filter(x=>x[1]>0).sort((p,q)=>q[1]-p[1]),dc=ps.length?CC[ps[0][0]]:'var(--bd)',hp=MODE==='sp'?headParts(s.x):{loc:s.x||''};
   const bdg=(t,ttl)=>h('span',{className:'chip',style:'font-size:12px;padding:2px 8px;margin:0',title:ttl||''},t),EM={'-3':'−٣','-2':'−٢','-1':'−١','0':'٠','1':'+١','2':'+٢','3':'+٣'},sm=(l,v)=>String(v||'').trim()?h('div',{style:'font-size:12px;line-height:1.5'},h('b',{},l+': '),v):'';
-  const tags=[hp.ie?bdg(hp.ie==='داخلي'?'🏠 داخلي':'🌳 خارجي'):'',hp.tm?bdg((/ليل|مساء|فجر/.test(hp.tm)?'🌙 ':/غروب|شروق/.test(hp.tm)?'🌅 ':'☀️ ')+hp.tm):'',bdg('≈ '+fmt(+(s.h/PL).toFixed(1))+' ص','الطول التقريبي بالصفحات'),o.e!==undefined&&o.e!==''?bdg('شحنة '+(EM[o.e]||o.e),'الشحنة العاطفية من أداة المشاهد'):''].filter(Boolean);
+  const tags=[hp.ie?bdg(hp.ie==='داخلي'?'🏠 داخلي':'🌳 خارجي'):'',hp.tm?bdg((/ليل|مساء|فجر/.test(hp.tm)?'🌙 ':/غروب|شروق/.test(hp.tm)?'🌅 ':'☀️ ')+hp.tm):'',hp.clk?bdg('⏰ '+toAr(hp.clk),'الساعة المحددة في عنوان المشهد'):'',bdg('≈ '+fmt(+(s.h/PL).toFixed(1))+' ص','الطول التقريبي بالصفحات'),o.e!==undefined&&o.e!==''?bdg('شحنة '+(EM[o.e]||o.e),'الشحنة العاطفية من أداة المشاهد'):''].filter(Boolean);
   const tc=!hp.tm?'':/ليل|مساء|فجر/.test(hp.tm)?' sb-night':/غروب|شروق/.test(hp.tm)?' sb-dusk':' sb-day',ic=hp.ie==='داخلي'?' sb-in':hp.ie==='خارجي'?' sb-ex':'';
-  const card=h('div',{className:'card'+tc+ic,style:'margin:0;padding:8px;border-inline-start:6px solid '+dc+'!important;background:'+(ps.length&&!tc?'color-mix(in srgb,'+dc+' 12%,var(--paper))':'')},h('div',{className:'r',style:'align-items:center'},hd,h('b',{className:'lk',style:'flex:1;font-size:14px',onclick(){jump(s.e)}},s.n+'. '+(hp.loc||s.x||'(بدون عنوان)'))),
+  const card=h('div',{className:'card'+tc+ic,style:'margin:0;padding:8px;border-inline-start:6px solid '+dc+'!important;background:'+(ps.length&&!tc?'color-mix(in srgb,'+dc+' 12%,var(--paper))':'')},h('div',{className:'r',style:'align-items:center'},hd,h('b',{className:'lk',style:'flex:1;font-size:14px',onclick(){jump(s.e)}},(s.lab||s.n)+'. '+(hp.loc||s.x||'(بدون عنوان)'))),
    tags.length?h('div',{className:'r',style:'flex-wrap:wrap;gap:4px'},...tags):'',
    ps.length?h('div',{className:'r',style:'flex-wrap:wrap'},...ps.map(x=>h('span',{className:'mu',style:'font-size:12px;border-inline-start:6px solid '+CC[x[0]]+';padding-inline-start:4px'},x[0]))):h('div',{className:'mu',style:'font-size:12px'},'لا شخصيات بعد'),img,inp,
    o.img?h('button',{onclick(){delete o.img;savePlan();renderTool()}},'حذف الصورة'):'',
@@ -603,7 +610,7 @@ function rStory(b){const PR=presenceOf(model()),S=PR.S,CC={};PR.N.forEach((n,i)=
    hd.onpointerup=ev=>{hd.onpointermove=hd.onpointerup=null;card.style.opacity='';const t=document.elementFromPoint(ev.clientX,ev.clientY),c=t&&t.closest&&t.closest('[data-sid]');g.querySelectorAll('[data-sid]').forEach(c=>c.style.outline='');finish(s.id,c&&c.dataset.sid)}};
   if(s.part&&s.part!==lp){lp=s.part;g.append(h('div',{className:'grp',style:'grid-column:1/-1'},s.part))}
   g.append(card)});b.append(g)}
-function treatBuild(){const S=scenesOf(model());return S.map(s=>{const o=plan.sc[s.id]||{},t=[o.sum,[o.g,o.c,o.r].filter(x=>String(x||'').trim()).join('، ')].find(x=>String(x||'').trim());return s.n+'. '+(s.x||'')+(t?'\n'+String(t).trim():'')}).join('\n\n')}
+function treatBuild(){const S=scenesOf(model());return S.map(s=>{const o=plan.sc[s.id]||{},t=[o.sum,[o.g,o.c,o.r].filter(x=>String(x||'').trim()).join('، ')].find(x=>String(x||'').trim());return (s.lab||s.n)+'. '+(s.x||'')+(t?'\n'+String(t).trim():'')}).join('\n\n')}
 function rTreat(b){const ta=h('textarea',{rows:14,placeholder:'اكتب المعالجة هنا: حكاية العمل كاملة بالنثر، بزمن المضارع، من البداية إلى النهاية، بلا حوار تفصيلي.',value:plan.treat||'',oninput(e){plan.treat=e.target.value;savePlan();cnt.textContent=fmt(wc(plan.treat))+' كلمة'}}),cnt=h('span',{className:'mu'},fmt(wc(plan.treat||''))+' كلمة');
  b.append(h('p',{className:'mu'},'المعالجة هي حكاية '+WD().of+' بالنثر قبل كتابة التفاصيل، وتُرسل غالبًا إلى المنتج أو الناشر قبل المسودة الكاملة. اتبع فيها المحطات الدرامية، واجعلها بين ٣٠٠ و١٥٠٠ كلمة.'),ta,cnt,
   h('div',{className:'r'},h('button',{onclick(){const t=treatBuild();if(!t){note('لا توجد '+WD().us+' بعد');return}if((plan.treat||'').trim()&&!confirm('استبدال نص المعالجة الحالي بملخصات '+WD().us+'؟'))return;plan.treat=t;savePlan();renderTool()}},'ابنِ من ملخصات '+WD().us),shBtn(()=>projName()+' — معالجة',()=>plan.treat),h('button',{onclick(){copyText(plan.treat||'').then(ok=>note(ok?'نُسخت المعالجة':'تعذّر النسخ'))}},'نسخ')))}
@@ -686,7 +693,8 @@ async function renderPages(title){if(TVF())return renderPagesTv(title);await(doc
  const cvx=coverX(),cvr=()=>{for(const l of cvx.mid)para(l,{b:0,a:'center',w:1,bf:46},nv?32:FS+2);if(cvx.foot.length){y=H-Mb-LH*(cvx.foot.length+.5)-(nv?40:0);for(const l of cvx.foot)para(l,{b:0,a:'center',w:1,bf:0},nv?26:FS-2)}};
  if(nv){y=H*.36;para(title,TT,60);cvr()}else{y=H*.36;para(title,TT,Math.round(FS*1.9));cvr();np()}
  const rows=nv?null:model().rows;
- [...root.children].forEach((e,i)=>{if(rows&&rows[i]&&rows[i].np&&y>Mt)np();para(e.p.t==='sep'&&!e.p.x.trim()?'*     *     *':e.p.x,e.p.t==='transition'&&isCutX(e.p.x)?{b:1,a:'center',w:1,bf:Math.round((SP.transition||0)*LH)}:(PS[e.p.t]||PS.action),undefined,e.classList.contains('rev'))});
+ const OM=nv?new Map():nlOmitAt(),omF=i=>{for(const g of OM.get(i)||[])para(nlOmitTxt(g),PS.scene)};
+ [...root.children].forEach((e,i)=>{omF(i);if(rows&&rows[i]&&rows[i].np&&y>Mt)np();para(e.p.t==='sep'&&!e.p.x.trim()?'*     *     *':e.p.x,e.p.t==='transition'&&isCutX(e.p.x)?{b:1,a:'center',w:1,bf:Math.round((SP.transition||0)*LH)}:(PS[e.p.t]||PS.action),undefined,e.classList.contains('rev'))});omF(root.children.length);
  fin();return pages}
 /* كل صفحة تتحول إلى صورة فور اكتمالها ثم تُفرَّغ من الذاكرة، فلا يتعطل الهاتف في الأعمال الطويلة */
 let PGSINK=null;
@@ -873,7 +881,7 @@ function updateAC(ta){if(!ta||!ta.p){acEl.style.display='none';return}const t=ta
  if(t==='part'){if(!norm(v)){let n=0;for(const e of root.children){if(e.p.t==='part')n++;if(e===ta)break}acShow(['الباب '+(ORD[n-1]||fmt(n))],s=>putWord(ta,s,true))}else acShow([]);return}
  if(t==='scene'){if(!norm(v)){acShow(['مشهد '+sceneNo(ta)],s=>putWord(ta,s,true));return}
   const w=norm(v).split(' '),ends=/\s$/.test(v),part=ends?'':w[w.length-1],hz=(ends?w:w.slice(0,-1)).map(zn),c=[];
-  if(!hz.some(x=>IE.has(x)))c.push('داخلي','خارجي');if(!hz.some(x=>TM.has(x)))c.push('نهار','ليل','صباح','مساء','فجر','غروب');
+  if(!hz.some(x=>IE.has(x)))c.push('داخلي','خارجي');if(!hz.some(x=>TM.has(x)))c.push('نهار','ليل','مساء','فجر','غروب');
   const vz=zn(norm(v));c.push(...locs(ta).filter(l=>!vz.includes(zn(l))));const pz=zn(part);
   acShow((pz?c.filter(x=>zn(x).startsWith(pz)&&zn(x)!==pz):c).slice(0,10),s=>putWord(ta,s,false));return}
  acShow([])}
@@ -1277,18 +1285,18 @@ function stopRec(){clearTimeout(idleT);try{wl&&wl.release()}catch(e){}wl=null;re
 function sceneData(){const PR=presenceOf(model()),S=PR.S;return S.map((s,i)=>{const hp=hpOf(s);return{s,i,hp,loc:(hp.loc||'(بدون مكان)').trim(),pages:s.h/PL,who:PR.N.filter(n=>{const c=PR.M[n][i];return c.cue||c.w}),ment:PR.N.filter(n=>{const c=PR.M[n][i];return!c.cue&&!c.w&&c.ment})}})}
 const tcat=t=>!t?'—':/ليل|مساء|فجر/.test(t)?'ليل':/غروب|شروق/.test(t)?'شروق/غروب':'نهار';
 function repText(D){const L=[projName()+' — تقرير الإنتاج',''];const loc={};D.forEach(d=>{(loc[d.loc]=loc[d.loc]||[]).push(d)});
- L.push('الأماكن:');for(const k in loc)L.push('• '+k+': '+loc[k].length+' مشهد ('+loc[k].map(d=>d.s.n).join('، ')+')');L.push('','الشخصيات في كل مشهد:');D.forEach(d=>L.push(d.s.n+'. '+(d.s.x||'')+' — '+(d.who.join('، ')||'لا أحد')));return L.join('\n')}
+ L.push('الأماكن:');for(const k in loc)L.push('• '+k+': '+loc[k].length+' مشهد ('+loc[k].map(d=>d.s.lab||d.s.n).join('، ')+')');L.push('','الشخصيات في كل مشهد:');D.forEach(d=>L.push((d.s.lab||d.s.n)+'. '+(d.s.x||'')+' — '+(d.who.join('، ')||'لا أحد')));return L.join('\n')}
 function rRep(b){back(b);if(spOnly(b))return;const D=sceneData();if(!D.length){b.append(mu('لا توجد مشاهد بعد.'));return}
  const cnt=f=>D.filter(f).length,pg=f=>D.filter(f).reduce((a,d)=>a+d.pages,0),f1=n=>fmt(+n.toFixed(1));
  b.append(card($('b',{},'نظرة عامة'),$('table',{className:'tbl'},...[['المشاهد',fmt(D.length)],['الصفحات التقريبية',f1(pg(()=>1))],['داخلي',fmt(cnt(d=>d.hp.ie==='داخلي'))],['خارجي',fmt(cnt(d=>d.hp.ie==='خارجي'))],['نهار',fmt(cnt(d=>tcat(d.hp.tm)==='نهار'))],['ليل',fmt(cnt(d=>tcat(d.hp.tm)==='ليل'))],['شروق/غروب',fmt(cnt(d=>tcat(d.hp.tm)==='شروق/غروب'))],['بلا وقت أو مكان محدد',fmt(cnt(d=>!d.hp.tm||!d.hp.ie))]].map(([a,v])=>$('tr',{},$('td',{},a),$('td',{},v))))));
  const loc={};D.forEach(d=>{(loc[d.loc]=loc[d.loc]||[]).push(d)});
  b.append(card($('b',{},'الأماكن (مرتبة بعدد المشاهد)'),mu('مفيد لترتيب التصوير: كل مشاهد المكان الواحد تُصوَّر معًا.'),$('table',{className:'tbl'},$('tr',{},$('th',{},'المكان'),$('th',{},'مشاهد'),$('th',{},'ص'),$('th',{},'ليل')),
-  ...Object.entries(loc).sort((a,b)=>b[1].length-a[1].length).map(([k,L])=>$('tr',{},$('td',{},k+(L[0].hp.ie?' ('+L[0].hp.ie+')':'')),$('td',{},...L.map(d=>$('span',{className:'lk',onclick(){jump(d.s.e)}},d.s.n+' '))),$('td',{},f1(L.reduce((a,d)=>a+d.pages,0))),$('td',{},fmt(L.filter(d=>tcat(d.hp.tm)==='ليل').length)))))));
+  ...Object.entries(loc).sort((a,b)=>b[1].length-a[1].length).map(([k,L])=>$('tr',{},$('td',{},k+(L[0].hp.ie?' ('+L[0].hp.ie+')':'')),$('td',{},...L.map(d=>$('span',{className:'lk',onclick(){jump(d.s.e)}},(d.s.lab||d.s.n)+' '))),$('td',{},f1(L.reduce((a,d)=>a+d.pages,0))),$('td',{},fmt(L.filter(d=>tcat(d.hp.tm)==='ليل').length)))))));
  const N={};D.forEach(d=>d.who.forEach(n=>{(N[n]=N[n]||[]).push(d)}));
  b.append(card($('b',{},'الشخصيات'),mu('عدد المشاهد = أيام التصوير التقريبية لكل ممثل.'),$('table',{className:'tbl'},$('tr',{},$('th',{},'الشخصية'),$('th',{},'مشاهد'),$('th',{},'الأماكن')),
-  ...Object.entries(N).sort((a,b)=>b[1].length-a[1].length).map(([n,L])=>$('tr',{},$('td',{},n),$('td',{},fmt(L.length)+' ('+L.map(d=>d.s.n).join('، ')+')'),$('td',{},[...new Set(L.map(d=>d.loc))].join('، ')))))));
+  ...Object.entries(N).sort((a,b)=>b[1].length-a[1].length).map(([n,L])=>$('tr',{},$('td',{},n),$('td',{},fmt(L.length)+' ('+L.map(d=>d.s.lab||d.s.n).join('، ')+')'),$('td',{},[...new Set(L.map(d=>d.loc))].join('، ')))))));
  b.append(card($('b',{},'كشف المشاهد (Breakdown)'),$('table',{className:'tbl'},$('tr',{},$('th',{},'#'),$('th',{},'المكان'),$('th',{},'د/خ'),$('th',{},'الوقت'),$('th',{},'الشخصيات')),
-  ...D.map(d=>$('tr',{},$('td',{className:'lk',onclick(){jump(d.s.e)}},d.s.n),$('td',{},d.loc),$('td',{},d.hp.ie||'—'),$('td',{},d.hp.tm||'—'),$('td',{},d.who.join('، ')+(d.ment.length?' (ذكر: '+d.ment.join('، ')+')':'')))))),
+  ...D.map(d=>$('tr',{},$('td',{className:'lk',onclick(){jump(d.s.e)}},d.s.lab||d.s.n),$('td',{},d.loc),$('td',{},d.hp.ie||'—'),$('td',{},d.hp.tm||'—'),$('td',{},d.who.join('، ')+(d.ment.length?' (ذكر: '+d.ment.join('، ')+')':'')))))),
   $('div',{className:'r'},shBtn(()=>projName()+' — تقرير الإنتاج',()=>repText(D))))}
 TOOLS.rep=['rep','تقارير الإنتاج',rRep];
 
@@ -1363,7 +1371,7 @@ function rLines(b){back(b);const p=P();p.lines=p.lines||[];const S=scenesOf(mode
   b.append(card($('b',{},'مسار «'+sel.n+'»: '+fmt(idxs.length)+' من '+fmt(S.length)+' مشهد'),$('div',{style:'display:flex;gap:2px;height:22px;margin:6px 0'},...has.map((v,i)=>$('i',{title:S[i].n+'. '+S[i].x,style:'flex:1;border-radius:2px;background:'+(v?sel.c:'var(--bd)'),onclick(){jump(S[i].e)}}))),
    gap>=4?$('div',{className:'warn'},'⚠️ يختفي هذا الخط '+fmt(gap)+' مشاهد متتالية بعد المشهد '+fmt(S[ga].n)+'.'):mu('توزيع الخط متوازن.')))}
  S.forEach(s=>{const o=plan.sc[s.id]=plan.sc[s.id]||{};o.pl=o.pl||[];if(sel&&!o.pl.includes(sel.id))return;
-  b.append(card($('div',{className:'lk',onclick(){jump(s.e)}},s.n+'. '+(s.x||'')),$('div',{className:'r',style:'flex-wrap:wrap'},...p.lines.map(l=>$('label',{className:'r',style:'border-inline-start:6px solid '+l.c+';padding-inline-start:4px'},$('input',{type:'checkbox',checked:o.pl.includes(l.id),onchange(e){o.pl=e.target.checked?[...o.pl,l.id]:o.pl.filter(x=>x!==l.id);savePlan();if(sel)renderTool()}}),$('span',{},l.n))))))})}
+  b.append(card($('div',{className:'lk',onclick(){jump(s.e)}},(s.lab||s.n)+'. '+(s.x||'')),$('div',{className:'r',style:'flex-wrap:wrap'},...p.lines.map(l=>$('label',{className:'r',style:'border-inline-start:6px solid '+l.c+';padding-inline-start:4px'},$('input',{type:'checkbox',checked:o.pl.includes(l.id),onchange(e){o.pl=e.target.checked?[...o.pl,l.id]:o.pl.filter(x=>x!==l.id);savePlan();if(sel)renderTool()}}),$('span',{},l.n))))))})}
 TOOLS.lines=['lines','الخطوط الدرامية',rLines];
 
 /* ---------- 8) قوالب مصرية ---------- */
@@ -1387,9 +1395,9 @@ function contIssues(){const S=scenesOf(model()),D=autoDays(S),out=[],ORD={'نه�
  return{S,D,out}}
 function rDays(b){back(b);if(spOnly(b))return;const{S,D,out}=contIssues();if(!S.length){b.append(mu('لا توجد مشاهد بعد.'));return}
  b.append(mu('لكل مشهد «يوم» في زمن الحكاية. يحسبه حكّاء تلقائيًا (يبدأ يوم جديد حين ينتقل الوقت من ليل إلى نهار)، ويمكنك تعديله بيدك.'));
- b.append($('div',{className:'hsec'},out.length?'⚠️ '+fmt(out.length)+' ملاحظة استمرارية':'✓ لا توجد أخطاء استمرارية ظاهرة'),...out.slice(0,60).map(([s,m])=>card(s?$('div',{className:'lk',onclick(){jump(s.e)}},s.n+'. '+s.x):'',$('div',{className:'warn'},m))));
+ b.append($('div',{className:'hsec'},out.length?'⚠️ '+fmt(out.length)+' ملاحظة استمرارية':'✓ لا توجد أخطاء استمرارية ظاهرة'),...out.slice(0,60).map(([s,m])=>card(s?$('div',{className:'lk',onclick(){jump(s.e)}},(s.lab||s.n)+'. '+s.x):'',$('div',{className:'warn'},m))));
  let lastD=0;S.forEach((s,i)=>{const o=plan.sc[s.id]=plan.sc[s.id]||{};if(D[i]!==lastD){b.append($('div',{className:'hsec'},'اليوم '+fmt(D[i])));lastD=D[i]}
-  b.append($('div',{className:'r',style:'align-items:center'},$('span',{className:'lk',style:'flex:1',onclick(){jump(s.e)}},s.n+'. '+s.x),$('input',{type:'number',min:1,style:'width:64px',title:'يوم القصة',value:o.day||'',placeholder:String(D[i]),onchange(e){o.day=e.target.value?+e.target.value:undefined;savePlan();renderTool()}})))})}
+  b.append($('div',{className:'r',style:'align-items:center'},$('span',{className:'lk',style:'flex:1',onclick(){jump(s.e)}},(s.lab||s.n)+'. '+s.x),$('input',{type:'number',min:1,style:'width:64px',title:'يوم القصة',value:o.day||'',placeholder:String(D[i]),onchange(e){o.day=e.target.value?+e.target.value:undefined;savePlan();renderTool()}})))})}
 TOOLS.days=['days','أيام القصة والاستمرارية',rDays];
 
 /* ---------- 10) الميزانية التقريبية ---------- */
@@ -1422,7 +1430,7 @@ function rVid(b){back(b);if(spOnly(b))return;const p=P(),o=p.vid=p.vid||{m:'omni
  const sel=o.sc&&S.find(s=>s.id===o.sc)?o.sc:S[0].id;
  S.forEach(s=>{all+=shotsOf(s).length});
  b.append(card($('b',{},'العمل كله: '+fmt(all)+' لقطة × '+fmt(o.tries)+' × '+fmt(price)+' = '+fmt(all*o.tries*price)+' ائتمان')));
- b.append($('select',{onchange(e){o.sc=e.target.value;savePlan();renderTool()}},...S.map(s=>$('option',{value:s.id,selected:s.id===sel},s.n+'. '+s.x.slice(0,40)))));
+ b.append($('select',{onchange(e){o.sc=e.target.value;savePlan();renderTool()}},...S.map(s=>$('option',{value:s.id,selected:s.id===sel},(s.lab||s.n)+'. '+s.x.slice(0,40)))));
  const s=S.find(x=>x.id===sel),SH=shotsOf(s);
  b.append(card($('b',{},'المشهد '+fmt(s.n)+': '+fmt(SH.length)+' لقطة × '+fmt(o.tries)+' × '+fmt(price)+' = '+fmt(SH.length*o.tries*price)+' ائتمان')));
  SH.forEach((x,i)=>{txt.push('لقطة '+(i+1)+' ('+x.k+'):\n'+x.p);b.append(card($('b',{},'لقطة '+fmt(i+1)+' — '+x.k),$('div',{className:'dline',dir:'ltr',style:'text-align:left;unicode-bidi:plaintext'},x.p),$('button',{async onclick(){note(await copyText(x.p)?'نُسخ البرومبت':'تعذّر النسخ')}},'نسخ')))});
@@ -1680,20 +1688,21 @@ const _sf=setFocus;setFocus=function(on){_sf(on);if(on){ftool.prepend(mic,nb,sce
 const _sm=setMode;setMode=function(k){const r=_sm(k);sceneBtn.hidden=MODE!=='sp';return r};
 const _cp=closePanel;closePanel=function(){SC.init=false;return _cp()};
 function recentLocs(){const S=scenesOf(model()),seen=[];for(let i=S.length-1;i>=0;i--){const hp=headParts(S[i].x);if(hp.loc&&hp.loc.length<=28&&!/[؟?!.…]/.test(hp.loc)&&(hp.ie||hp.tm)&&!seen.some(x=>x.loc===hp.loc))seen.push({loc:hp.loc,ie:hp.ie,tm:hp.tm})}return seen.slice(0,8)}
-function parseLocInput(x){let t=' '+norm(String(x||'')).replace(/^مشهد\s*[\d٠-٩]*\s*[-–—:.]?\s*/,'')+' ',ie='',tm='';
+function parseLocInput(x){let t=' '+norm(String(x||'')).replace(/^مشهد\s*[\d٠-٩]*[A-Za-z]*\s*[-–—:.]?\s*/,'')+' ',ie='',tm='',clk='';const ck=clockOf(t);if(ck){clk=ck.txt;t=t.replace(ck.raw,' ')}
  t=t.replace(/\s(داخلي|داخلى)(?=\s)/,()=>{ie='داخلي';return''}).replace(/\s(خارجي|خارجى)(?=\s)/,()=>{ie='خارجي';return''}).replace(/\s(نهار|ليل|غروب|شروق)(?=\s)/,(m,w)=>{tm=w;return''}).replace(/\s(صباح|ظهر|عصر)(?=\s)/,()=>{tm='نهار';return''}).replace(/\s(مساء|فجر)(?=\s)/,()=>{tm='ليل';return''});
- return{ie,tm,loc:t.replace(/\s*[-–—،,]\s*/g,' ').trim()}}
-function addScene(){const pr=parseLocInput(SC.loc),ie=pr.ie||SC.ie,tm=pr.tm||SC.tm,loc=pr.loc;
- if(!ie||!tm||!loc){const m=[];if(!ie)m.push('داخلي أو خارجي');if(!tm)m.push('الوقت (نهار/ليل…)');if(!loc)m.push('المكان');SC.err='ينقصك: '+m.join('، ');if(ie)SC.ie=ie;if(tm)SC.tm=tm;SC.loc=loc;fb(false);renderTool();return}SC.err='';
+ return{ie,tm,clk,loc:t.replace(/\s*[-–—،,]\s*/g,' ').trim()}}
+function addScene(){const pr=parseLocInput(SC.loc),ie=pr.ie||SC.ie,clk=pr.clk||SC.clk||'',tm=pr.tm||SC.tm||(clk?tmFromClock(+clk.slice(0,2)):''),loc=pr.loc;
+ if(!ie||!tm||!loc){const m=[];if(!ie)m.push('داخلي أو خارجي');if(!tm)m.push('الوقت (نهار/ليل…) أو الساعة');if(!loc)m.push('المكان');SC.err='ينقصك: '+m.join('، ');if(ie)SC.ie=ie;if(tm)SC.tm=tm;SC.loc=loc;fb(false);renderTool();return}SC.err='';
  const E=allEls(),ta=curLine()||E[E.length-1],hd=sceneHead(ta);let after=ta;if(hd){const blk=blockOf(hd);after=blk[blk.length-1]}else after=E[E.length-1];
- const n=E.slice(0,E.indexOf(hd||after)+1).filter(e=>e.p.t==='scene').length+1,txt='مشهد '+fmt(n)+' - '+ie+' - '+loc+' - '+tm;
+ const n=E.slice(0,E.indexOf(hd||after)+1).filter(e=>e.p.t==='scene').length+1,txt='مشهد '+fmt(n)+' - '+ie+' - '+loc+' - '+tm+(clk?' - '+toAr(clk):'');
  beginStruct();let sc;if(after.p.t==='action'&&!after.value.trim()&&after===E[E.length-1]){sc=after;sc.value=txt;sc.p.x=txt;retype(sc,'scene')}else{sc=mk({t:'scene',x:txt});after.after(sc)}fit(sc);
- const ac=mk({t:'action',x:''});sc.after(ac);fit(ac);SC.init=false;SC.loc='';SC.err='';closePanel();ac.focus();sync();save();fb();tipOnce('scn','تقدر تقول بالميكروفون: «مشهد جديد داخلي البيت ليل» بدل هذه الأزرار.')}
+ const ac=mk({t:'action',x:''});sc.after(ac);fit(ac);SC.init=false;SC.loc='';SC.clk='';SC.err='';closePanel();ac.focus();sync();save();fb();tipOnce('scn','تقدر تقول بالميكروفون: «مشهد جديد داخلي البيت ليل» بدل هذه الأزرار.')}
 function rNewScene(b){if(spOnly(b))return;const R=recentLocs();
- if(!SC.init){SC.init=true;const l=R[0];SC.ie=l?l.ie:'';SC.tm=l?l.tm:'';SC.loc=''}
+ if(!SC.init){SC.init=true;const l=R[0];SC.ie=l?l.ie:'';SC.tm=l?l.tm:'';SC.loc='';SC.clk=''}
  const bb=(lab,on,fn)=>$('button',{className:'bigb'+(on?' on':''),onclick(){fn();renderTool()}},lab);
  b.append($('div',{className:'hsec'},'أين؟'),$('div',{className:'r'},bb('🏠 داخلي',SC.ie==='داخلي',()=>SC.ie='داخلي'),bb('🌳 خارجي',SC.ie==='خارجي',()=>SC.ie='خارجي')),
   $('div',{className:'hsec'},'متى؟'),$('div',{className:'r',style:'flex-wrap:wrap'},...['نهار','ليل','غروب','شروق'].map(t=>bb((t==='ليل'?'🌙 ':t==='نهار'?'☀️ ':'🌅 ')+t,SC.tm===t,()=>SC.tm=t))),
+  $('div',{className:'hsec'},'الساعة بالتحديد (اختياري)'),$('div',{className:'r'},$('input',{type:'time',value:SC.clk||'',style:'font-size:17px;padding:10px;flex:1',onchange(e){SC.clk=e.target.value;if(SC.clk)SC.tm=tmFromClock(+SC.clk.slice(0,2));renderTool()}}),SC.clk?$('button',{onclick(){SC.clk='';renderTool()}},'مسح'):''),
   $('div',{className:'hsec'},'المكان'),
   R.length?$('div',{className:'r',style:'flex-wrap:wrap'},...R.map((x,i)=>$('button',{className:'bigb'+(SC.loc===x.loc?' on':''),style:'flex:none;font-size:15px;padding:10px 14px',onclick(){SC.loc=x.loc;SC.ie=SC.ie||x.ie;SC.tm=SC.tm||x.tm;renderTool()}},(i===0?'نفس المكان: ':'')+(x.loc.length>22?x.loc.slice(0,22)+'…':x.loc)))):'',
   $('input',{type:'text',placeholder:'أو اكتب مكانًا جديدًا (مثال: بيت يارا)',value:R.some(x=>x.loc===SC.loc)?'':SC.loc,style:'width:100%;margin-top:6px;font-size:17px;padding:12px',oninput(e){SC.loc=e.target.value;SC.err=''},onchange(e){const r=parseLocInput(e.target.value);if(r.ie)SC.ie=r.ie;if(r.tm)SC.tm=r.tm;SC.loc=r.loc;renderTool()}}),
@@ -1793,14 +1802,76 @@ try{HUB[2][1].push(['rev','ألوان التعديلات','تعليم ما تغ�
  const _opR=openProj;openProj=function(){const r=_opR.apply(this,arguments);try{revLoad()}catch(e){}return r};setTimeout(()=>{try{if(!document.body.classList.contains('home'))revLoad()}catch(e){}},600)}
 {const st=document.createElement('style');st.textContent='#doc textarea.rev{box-shadow:inset 5px 0 0 var(--rev,#2f6fde);background-image:linear-gradient(color-mix(in srgb,var(--rev,#2f6fde) 9%,transparent),color-mix(in srgb,var(--rev,#2f6fde) 9%,transparent))}#doc textarea.rev[data-note]{box-shadow:inset -4px 0 0 #e0962b,inset 5px 0 0 var(--rev,#2f6fde)}';document.head.append(st)}
 
+/* ===== قفل ترقيم المشاهد: الرقم يفضل ثابت لما التصوير يبدأ؛ المشهد الجديد ياخد ٥A، والمحذوف يتسجّل ===== */
+const NLH=/^(\s*مشهد\s*)([\d٠-٩]+)([A-Za-z]*)(?=\s|[-–—:.]|$)/;
+const nlSt=()=>{const p=P();return p&&p.nl&&p.nl.on&&MODE==='sp'?p.nl:null};
+const nlParse=x=>{const m=NLH.exec(String(x||''));return m?(+dig(m[2]))+m[3].toUpperCase():''};
+const nlAr=()=>{const L=P()&&P().nl;return !L||L.ar!==false};
+const nlShow=(l,ar)=>{const m=/^(\d+)([A-Z]*)$/.exec(l||'');if(ar===undefined)ar=nlAr();return m?(ar?toAr(m[1]):m[1])+m[2]:String(l||'')};
+function nlCmp(a,b){const A=/^(\d+)([A-Z]*)$/.exec(a),B=/^(\d+)([A-Z]*)$/.exec(b);if(!A||!B)return 0;return (+A[1])-(+B[1])||(A[2].length-B[2].length)||(A[2]<B[2]?-1:A[2]>B[2]?1:0)}
+function nlInc(ls){if(!ls)return'A';let c=ls.split(''),i=c.length-1;while(i>=0){if(c[i]==='Z'){c[i]='A';i--}else{c[i]=String.fromCharCode(c[i].charCodeAt(0)+1);return c.join('')}}return 'A'+c.join('')}
+function nlNext(prev,used){if(!prev){let n=1;if(!used.has('1'))return'1';return'0A'}
+ const m=/^(\d+)([A-Z]*)$/.exec(prev);if(!m)return String((+prev||0)+1);let l=m[2],g=0;do{l=nlInc(l);g++}while(used.has(m[1]+l)&&g<80);return m[1]+l}
+function nlSync(){const L=nlSt();if(!L)return false;
+ const els=[...root.children],hs=els.filter(e=>e.p.t==='scene');if(!hs.length)return false;
+ L.num=L.num||{};L.gone=L.gone||[];L.ord=L.ord||[];
+ const ids=hs.map(e=>e.p.id),has=new Set(ids);let ch=false;
+ const overlap=L.ord.some(i=>has.has(i));
+ if(L.ord.length&&!overlap){L.ord=ids.slice();for(const id of ids)if(!L.num[id]){}}
+ else{
+  L.gone=L.gone.filter(g=>{if(has.has(g.id)){L.num[g.id]=g.lab;ch=true;return false}return true});
+  L.ord.forEach((id,i)=>{if(!has.has(id)&&L.num[id]){let after='';for(let j=i-1;j>=0;j--){const q=L.ord[j];if(has.has(q)&&L.num[q]){after=L.num[q];break}}L.gone.push({id,lab:L.num[id],after});delete L.num[id];ch=true}})}
+ const used=new Set([...Object.values(L.num),...L.gone.map(g=>g.lab)]);let prev='';
+ hs.forEach(e=>{let l=L.num[e.p.id];if(!l){l=nlNext(prev,used);L.num[e.p.id]=l;used.add(l);ch=true}prev=l});
+ L.ord=ids.slice();
+ const act=document.activeElement;
+ hs.forEach(e=>{if(e===act)return;const m=NLH.exec(e.value||'');if(!m)return;const want=nlShow(L.num[e.p.id],L.ar!==false),cur=m[2]+m[3];if(cur===want)return;
+  const v=m[1].replace(/\s+$/,'')+' '+want+e.value.slice(m[0].length);e.value=v;e.p.x=v;fit(e);ch=true});
+ if(ch){savePlan();save()}return ch}
+function nlEnable(){const p=P(),hs=[...root.children].filter(e=>e.p.t==='scene');const L=p.nl={on:true,num:{},ord:[],gone:[],ar:hs.filter(e=>/[٠-٩]/.test((NLH.exec(e.value||'')||[])[2]||'')).length>=hs.filter(e=>/\d/.test((NLH.exec(e.value||'')||[])[2]||'')&&!/[٠-٩]/.test((NLH.exec(e.value||'')||[])[2]||'')).length},used=new Set();let prev='';
+ hs.forEach(e=>{let l=nlParse(e.value);if(!l||used.has(l))l=nlNext(prev,used);L.num[e.p.id]=l;used.add(l);prev=l});
+ L.ord=hs.map(e=>e.p.id);savePlan();nlSync();commit(true)}
+function nlRenumber(){const hs=[...root.children].filter(e=>e.p.t==='scene');beginStruct();let n=0,c=0;
+ hs.forEach(e=>{n++;const m=NLH.exec(e.value||'');if(!m)return;const v=m[1].replace(/\s+$/,'')+' '+toAr(n)+e.value.slice(m[0].length);if(v!==e.value){e.value=v;e.p.x=v;fit(e);c++}});
+ save();return c}
+/* أماكن المشاهد المحذوفة داخل التصدير: قبل أي عنصر (فهرس) تظهر علامة «محذوف» */
+function nlOmitAt(){const L=nlSt(),M=new Map();if(!L||!L.gone||!L.gone.length||(typeof TVF==='function'?TVF():TVF))return M;
+ const els=[...root.children];const idxOf=lab=>els.findIndex(e=>e.p.t==='scene'&&L.num[e.p.id]===lab);
+ for(const g of L.gone){let at;if(!g.after){const f=els.findIndex(e=>e.p.t==='scene');at=f<0?els.length:f}else{const a=idxOf(g.after);if(a<0)at=els.length;else{let j=a+1;while(j<els.length&&els[j].p.t!=='scene')j++;at=j}}
+  if(!M.has(at))M.set(at,[]);M.get(at).push(g)}
+ for(const v of M.values())v.sort((a,b)=>nlCmp(a.lab,b.lab));return M}
+const nlOmitTxt=g=>'مشهد '+nlShow(g.lab)+' — محذوف';
+function nlDocItems(){const M=nlOmitAt(),out=[];[...root.children].forEach((e,i)=>{for(const g of M.get(i)||[])out.push({t:'scene',x:nlOmitTxt(g),r:false});out.push({t:e.p.t,x:e.p.x,r:e.classList.contains('rev')})});for(const g of M.get(root.children.length)||[])out.push({t:'scene',x:nlOmitTxt(g),r:false});return out}
+function rLock(b){back(b);if(MODE!=='sp'){b.append(mu('قفل الترقيم للسيناريو (فيلم أو مسلسل) فقط.'));return}
+ const p=P(),L=p.nl&&p.nl.on?p.nl:null;
+ b.append(mu('لما التصوير يبدأ، كل فريق بيشتغل بأرقام المشاهد. لو الأرقام اتحركت كل الجداول بتبوظ. بعد القفل: المشهد الجديد بعد ٥ ياخد «٥A»، والمشهد اللي تحذفه يفضل رقمه ظاهر في PDF وWord بعلامة «محذوف».'));
+ if(!L){const n=[...root.children].filter(e=>e.p.t==='scene').length;
+  b.append(card($('b',{},'الترقيم مفتوح'),mu(n?'عندك '+fmt(n)+' مشهد. القفل بيثبّت أرقامهم الحالية زي ما هي مكتوبة في العناوين.':'اكتب مشاهد الأول.')));
+  if(n)b.append($('button',{className:'pri',onclick(){nlEnable();note('🔒 الترقيم اتقفل. أي مشهد جديد هياخد رقم زي ٥A.');renderTool()}},'🔒 اقفل الترقيم الآن'));
+  b.append($('div',{className:'hsec'},'قبل التصوير'),mu('لسه بتكتب؟ لو الأرقام اتلخبطت بعد نقل مشاهد أو إضافة، «إعادة الترقيم» بيرقمها ١، ٢، ٣… من الأول. اعملها قبل ما تقفل.'),
+   $('button',{onclick(){const c=nlRenumber();note(c?'اتغيّر رقم '+fmt(c)+' مشهد.':'الأرقام متظبطة أصلًا.');renderTool()}},'🔢 إعادة ترقيم المشاهد ١، ٢، ٣…'));return}
+ const hs=[...root.children].filter(e=>e.p.t==='scene');
+ b.append(card($('b',{},'🔒 الترقيم مقفول — '+fmt(hs.length)+' مشهد'),mu('الأرقام اللي في العناوين مثبّتة. المشهد الجديد بيتسمّى تلقائيًا بعد اللي قبله.')));
+ b.append($('div',{className:'hsec'},'المشاهد وأرقامها'));
+ const box=$('div',{style:'max-height:260px;overflow:auto'});hs.forEach(e=>box.append($('div',{className:'r',style:'margin:2px 0'},$('b',{style:'min-width:46px;direction:ltr;text-align:center'},nlShow(L.num[e.p.id])),$('span',{className:'mu',style:'margin:0;flex:1;cursor:pointer',onclick(){try{e.focus();e.scrollIntoView({block:'center'})}catch(x){}}},(e.value||'(بدون عنوان)').slice(0,60)))));b.append(box);
+ if((L.gone||[]).length){b.append($('div',{className:'hsec'},'مشاهد محذوفة (بتظهر في التصدير)'));
+  [...L.gone].sort((a,b2)=>nlCmp(a.lab,b2.lab)).forEach(g=>b.append($('div',{className:'r'},$('b',{style:'flex:1'},nlOmitTxt(g)+(g.after?' (بعد '+nlShow(g.after)+')':'')),$('button',{title:'شيل العلامة من التصدير',onclick(){L.gone=L.gone.filter(x=>x!==g);savePlan();renderTool()}},'شيل'))))}
+ b.append($('button',{style:'margin-top:12px',onclick(){if(confirm('تفك القفل؟ أرقام العناوين هتفضل زي ما هي، لكن المشاهد الجديدة مش هتتسمّى تلقائيًا.')){p.nl.on=false;savePlan();renderTool()}}},'🔓 فك القفل'))}
+TOOLS.nlock=['nlock','قفل الترقيم',rLock];window.nlOmitAt=nlOmitAt;window.nlOmitTxt=nlOmitTxt;window.nlDocItems=nlDocItems;window.__nl={on:()=>nlSt()!==null,st:()=>P().nl,sync:nlSync,show:nlShow,next:nlNext};
+try{IC.nlock=IC.rev||IC.sides}catch(e){}
+try{HUB[2][1].push(['nlock','قفل الترقيم','تثبيت أرقام المشاهد لما التصوير يبدأ']);HINFO.nlock=['قفل الترقيم','تثبيت أرقام المشاهد لما التصوير يبدأ'];(HT.find(x=>x[0]==='send')||HT[HT.length-1])[2].push('nlock')}catch(e){}
+{const _pgN=paginate;paginate=function(){const r=_pgN.apply(this,arguments);try{nlSync()}catch(e){}return r}}
+root.addEventListener('focusout',()=>setTimeout(()=>{try{nlSync()}catch(e){}},60));
+
 try{if(!document.body.classList.contains('home'))buildRail()}catch(e){}
 })();
 
 /* ---------- تنسيق عنوان المشهد: «مشهد ١ - داخلي - الصيدلية - نهار» ---------- */
 function fmtScene(x){const K='داخلي خارجي|داخلى خارجى|داخلي|داخلى|خارجي|خارجى|نهار|نهارا|ليل|ليلا|صباح|صباحا|مساء|مساءا|فجر|غروب|شروق|ظهر|عصر';
  let v=String(x||'').replace(/\s*[-–—]\s*/g,' - ').replace(/\s+/g,' ').trim();if(!v)return v;
- v=v.replace(/^(مشهد\s*[\d٠-٩]+)\s*(?!-)/,'$1 - ');
+ v=v.replace(/^(مشهد\s*[\d٠-٩]+[A-Za-z]*)\s*(?!-)/,'$1 - ');
  v=v.replace(new RegExp('(^|\\s)('+K+')(?=\\s|$)','g'),' - $2 - ');
+ v=v.replace(/([^\s-])\s+((?:الساعة\s*)?[\d٠-٩]{1,2}\s*[:٫]\s*[\d٠-٩]{2})(?=\s|$)/,'$1 - $2');
  return v.replace(/(\s*-\s*)+/g,' - ').replace(/^\s*-\s*|\s*-\s*$/g,'').trim()}
 {const _splitF=split;split=function(ta){if(MODE==='sp'&&ta&&ta.p&&ta.p.t==='scene'){const L=ta.value.split(/\r\n|\r|\n/);const f=fmtScene(L[0]);if(f!==L[0]){L[0]=f;ta.value=L.join('\n')}}return _splitF(ta)}}
 root.addEventListener('focusout',e=>{const ta=e.target;if(MODE!=='sp'||!ta||!ta.p||ta.p.t!=='scene')return;const f=fmtScene(ta.value);if(f!==ta.value){ta.value=f;ta.p.x=f;fit(ta);save()}});
@@ -1830,7 +1901,7 @@ function jLine(c,l,re,y,w){const ws=l.split(' ').filter(Boolean),wd=ws.map(x=>c.
 root.addEventListener('input',e=>{const ta=e.target;if(!ta||!ta.p||!smart||MODE!=='sp'||ta.dataset.manual||ta.value.length>10||/\n/.test(ta.value))return;
  if((ta.p.t==='action'&&/^\s*مشهد[\s\d٠-٩]/.test(ta.value))||(ta.p.t==='dialogue'&&/^\s*مشهد\s*[\d٠-٩]/.test(ta.value))){beginStruct();retype(ta,'scene');save();sync()}});
 function revShd(){return '<w:shd w:val="clear" w:color="auto" w:fill="'+(window.REVFILL||'DCE9FF')+'"/>'}
-const BUILD='12.4';
+const BUILD='12.5';
 (function(){if(!/^https?:$/.test(location.protocol))return;let lastC=0,shown=false;
  function bar(){if(shown)return;shown=true;const d=document.createElement('div');d.id='updbar';d.style.cssText='position:fixed;left:10px;right:10px;bottom:76px;z-index:9999;background:var(--ac,#2a7de1);color:#fff;border-radius:14px;padding:10px 12px;display:flex;gap:8px;align-items:center;box-shadow:0 6px 24px rgba(0,0,0,.3);font-size:15px';
   const s=document.createElement('span');s.style.flex='1';s.textContent='✨ نسخة جديدة من حكّاء جاهزة';
@@ -2085,7 +2156,7 @@ function rShort(b){const p=plan,A=[...root.children],w=A.reduce((a,e)=>a+wc(e.va
  const fs=$('select',{onchange(e){p.form=e.target.value;savePlan();renderTool()}},...[['novel','📖 رواية'],['short','🪶 قصة قصيرة'],['coll','📚 مجموعة قصصية']].map(([v,l])=>$('option',{value:v,selected:formOf()===v},l)));
  b.append(card($('b',{},'شكل العمل'),fs,mu('عدد الكلمات: '+fmt(w)+' — ده يعتبر: '+R[2])));
  if(formOf()!=='novel'){const tg=+(p.ssT||(formOf()==='coll'?20000:3000));b.append(card($('b',{},'🎯 الهدف'),$('div',{className:'r'},$('input',{type:'number',min:100,step:100,value:tg,onchange(e){p.ssT=+e.target.value||3000;savePlan();renderTool()}}),$('span',{className:'mu'},'كلمة')),bar('اتكتب',Math.min(w,tg),tg)));
-  if(formOf()==='coll'){const S=scenesOf(model());b.append(card($('b',{},'📚 قصص المجموعة ('+fmt(S.length)+')'),S.length?$('div',{},...S.map(s=>$('div',{style:'border-top:1px solid var(--bd);padding:6px 0;display:flex;justify-content:space-between'},$('span',{className:'lk',onclick(){jump(s.e)}},s.n+'. '+(s.x||'(بدون عنوان)')),$('span',{className:'mu',style:'margin:0'},fmt(s.w)+' كلمة')))):mu('كل قصة تبدأ بسطر من نوع «فصل» بعنوانها.')))}}
+  if(formOf()==='coll'){const S=scenesOf(model());b.append(card($('b',{},'📚 قصص المجموعة ('+fmt(S.length)+')'),S.length?$('div',{},...S.map(s=>$('div',{style:'border-top:1px solid var(--bd);padding:6px 0;display:flex;justify-content:space-between'},$('span',{className:'lk',onclick(){jump(s.e)}},(s.lab||s.n)+'. '+(s.x||'(بدون عنوان)')),$('span',{className:'mu',style:'margin:0'},fmt(s.w)+' كلمة')))):mu('كل قصة تبدأ بسطر من نوع «فصل» بعنوانها.')))}}
  const ck=p.ssC=p.ssC||{};b.append(card($('b',{},'✅ قائمة القصة القصيرة الناجحة'),...SSCHK.map((t,i)=>$('label',{className:'r',style:'margin:2px 0'},$('input',{type:'checkbox',checked:!!ck[i],onchange(e){ck[i]=e.target.checked;savePlan()}}),$('span',{},t)))));
  b.append(card($('b',{},'🧱 قوالب بناء جاهزة'),mu('بيضيف القالب في آخر النص: عنوان + فقرات إرشادية تكتب مكانها.'),...SSTPL.map(([n,L])=>$('button',{style:'display:block;width:100%;text-align:start;margin:4px 0',onclick(){flush();commit(true);const nw=[mk({t:'chapter',x:'عنوان القصة — '+n})].concat(L.map(x=>mk({t:'para',x:'['+x+']'})));root.append(...nw);nw.forEach(fit);flush();commit(true);paginate();jump(nw[0]);note('اتضاف القالب. اكتب مكان كل سطر بين []')}},'➕ '+n))));
  b.append($('b',{},'🤖 الفريق للقصة القصيرة'),$('div',{className:'hub'},...SACTS.map(a=>$('button',{onclick(){run(a,AI().q||'')}},$('b',{},a.ic+' '+a.n),$('small',{},a.edit==='append'?'يضيف للنص':a.edit?'يعدّل الجزء الحالي':'اقتراحات')))))}
@@ -2165,10 +2236,10 @@ function schedule(D,ppd){const G=[],key=d=>d.loc+'|'+d.tm;const idx={};D.forEach
  G.forEach(g=>g.forEach(d=>{if(!cur||(cur.p>0&&cur.p+d.pages>ppd+.25)){cur={sc:[],p:0};days.push(cur)}cur.sc.push(d);cur.p+=d.pages}));return days}
 function union(L,f){const s=new Set();L.forEach(d=>f(d).forEach(x=>s.add(x)));return[...s]}
 function dayText(days){const L=['جدول التصوير المقترح — «'+projName()+'»',''];days.forEach((dy,j)=>{L.push('يوم التصوير '+(j+1)+' — ≈ '+dy.p.toFixed(1)+' صفحة');
- dy.sc.forEach(d=>L.push('  مشهد '+(d.i+1)+': '+d.loc+' — '+(d.hp.ie||'')+' '+d.tm+' — '+d.pages.toFixed(1)+' ص'));L.push('  الممثلون: '+(union(dy.sc,d=>d.cast).join('، ')||'—'));
+ dy.sc.forEach(d=>L.push('  مشهد '+(d.s.lab||d.i+1)+': '+d.loc+' — '+(d.hp.ie||'')+' '+d.tm+' — '+d.pages.toFixed(1)+' ص'));L.push('  الممثلون: '+(union(dy.sc,d=>d.cast).join('، ')||'—'));
  BK.forEach(([k,l])=>{const u=union(dy.sc,d=>items(d.bk[k]));if(u.length)L.push('  '+l.replace(/^\S+\s/,'')+': '+u.join('، '))});L.push('')});return L.join('\n')}
-function bkCSV(D,days){const q=v=>'"'+String(v).replace(/"/g,'""')+'"',rows=[['يوم التصوير','#','المكان','داخلي/خارجي','الوقت','الصفحات','الممثلون',...BK.map(x=>x[1].replace(/^\S+\s/,''))]];
- days.forEach((dy,j)=>dy.sc.forEach(d=>rows.push([j+1,d.i+1,d.loc,d.hp.ie||'',d.tm,d.pages.toFixed(1),d.cast.join('، '),...BK.map(([k])=>items(d.bk[k]).join('، '))])));return '﻿'+rows.map(r=>r.map(q).join(',')).join('\r\n')}
+function bkCSV(D,days){const q=v=>'"'+String(v).replace(/"/g,'""')+'"',rows=[['يوم التصوير','#','المكان','داخلي/خارجي','الوقت','الساعة','الصفحات','الممثلون',...BK.map(x=>x[1].replace(/^\S+\s/,''))]];
+ days.forEach((dy,j)=>dy.sc.forEach(d=>rows.push([j+1,d.s.lab||d.i+1,d.loc,d.hp.ie||'',d.tm,d.hp.clk||'',d.pages.toFixed(1),d.cast.join('، '),...BK.map(([k])=>items(d.bk[k]).join('، '))])));return '﻿'+rows.map(r=>r.map(q).join(',')).join('\r\n')}
 function bkPrompt(D){return 'أنت مساعد مخرج ومسؤول تفريغ سيناريو (Script Breakdown) محترف. فرّغ كل مشهد من السيناريو التالي إلى عناصر الإنتاج.\n'+
  'السيناريو (كل سطر يبدأ بنوعه):\n"""\n'+[...root.children].map(e=>'['+ALLT[e.p.t]+'] '+e.value).join('\n')+'\n"""\n'+
  'أرجع JSON فقط بين ===بداية=== و===نهاية=== بالشكل: [{"n":رقم المشهد,"xtr":"","props":"","cost":"","mk":"","veh":"","sfx":"","set":"","snd":""}] — كل قيمة عناصر مفصولة بفاصلة عربية «،»، مختصرة وعملية (مثال props: "كيس بلاستيك، موبايل قديم"). xtr=كومبارس (عددهم ووصفهم)، cost=ملابس مميزة، mk=مكياج ومؤثرات، veh=مركبات وحيوانات، sfx=مؤثرات خاصة، set=ديكور مطلوب، snd=صوت أو موسيقى داخل المشهد. لا تخترع عناصر غير مفهومة من النص؛ استنتج المنطقي فقط. عدد المشاهد '+D.length+'.'}
@@ -2180,15 +2251,15 @@ function rBreak(b){backHub(b);if(spOnly(b))return;const D=bkData();if(!D.length)
  const tab=(v,l)=>$('button',{className:'bigb'+(BKV===v?' on':''),style:'padding:9px 4px',onclick(){BKV=v;renderTool()}},l);b.append($('div',{className:'r'},tab('sc','🎬 تفريغ المشاهد'),tab('days','📅 جدول التصوير'),tab('el','🧾 كل العناصر')));
  const ag=$('div',{});b.append(card($('b',{},'🤖 الفريق يفرّغ السيناريو كله'),mu('بيقرا كل المشاهد ويملا العناصر (بيضيف بس، مش بيمسح اللي كتبته).'),$('button',{onclick(){agentBox(ag,bkPrompt(D),t=>{const n=applyBk(D,t);ag.textContent='';note('✓ الفريق ملا '+fmt(n)+' خانة');renderTool()})}},'🤖 فرّغ كل المشاهد'),ag));
  if(BKV==='sc'){D.forEach(d=>{const filled=BK.filter(([k])=>items(d.bk[k]).length).length;
-  const det=$('details',{className:'card'},$('summary',{style:'cursor:pointer'},$('b',{},(d.i+1)+'. '+d.loc),$('span',{className:'mu'},' — '+(d.hp.ie||'')+' '+d.tm+' — '+fmt(+d.pages.toFixed(1))+' ص'+(filled?' — ✓ '+fmt(filled)+' عنصر':''))),
+  const det=$('details',{className:'card'},$('summary',{style:'cursor:pointer'},$('b',{},(d.s.lab||d.i+1)+'. '+d.loc),$('span',{className:'mu'},' — '+(d.hp.ie||'')+' '+d.tm+' — '+fmt(+d.pages.toFixed(1))+' ص'+(filled?' — ✓ '+fmt(filled)+' عنصر':''))),
    $('div',{className:'mu'},'👥 الممثلون: '+(d.cast.join('، ')||'—')),$('span',{className:'lk',onclick(){jump(d.s.e)}},'روح للمشهد'),
    ...BK.map(([k,l])=>$('label',{className:'f'},$('b',{},l),$('input',{type:'text',value:d.bk[k]||'',placeholder:'افصل بفاصلة',oninput(e){d.bk[k]=e.target.value;savePlan()}}))));b.append(det)})}
  else if(BKV==='days'){const pp=(plan.pro=plan.pro||{}),ppd=+(pp.ppd||((pp.bud||{}).ppd)||4),days=schedule(D,ppd);
   b.append(card($('div',{className:'r'},$('span',{},'صفحات في اليوم:'),$('input',{type:'number',min:.5,step:.5,value:ppd,onchange(e){pp.ppd=+e.target.value||4;savePlan();renderTool()}}),$('b',{},'= '+fmt(days.length)+' يوم تصوير')),mu('المشاهد في نفس المكان والوقت بتتصور مع بعض، والنهار قبل الليل. ده اقتراح مبدئي لمدير الإنتاج.')));
-  days.forEach((dy,j)=>{const c=card($('b',{},'📅 يوم '+fmt(j+1)+' — ≈ '+fmt(+dy.p.toFixed(1))+' صفحة'));dy.sc.forEach(d=>c.append($('div',{style:'font-size:14px'},$('span',{className:'lk',onclick(){jump(d.s.e)}},'مشهد '+fmt(d.i+1)),' — '+d.loc+' — '+(d.hp.ie||'')+' '+d.tm)));
+  days.forEach((dy,j)=>{const c=card($('b',{},'📅 يوم '+fmt(j+1)+' — ≈ '+fmt(+dy.p.toFixed(1))+' صفحة'));dy.sc.forEach(d=>c.append($('div',{style:'font-size:14px'},$('span',{className:'lk',onclick(){jump(d.s.e)}},'مشهد '+fmt(d.s.lab||d.i+1)),' — '+d.loc+' — '+(d.hp.ie||'')+' '+d.tm)));
    c.append($('div',{className:'mu'},'👥 '+(union(dy.sc,d=>d.cast).join('، ')||'—')));BK.forEach(([k,l])=>{const u=union(dy.sc,d=>items(d.bk[k]));if(u.length)c.append($('div',{className:'mu'},l+': '+u.join('، ')))});b.append(c)});
   b.append($('div',{className:'r'},$('button',{onclick(){copyText(dayText(days)).then(ok=>note(ok?'📋 الجدول اتنسخ':'تعذّر'))}},'📋 نسخ الجدول'),$('button',{onclick(){saveFile(safeN(projName())+' - جدول التصوير.csv',new Blob([bkCSV(D,days)],{type:'text/csv;charset=utf-8'}))}},'📥 Excel (CSV)')))}
- else{const E={};D.forEach(d=>BK.forEach(([k,l])=>{if(k==='note')return;items(d.bk[k]).forEach(x=>{const key=l+'|'+x;(E[key]=E[key]||{l,x,s:[]}).s.push(d.i+1)})}));const L=Object.values(E).sort((a,c)=>a.l.localeCompare(c.l)||c.s.length-a.s.length);
+ else{const E={};D.forEach(d=>BK.forEach(([k,l])=>{if(k==='note')return;items(d.bk[k]).forEach(x=>{const key=l+'|'+x;(E[key]=E[key]||{l,x,s:[]}).s.push(d.s.lab||d.i+1)})}));const L=Object.values(E).sort((a,c)=>a.l.localeCompare(c.l)||c.s.length-a.s.length);
   if(!L.length)b.append(mu('لسه مفيش عناصر. املا التفريغ أو خلي الفريق يفرّغ.'));let last='';L.forEach(e=>{if(e.l!==last){last=e.l;b.append($('b',{style:'display:block;margin-top:10px'},e.l))}b.append($('div',{style:'font-size:14px;border-top:1px solid var(--bd);padding:4px 0'},e.x+' — مشاهد: '+e.s.map(fmt).join('، ')))})}}
 IC.brk='<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 4v16"/>';
 TOOLS.brk=['brk','تفريغ المشاهد وجدول التصوير',rBreak];
@@ -2424,7 +2495,7 @@ function sendToStudio(els,label){flush();const txt=scriptText(els);if(!txt.trim(
 function rStudio(b){if(MODE!=='sp'){b.append(mu('الإرسال للاستوديو للسيناريو. في الرواية: حوّل الفصل لسيناريو الأول بـ «فريق الكتابة» (اطلب: حوّل الفصل ده لسيناريو).'));return}
  const S=scenesOf(model());b.append(mu('بيبعت السيناريو لـ «استوديو الإخراج الذكي» ← استوديو الأفلام، في خانة السيناريو، وبعدها تكمّل هناك: التقسيم للقطات والبرومبتات والمونتاج. العمل اللي مفتوح في الاستوديو بيتحفظ في سجل النسخ قبلها.'));
  b.append(card($('b',{},'📚 السيناريو كله'),mu(fmt(model().pages)+' صفحة، '+fmt(S.length)+' مشهد ← مدة تقريبية '+fmt(Math.max(1,model().pages))+' دقيقة'),$('button',{style:'width:100%;background:var(--ac);color:#fff;border:0;min-height:44px',onclick(){sendToStudio([...root.children])}},'🎬 ابعت السيناريو كله')));
- if(S.length>1){const sel=$('select',{},...S.map((s,i)=>$('option',{value:i},s.n+'. '+(s.x||'').slice(0,40))));const sel2=$('select',{},...S.map((s,i)=>$('option',{value:i,selected:i===0},s.n+'. '+(s.x||'').slice(0,40))));
+ if(S.length>1){const sel=$('select',{},...S.map((s,i)=>$('option',{value:i},(s.lab||s.n)+'. '+(s.x||'').slice(0,40))));const sel2=$('select',{},...S.map((s,i)=>$('option',{value:i,selected:i===0},(s.lab||s.n)+'. '+(s.x||'').slice(0,40))));
   b.append(card($('b',{},'🎞️ مشاهد معينة'),mu('للفيديوهات القصيرة: ابعت مشهد واحد أو من مشهد لمشهد.'),$('div',{className:'r'},$('span',{className:'mu'},'من'),sel),$('div',{className:'r'},$('span',{className:'mu'},'لحد'),sel2),
    $('button',{style:'width:100%',onclick(){const a=+sel.value,z=Math.max(a,+sel2.value),A=[...root.children],i0=A.indexOf(S[a].e),i1=z+1<S.length?A.indexOf(S[z+1].e):A.length;sendToStudio(A.slice(i0,i1),a===z?'مشهد '+(a+1):'مشاهد '+(a+1)+'–'+(z+1))}},'🎬 ابعت المشاهد دي')))}
  b.append(mu('لو الاستوديو مش متثبت على الجهاز ده هيفتح في المتصفح، وده عادي.'))}
