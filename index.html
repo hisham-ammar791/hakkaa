@@ -74,7 +74,7 @@ textarea:focus{background:color-mix(in srgb,var(--ac) 6%,transparent)}#doc texta
 .scene{font-weight:700;margin-top:18px}.character{text-align:right;font-weight:700;margin-top:12px}.dialogue{text-align:right}
 .parenthetical{text-align:right;color:var(--mu);font-style:italic}.action{text-align:right}.transition{text-align:left;font-weight:700}
 .part{text-align:center;font-weight:800;font-size:31px;margin:56px 0 28px;color:var(--ac)}
-.chapter{text-align:center;font-weight:700;font-size:25px;margin:24px 0 12px}.sub{font-weight:700;font-size:21px;margin:16px 0 4px}
+.chapter{text-align:center;font-weight:700;font-size:25px;margin:24px 0 12px}body.ss .chapter{font-size:19px;margin:16px 0 6px;color:var(--mu)}.sub{font-weight:700;font-size:21px;margin:16px 0 4px}
 #pbody .grp{margin:18px 0 4px;font-weight:800;color:var(--ac);font-size:15px}.para{text-align:justify;text-indent:1.6em}
 .sep{text-align:center;letter-spacing:.5em;color:var(--mu)}.quote{width:86%;margin-inline:auto;font-style:italic;border-inline-start:2px solid var(--bd);border-radius:0}
 #pgl{position:absolute;inset:0;pointer-events:none}
@@ -1012,7 +1012,7 @@ function applyTheme(t){const r=document.documentElement;if(t==='auto')r.removeAt
 function cycleTheme(){const i=THEMES.findIndex(x=>x[0]===themeNow()),n=THEMES[(i+1)%THEMES.length][0];try{localStorage.setItem('hasp:theme',n)}catch(e){}applyTheme(n)}
 thb=btn(themeLabel(),()=>cycleTheme());document.getElementById('htheme').onclick=cycleTheme;applyTheme(themeNow());
 addEventListener('keydown',e=>{if(e.key==='Escape'&&!guide.hidden)closeGuide()});
-addEventListener('popstate',()=>{if(!guide.hidden){guide.hidden=true;return}if(!document.body.classList.contains('home'))goHome(true)});
+addEventListener('popstate',()=>{if(!guide.hidden){guide.hidden=true;return}if(window.__navPop&&window.__navPop())return;if(!document.body.classList.contains('home'))goHome(true)});
 document.getElementById('back').onclick=()=>goHome();document.getElementById('more').onclick=()=>{smenu.hidden=true;menu.hidden=!menu.hidden};
 document.getElementById('ttlw').onclick=togglePj;document.getElementById('hdrive').onclick=()=>openTool('drive');
 document.addEventListener('click',e=>{if(!menu.hidden&&!e.target.closest('#menu,#more'))menu.hidden=true;if(!smenu.hidden&&!e.target.closest('#smenu,#share'))smenu.hidden=true});
@@ -2151,33 +2151,72 @@ const SSTPL=[['التنوير (جويس وتشيخوف)',['لحظة عادية �
  ['الرعب/الغموض القصير',['تفصيلة غريبة صغيرة في عالم طبيعي.','البطل يفسرها تفسيرًا منطقيًا.','التفاصيل تتراكم وتكذّب التفسير.','الكشف الأخير في آخر سطر.']]];
 const SSCHK=['لحظة/حدث واحد مركزي','أثر واحد في نفس القارئ (إدجار آلان بو)','شخصيات قليلة (١–٣)','بداية من قلب الحدث بلا مقدمات','كل جملة تخدم النهاية','تفاصيل حسية دالة بدل الشرح','نهاية واضحة النوع: تنوير/مفارقة/مفتوحة','العنوان جزء من المعنى'];
 const SSRANGE=[[0,1000,'قصة قصيرة جدًا (ومضة)'],[1000,7500,'قصة قصيرة'],[7500,17500,'قصة طويلة'],[17500,40000,'نوفيلا'],[40000,1e9,'رواية']];
-function rShort(b){const p=plan,A=[...root.children],w=A.reduce((a,e)=>a+wc(e.value),0),R=SSRANGE.find(r=>w>=r[0]&&w<r[1]);
- b.append(mu('القصة القصيرة جوه قسم الرواية: نفس المحرر والتصدير، بس بأدوات وقوالب مخصوصة ليها. ممكن تعمل قصة واحدة أو مجموعة قصصية (كل قصة = فصل).'));
- const fs=$('select',{onchange(e){p.form=e.target.value;savePlan();renderTool()}},...[['novel','📖 رواية'],['short','🪶 قصة قصيرة'],['coll','📚 مجموعة قصصية']].map(([v,l])=>$('option',{value:v,selected:formOf()===v},l)));
+function rShort(b){const p=plan,A=[...root.children],w=A.reduce((a,e)=>a+wc(e.value),0),R=SSRANGE.find(r=>w>=r[0]&&w<r[1]),F=formOf();
+ b.append(mu(F==='coll'?'ده ملف «مجموعة قصصية» قديم (كل القصص في ملف واحد). دلوقتي المجموعة مش ملف: كل قصة ملف مستقل، والمجموعة اسم بيجمعهم. افصلها من الزرار تحت.':'القصة القصيرة لحظة واحدة مركّزة، فتقسيمها مختلف عن الرواية: مفيش أبواب ولا فصول، فيه «مقاطع» قصيرة بينها فاصل عند قفزة زمن أو مكان. والمجموعة القصصية مش ملف لوحدها: هي قصص قصيرة منفصلة بتجمعها باسم واحد.'));
+ const opts=[['novel','📖 رواية'],['short','🪶 قصة قصيرة']];if(F==='coll')opts.push(['coll','📚 مجموعة قديمة (ملف واحد)']);
+ const fs=$('select',{onchange(e){p.form=e.target.value;savePlan();writePlan();renderTool()}},...opts.map(([v,l])=>$('option',{value:v,selected:F===v},l)));
  b.append(card($('b',{},'شكل العمل'),fs,mu('عدد الكلمات: '+fmt(w)+' — ده يعتبر: '+R[2])));
- if(formOf()!=='novel'){const tg=+(p.ssT||(formOf()==='coll'?20000:3000));b.append(card($('b',{},'🎯 الهدف'),$('div',{className:'r'},$('input',{type:'number',min:100,step:100,value:tg,onchange(e){p.ssT=+e.target.value||3000;savePlan();renderTool()}}),$('span',{className:'mu'},'كلمة')),bar('اتكتب',Math.min(w,tg),tg)));
-  if(formOf()==='coll'){const S=scenesOf(model());b.append(card($('b',{},'📚 قصص المجموعة ('+fmt(S.length)+')'),S.length?$('div',{},...S.map(s=>$('div',{style:'border-top:1px solid var(--bd);padding:6px 0;display:flex;justify-content:space-between'},$('span',{className:'lk',onclick(){jump(s.e)}},(s.lab||s.n)+'. '+(s.x||'(بدون عنوان)')),$('span',{className:'mu',style:'margin:0'},fmt(s.w)+' كلمة')))):mu('كل قصة تبدأ بسطر من نوع «فصل» بعنوانها.')))}}
- const ck=p.ssC=p.ssC||{};b.append(card($('b',{},'✅ قائمة القصة القصيرة الناجحة'),...SSCHK.map((t,i)=>$('label',{className:'r',style:'margin:2px 0'},$('input',{type:'checkbox',checked:!!ck[i],onchange(e){ck[i]=e.target.checked;savePlan()}}),$('span',{},t)))));
- b.append(card($('b',{},'🧱 قوالب بناء جاهزة'),mu('بيضيف القالب في آخر النص: عنوان + فقرات إرشادية تكتب مكانها.'),...SSTPL.map(([n,L])=>$('button',{style:'display:block;width:100%;text-align:start;margin:4px 0',onclick(){flush();commit(true);const nw=[mk({t:'chapter',x:'عنوان القصة — '+n})].concat(L.map(x=>mk({t:'para',x:'['+x+']'})));root.append(...nw);nw.forEach(fit);flush();commit(true);paginate();jump(nw[0]);note('اتضاف القالب. اكتب مكان كل سطر بين []')}},'➕ '+n))));
+ if(F==='short'){
+  b.append(card($('b',{},'🧭 تقسيم القصة القصيرة'),...[['١. الافتتاح','ادخل من قلب اللحظة، من غير مقدمات.'],['٢. التصعيد','تفصيلة أو اتنين يزودوا التوتر، وكل جملة تخدم النهاية.'],['٣. لحظة التنوير','الكشف أو المفارقة اللي القصة اتكتبت عشانها.'],['٤. الخاتمة','سطر أو فقرة تسيب الأثر.']].map(([t,d])=>$('div',{style:'margin:3px 0'},$('b',{},t+' '),$('span',{className:'mu'},d))),mu('في المحرر: «مقطع» لعنوان أو رقم المقطع (١، ٢…)، و«فاصل» ✱ ✱ ✱ لقفزة الزمن أو المكان. اسم القصة نفسه هو اسم الملف.')));
+  const names=collNames(),dl=$('datalist',{id:'hkcolls'},...names.map(n=>$('option',{value:n})));
+  b.append(card($('b',{},'📚 ضمن مجموعة قصصية'),mu('اكتب اسم المجموعة (أو اختار اسم موجود). كل القصص اللي ليها نفس الاسم بتظهر مع بعض في الصفحة الرئيسية، وتقدر تطلّعها كتاب EPUB واحد.'),dl,
+   (()=>{const i=$('input',{type:'text',placeholder:'مثال: حكايات الليل',value:p.coll||'',onchange(e){p.coll=e.target.value.trim();if(!p.coll){delete p.coll;delete p.collN}else if(!p.collN)p.collN=collStories(p.coll).filter(o=>o.x.id!==pid).length+1;savePlan();writePlan();renderTool()}});i.setAttribute('list','hkcolls');return i})(),
+   p.coll?$('div',{className:'r',style:'margin-top:6px'},$('span',{className:'mu'},'ترتيبها في المجموعة'),$('input',{type:'number',min:1,style:'width:80px',value:p.collN||'',onchange(e){p.collN=+e.target.value||0;savePlan();writePlan()}})):''))}
+ if(F!=='novel'){const tg=+(p.ssT||(F==='coll'?20000:3000));b.append(card($('b',{},'🎯 الهدف'),$('div',{className:'r'},$('input',{type:'number',min:100,step:100,value:tg,onchange(e){p.ssT=+e.target.value||3000;savePlan();renderTool()}}),$('span',{className:'mu'},'كلمة')),bar('اتكتب',Math.min(w,tg),tg)))}
+ if(F==='coll'){const S=scenesOf(model());b.append(card($('b',{},'📚 القصص اللي في الملف ('+fmt(S.length)+')'),S.length?$('div',{},...S.map(s=>$('div',{style:'border-top:1px solid var(--bd);padding:6px 0;display:flex;justify-content:space-between'},$('span',{className:'lk',onclick(){jump(s.e)}},(s.lab||s.n)+'. '+(s.x||'(بدون عنوان)')),$('span',{className:'mu',style:'margin:0'},fmt(s.w)+' كلمة')))):mu('كل قصة تبدأ بسطر من نوع «فصل» بعنوانها.'),
+  S.length?$('button',{style:'background:var(--ac);color:#fff;border:0;width:100%;min-height:44px;margin-top:8px',onclick:splitColl},'✂️ افصلها لقصص قصيرة منفصلة'):'',mu('الملف الأصلي مش هيتمسح، وتقدر تمسحه بنفسك بعد ما تتأكد.')))}
+ const ck=p.ssC=p.ssC||{};if(F!=='novel')b.append(card($('b',{},'✅ قائمة القصة القصيرة الناجحة'),...SSCHK.map((t,i)=>$('label',{className:'r',style:'margin:2px 0'},$('input',{type:'checkbox',checked:!!ck[i],onchange(e){ck[i]=e.target.checked;savePlan()}}),$('span',{},t)))));
+ b.append(card($('b',{},'🧱 قوالب بناء جاهزة'),mu(F==='short'?'بيضيف القالب في آخر النص فقرات إرشادية بينها فواصل، تكتب مكانها.':'بيضيف القالب في آخر النص: عنوان + فقرات إرشادية تكتب مكانها.'),...SSTPL.map(([n,L])=>$('button',{style:'display:block;width:100%;text-align:start;margin:4px 0',onclick(){flush();commit(true);
+  const nw=F==='short'?L.flatMap((x,i)=>(i?[mk({t:'sep',x:'✱ ✱ ✱'})]:[]).concat([mk({t:'para',x:'['+x+']'})])):[mk({t:'chapter',x:'عنوان القصة — '+n})].concat(L.map(x=>mk({t:'para',x:'['+x+']'})));
+  root.append(...nw);nw.forEach(fit);flush();commit(true);paginate();jump(nw[0]);note('اتضاف القالب. اكتب مكان كل سطر بين []')}},'➕ '+n))));
  b.append($('b',{},'🤖 الفريق للقصة القصيرة'),$('div',{className:'hub'},...SACTS.map(a=>$('button',{onclick(){run(a,AI().q||'')}},$('b',{},a.ic+' '+a.n),$('small',{},a.edit==='append'?'يضيف للنص':a.edit?'يعدّل الجزء الحالي':'اقتراحات')))))}
+/* ---- المجموعة القصصية = اسم يجمع قصص قصيرة منفصلة (مش ملف) ---- */
+function shortsAll(){return idx().filter(x=>x.k==='nv').map(x=>{const d=projData(x.id),pl=d.plan||{};return{x,pl,d}}).filter(o=>o.pl.form==='short')}
+function collNames(){return[...new Set(shortsAll().map(o=>String(o.pl.coll||'').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'ar'))}
+function collStories(n){return shortsAll().filter(o=>String(o.pl.coll||'').trim()===n).sort((a,b)=>((a.pl.collN||1e9)-(b.pl.collN||1e9))||a.x.name.localeCompare(b.x.name,'ar'))}
+function addWorkRaw(name,rows,pl){const a=idx(),id='n'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);a.push({id,name,k:'nv'});setIdx(a);
+ lsSet(keyOf(id),JSON.stringify(rows));lsSet(keyOf(id)+':plan',JSON.stringify(pl));setT(id);schedulePush();return id}
+function splitColl(){flush();writePlan();const name=projName(),L=[];let cur=null;
+ for(const e of root.children){const t=e.p.t,x=e.value;if(t==='chapter'){cur={name:x.trim()||('قصة '+fmt(L.length+1)),rows:[]};L.push(cur);continue}
+  if(t==='part')continue;if(!cur){if(!x.trim())continue;cur={name:'قصة '+fmt(L.length+1),rows:[]};L.push(cur)}cur.rows.push({t:t==='sub'?'chapter':t,x})}
+ if(!L.length){note('مفيش قصص في الملف');return}
+ if(!confirm('هتتعمل '+fmt(L.length)+' قصة قصيرة منفصلة في مجموعة «'+name+'». الملف الأصلي هيفضل زي ما هو. نكمّل؟'))return;
+ L.forEach((c,i)=>addWorkRaw(c.name,c.rows,{form:'short',coll:name,collN:i+1}));note('✓ اتعملت '+fmt(L.length)+' قصة في مجموعة «'+name+'». هتلاقيهم في الصفحة الرئيسية.');renderTool()}
+async function collEpub(n){const S=collStories(n);if(!S.length)return;const A=[];
+ for(const o of S){A.push({t:'chapter',x:o.x.name});for(const r of o.d.doc){const t=r.t,x=String(r.x||'');if(t==='part'||t==='chapter'){if(x.trim())A.push({t:'sub',x});else A.push({t:'sep',x:''})}else A.push({t,x})}}
+ const by=(S.map(o=>(o.pl.idea||{}).by).find(Boolean))||'';const bl=await window.__hk2.buildEpub(A,n,by);if(!bl)return;
+ const nm=String(n).replace(/[\\/:*?"<>|]/g,'-')+'.epub',f=new File([bl],nm,{type:'application/epub+zip'});
+ if(navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({files:[f],title:nm});return}catch(e){if(e&&e.name==='AbortError')return}}await saveFile(nm,bl);note('📚 كتاب المجموعة اتنزل')}
+window.__hkColl={collNames,collStories,collEpub,splitColl};
+/* ---- تسميات المحرر للقصة القصيرة: مقطع بدل فصل، بدون أبواب ---- */
+const L_SS={chapter:'مقطع',para:'فقرة',sep:'فاصل',quote:'اقتباس'};
+function applySS(){try{const on=MODE==='nv'&&formOf()==='short';document.body.classList.toggle('ss',on);if(MODE!=='nv')return;const want=on?L_SS:L_NV;if(LBL!==want){LBL=want;buildTypes();root.querySelectorAll('textarea').forEach(t=>{if(t.p&&ALLT[t.p.t])t.placeholder=(LBL[t.p.t]||ALLT[t.p.t])});try{sync()}catch(e){}}}catch(e){}}
+const _acS=updateAC;updateAC=function(ta){if(ta&&ta.p&&MODE==='nv'&&formOf()==='short'&&ta.p.t==='chapter'&&!norm(ta.value)){let n=0;for(const e of root.children){if(e.p.t==='chapter')n++;if(e===ta)break}acShow([fmt(n),'✱ ✱ ✱'],s=>putWord(ta,s,true));return}return _acS.apply(this,arguments)};
 IC.short='<path d="M20 4c-6 0-11 4-12 11l-3 5"/><path d="M8 15c3 0 6-1 8-4"/>';
 TOOLS.short=['short','القصة القصيرة',rShort];
 
 /* ---------- ربط بالواجهة: الشريط، أدوات+، الصفحة الرئيسية ---------- */
-const {HINFO,HT,NVOK}=window.__hub;HINFO.ai=['فريق الكتابة 🤖','أفكار عالمية، حبكات، تشويق، عيوب، تطوير، بحث'];HINFO.stats=['الإحصائيات 📊','الشخصيات وأدوارها وظهورها، الأماكن، المشاهد'];HINFO.short=['القصة القصيرة 🪶','قوالب، هدف، مجموعة قصصية'];
+const {HINFO,HT,NVOK}=window.__hub;HINFO.ai=['فريق الكتابة 🤖','أفكار عالمية، حبكات، تشويق، عيوب، تطوير، بحث'];HINFO.stats=['الإحصائيات 📊','الشخصيات وأدوارها وظهورها، الأماكن، المشاهد'];HINFO.short=['القصة القصيرة 🪶','تقسيم بالمقاطع، قوالب، هدف، المجموعة'];
 NVOK.add('ai');NVOK.add('stats');NVOK.add('short');
 if(HT[0]&&Array.isArray(HT[0][2]))HT[0][2].unshift('ai','stats');HT.push(['ai','🤖 الفريق',['ai','stats','short']]);
 const _ok0=window.__okIn0;window.__okIn0=k=>k==='short'?MODE==='nv':(k==='ai'||k==='stats')?true:(_ok0?_ok0(k):true);
 for(const m of['sp','nv']){const R=RAIL[m];if(!R.includes('ai'))R.splice(0,0,'ai');if(!R.includes('stats'))R.splice(R.indexOf('pro')>=0?R.indexOf('pro'):R.length,0,'stats')}
-const _sm=setMode;setMode=function(k){_sm.apply(this,arguments);try{const R=RAIL.nv,i=R.indexOf('short');if(MODE==='nv'&&isShort()&&i<0){R.splice(1,0,'short');buildRail()}else if(i>=0&&!isShort()){R.splice(i,1);buildRail()}}catch(e){}};
+const _sm=setMode;setMode=function(k){_sm.apply(this,arguments);applySS();try{const R=RAIL.nv,i=R.indexOf('short');if(MODE==='nv'&&isShort()&&i<0){R.splice(1,0,'short');buildRail()}else if(i>=0&&!isShort()){R.splice(i,1);buildRail()}}catch(e){}};
 const _lp=loadPlan;loadPlan=function(){_lp.apply(this,arguments);try{setMode(MODE)}catch(e){}};
-const _wp=writePlan;writePlan=function(){_wp.apply(this,arguments);try{const R=RAIL.nv,i=R.indexOf('short');if(MODE==='nv'&&((isShort()&&i<0)||(!isShort()&&i>=0)))setMode(MODE)}catch(e){}};
+const _wp=writePlan;writePlan=function(){_wp.apply(this,arguments);applySS();try{const R=RAIL.nv,i=R.indexOf('short');if(MODE==='nv'&&((isShort()&&i<0)||(!isShort()&&i>=0)))setMode(MODE)}catch(e){}};
 btn('🤖 فريق الكتابة (الذكاء الاصطناعي)',()=>openTool('ai'));btn('📊 إحصائيات العمل',()=>openTool('stats'));
-const _nw=newWork;newWork=function(k,name,form){if(k==='nv'&&(form==='short'||form==='coll')){const id=_nw(k,(name||'').trim()||(form==='short'?'قصة قصيرة بدون عنوان':'مجموعة قصصية بدون عنوان'));plan.form=form;writePlan();setMode('nv');return id}return _nw.apply(this,arguments)};
-const _wb=workBtn;workBtn=function(x){const b=_wb(x);try{if(x.k==='nv'){const f=(projData(x.id).plan||{}).form;if(f==='short'||f==='coll'){const s=b.querySelector('small');if(s)s.textContent=s.textContent.replace(KN.nv.one,FORMS[f])}}}catch(e){}return b};
+const _nw=newWork;newWork=function(k,name,form,coll){if(k==='nv'&&(form==='short'||form==='coll')){const id=_nw(k,(name||'').trim()||(form==='short'?'قصة قصيرة بدون عنوان':'مجموعة قصصية بدون عنوان'));plan.form=form;if(coll){plan.coll=coll;plan.collN=collStories(coll).length+1}writePlan();setMode('nv');return id}return _nw.apply(this,arguments)};
+const _wb=workBtn;workBtn=function(x){const b=_wb(x);b.dataset.id=x.id;try{if(x.k==='nv'){const f=(projData(x.id).plan||{}).form;if(f==='short'||f==='coll'){const s=b.querySelector('small'),cl=(projData(x.id).plan||{}).coll;if(s)s.textContent=s.textContent.replace(KN.nv.one,FORMS[f]+(f==='short'&&cl?' 📚 '+cl:''))}}}catch(e){}return b};
 const _rh=renderHome;renderHome=function(){_rh.apply(this,arguments);try{if(hk!=='nv')return;const nw=hlist.querySelector('.new');if(!nw)return;const inp=nw.querySelector('input'),bt=nw.querySelector('button');
- const sel=$('select',{title:'نوع العمل',onchange(){ls('hasp:nvform',this.value);inp.placeholder=this.value==='short'?'اسم القصة':this.value==='coll'?'اسم المجموعة':'اسم الرواية';bt.textContent=this.value==='short'?'قصة جديدة':this.value==='coll'?'مجموعة جديدة':'رواية جديدة'}},$('option',{value:'novel'},'رواية'),$('option',{value:'short'},'قصة قصيرة'),$('option',{value:'coll'},'مجموعة قصصية'));
- sel.value=lg('hasp:nvform')||'novel';inp.after(sel);sel.onchange();const go=()=>{newWork('nv',inp.value,sel.value);showEditor()};bt.onclick=go;inp.onkeydown=e=>{if(e.key==='Enter')go()}}catch(e){}};
+ const sel=$('select',{title:'نوع العمل',onchange(){ls('hasp:nvform',this.value);inp.placeholder=this.value==='short'?'اسم القصة':this.value==='coll'?'اسم المجموعة':'اسم الرواية';bt.textContent=this.value==='short'?'قصة جديدة':this.value==='coll'?'مجموعة جديدة':'رواية جديدة'}},$('option',{value:'novel'},'رواية'),$('option',{value:'short'},'قصة قصيرة'));
+ sel.value=lg('hasp:nvform')==='short'?'short':'novel';inp.after(sel);sel.onchange();const go=()=>{newWork('nv',inp.value,sel.value);showEditor()};bt.onclick=go;inp.onkeydown=e=>{if(e.key==='Enter')go()};
+ const CN=collNames(),box=$('div',{}),inC=new Set();CN.forEach(n=>collStories(n).forEach(o=>inC.add(o.x.id)));const mw=hlist.querySelector('.works');if(mw){mw.querySelectorAll('.work').forEach(w=>{if(inC.has(w.dataset.id))w.remove()});if(!mw.children.length)mw.replaceWith($('div',{className:'empty'},'كل قصصك جوه مجموعات تحت.'))}
+ const BS='background:var(--paper);border:1px solid var(--bd);border-radius:10px;padding:8px 12px;font:inherit;font-size:14px;cursor:pointer;color:var(--fg)';hlist.append($('div',{className:'sec'},'📚 المجموعات القصصية'),box);
+ if(!CN.length)box.append($('div',{className:'empty'},'المجموعة القصصية مش ملف لوحدها: اعمل قصص قصيرة، وافتح أداة «القصة القصيرة 🪶» في كل قصة واكتب اسم المجموعة. القصص اللي ليها نفس الاسم هتتجمع هنا.'));
+ for(const n of CN){const S=collStories(n),W=S.reduce((a,o)=>a+o.d.doc.reduce((q,r)=>q+wc(String(r.x||'')),0),0);
+  box.append($('div',{className:'card',style:'margin:8px 0;padding:12px;border-radius:14px;border:1px solid var(--bd);border-inline-start:5px solid var(--teal)'},$('b',{style:'font-size:16px'},'📚 '+n),$('div',{className:'mu'},fmt(S.length)+' قصة، '+fmt(W)+' كلمة'),
+   $('div',{className:'works',style:'margin-top:6px'},...S.map(o=>workBtn(o.x))),
+   $('div',{className:'r',style:'margin-top:6px;gap:6px;flex-wrap:wrap'},$('button',{style:BS,onclick(){const t=prompt('اسم القصة الجديدة في «'+n+'»');if(t===null)return;newWork('nv',t,'short',n);showEditor()}},'➕ قصة جديدة في المجموعة'),$('button',{style:BS,onclick(){collEpub(n)}},'📚 كتاب EPUB للمجموعة'))))}}catch(e){}};
 try{buildRail();if(document.body.classList.contains('home'))renderHome();setMode(MODE)}catch(e){}
 })();
 </script>
@@ -2281,7 +2320,7 @@ TOOLS.sides=['sides','ورق الممثل',rSides];
 
 /* ===================== 📚 EPUB ===================== */
 const xe=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-async function buildEpub(){flush();const A=[...root.children].map(e=>({t:e.p.t,x:e.value})),o=plan.idea||{},title=projName(),by=String(o.by||'').trim(),id='urn:uuid:hk-'+pid+'-'+Date.now().toString(36);
+async function buildEpub(A0,T0,B0){flush();const A=A0||[...root.children].map(e=>({t:e.p.t,x:e.value})),o=A0?{}:(plan.idea||{}),title=T0||projName(),by=String(B0!=null?B0:(o.by||'')).trim(),id='urn:uuid:hk-'+pid+'-'+Date.now().toString(36);
  const ch=[];let cur=null;const page=(t,cls)=>{cur={t:t||'',b:[],cls};ch.push(cur)};
  for(const it of A){const x=it.x.trim();if(it.t==='part'){page(x||'باب','part');cur.b.push('<h1 class="part">'+xe(x||'باب')+'</h1>');cur=null;continue}
   if(it.t==='chapter'){page(x||'فصل');cur.b.push('<h2>'+xe(x||'')+'</h2>');continue}if(!cur)page(ch.length?'':'البداية');
@@ -2524,5 +2563,30 @@ const mb=btn(modeLabel(),()=>setSimple(!isSimple()));
 const _sm=setMode;setMode=function(){_sm.apply(this,arguments);if(isSimple()){const R=RAIL.nv,i=R.indexOf('short');if(i>=0){R.splice(i,1);try{buildRail()}catch(e){}}}};
 applyMode();
 window.__hk5={sendToStudio,scriptText,setSimple,isSimple};
+})();
+</script>
+<script>
+/* ===================== ↩ رجوع خطوة: من أي أداة للي قبلها، ثم للنص، ثم للرئيسية ===================== */
+(function(){
+const NAV=[];let skip=false,ignore=0,homeReq=false;const ph=document.getElementById('phead'),pt=document.getElementById('ptit');
+const bk=document.createElement('button');bk.id='pback2';bk.type='button';bk.textContent='→';bk.title='رجوع';bk.setAttribute('aria-label','رجوع');
+bk.style.cssText='width:auto!important;padding:0 12px;font-size:14px!important;font-weight:700;white-space:nowrap;margin-inline-end:8px';
+ph.insertBefore(bk,pt);pt.style.flex='1';
+const lab=k=>{try{return tLabel(k)}catch(e){return k}};
+function upd(){const p=NAV[NAV.length-1];bk.textContent=p?'→ '+lab(p):'→ النص';bk.title=p?'رجوع إلى '+lab(p):'رجوع إلى النص'}
+const _ot=openTool;openTool=function(k){
+ if(curTool===k&&!skip){NAV.length=0;back(false);return}
+ if(!skip){if(curTool&&curTool!==k)NAV.push(curTool);else if(!curTool)NAV.length=0}
+ const was=!panel.hidden;_ot.call(this,k);
+ if(!was&&!panel.hidden){try{history.pushState(Object.assign({},history.state||{},{tp:1}),'')}catch(e){}}upd()};
+function back(fromPop){if(NAV.length){const k=NAV.pop();skip=true;try{openTool(k)}finally{skip=false}if(fromPop){try{history.pushState(Object.assign({},history.state||{},{tp:1}),'')}catch(e){}}upd();return}
+ NAV.length=0;closePanel();if(!fromPop&&history.state&&history.state.tp){ignore++;history.back()}}
+bk.onclick=()=>back(false);
+document.getElementById('pclose').addEventListener('click',()=>{NAV.length=0;if(history.state&&history.state.tp){ignore++;history.back()}});
+const _gh=goHome;goHome=function(fromPop){if(!fromPop&&history.state&&history.state.tp){homeReq=true;NAV.length=0;closePanel();history.back();return}return _gh.apply(this,arguments)};
+window.__navPop=function(){if(ignore>0){ignore--;return true}
+ if(homeReq){homeReq=false;if(history.state&&history.state.ed){history.back();return true}return false}
+ if(!panel.hidden&&!document.body.classList.contains('home')){back(true);return true}return false};
+upd();
 })();
 </script></body></html>
