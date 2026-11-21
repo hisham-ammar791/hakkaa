@@ -2589,4 +2589,30 @@ window.__navPop=function(){if(ignore>0){ignore--;return true}
  if(!panel.hidden&&!document.body.classList.contains('home')){back(true);return true}return false};
 upd();
 })();
+</script>
+<script>
+/* ===================== 🎬 ترويسة المشهد الجاهزة + الترقيم التلقائي ===================== */
+(function(){
+const HR=/^(\s*مشهد)\s*([\d٠-٩]+)([A-Za-z]*)/;
+const locked=()=>{try{return !!(window.__nl&&__nl.on())}catch(e){return false}};
+const heads=()=>[...root.children].filter(e=>e.p&&e.p.t==='scene');
+/* سطر مشهد جديد فاضي: يتملي لوحده «مشهد N - » والمؤشر في آخره */
+function autoFill(ta){if(MODE!=='sp'||!ta||!ta.p||ta.p.t!=='scene'||ta.dataset.af||String(ta.value).trim())return false;ta.dataset.af='1';
+ const v='مشهد '+toAr(sceneNo(ta))+' - ';ta.value=v;ta.p.x=v;fit(ta);try{ta.setSelectionRange(v.length,v.length)}catch(e){}return true}
+const _uac=updateAC;updateAC=function(ta){if(autoFill(ta)){save()}return _uac.apply(this,arguments)};
+/* الاقتراحات بعد «مشهد N - » بتضيف الشرطة لوحدها: داخلي - المكان - نهار */
+const _pw=putWord;putWord=function(ta,s,whole){if(!whole&&ta&&ta.p&&ta.p.t==='scene'&&MODE==='sp'&&HR.test(ta.value)&&/-/.test(ta.value)){
+  beginStruct();const v=ta.value,base=(/\s$/.test(v)||!v)?v:v.replace(/\S*$/,''),isT=TM.has(zn(s));
+  let nv=(base.replace(/\s*-?\s*$/,'')+' - '+s).replace(/^(\s*مشهد\s*[\d٠-٩A-Za-z]+)\s*-\s*-\s*/,'$1 - ');if(!isT)nv+=' - ';
+  ta.value=nv;ta.p.x=nv;fit(ta);ta.focus();ta.setSelectionRange(nv.length,nv.length);save();updateAC(ta);return}
+ return _pw.apply(this,arguments)};
+/* الترقيم التلقائي: لما تضيف أو تمسح مشهد، الأرقام بتترتب من جديد (إلا لو «قفل الترقيم» شغال). وتقدر تعدّل أي رقم بإيدك. */
+let lastN=-1,busy=false;
+function renum(){if(busy||MODE!=='sp'||locked())return;const H=heads();if(H.length===lastN)return;const first=lastN<0;lastN=H.length;if(first)return;
+ busy=true;try{let n=0;const act=document.activeElement;H.forEach(e=>{n++;const m=HR.exec(e.value||'');if(!m)return;const want=/[٠-٩]/.test(m[2])||!/\d/.test(m[2])?toAr(n):String(n);if(m[2]===want&&!m[3])return;
+  const old=e.value,v=m[1]+' '+want+old.slice(m[0].length);const pos=e===act?e.selectionStart:null;e.value=v;e.p.x=v;fit(e);if(pos!=null){const q=Math.max(0,pos+v.length-old.length);try{e.setSelectionRange(q,q)}catch(x){}}})}finally{busy=false}}
+const _sv=save;save=function(){const r=_sv.apply(this,arguments);try{renum()}catch(e){}return r};
+const _op=openProj;openProj=function(){const r=_op.apply(this,arguments);lastN=-1;try{renum()}catch(e){}return r};
+try{renum()}catch(e){}
+})();
 </script></body></html>
