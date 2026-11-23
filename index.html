@@ -1930,6 +1930,7 @@ const $=(t,a,...k)=>h(t,a||{},...k),mu=t=>$('div',{className:'mu'},t),card=(...k
 const lg=k=>{try{return localStorage.getItem(k)}catch(e){return null}},ls=(k,v)=>{try{if(v==null)localStorage.removeItem(k);else localStorage.setItem(k,v)}catch(e){}};
 const KK='hs_gemkey',MK='hs_gemmodel',BASE='https://generativelanguage.googleapis.com/v1beta';
 const gemKey=()=>{let k=(lg(KK)||'').trim();if(!k){const o=(lg('studio5s_v2_key')||'').trim();if(o.length>=20){k=o;ls(KK,o)}}return k};
+const manualMode=()=>lg('hs_manual')==='1';
 const gemSpeed=()=>lg('hs_gemspeed')||'fast';
 async function gemModels(){try{const c=JSON.parse(lg(MK)||'null');if(c&&Date.now()-c.t<864e5&&Array.isArray(c.l)&&c.l.length)return c.l}catch(e){}
  const r=await fetch(BASE+'/models?pageSize=200',{headers:{'x-goog-api-key':gemKey()}});if(!r.ok)throw new Error(r.status===400||r.status===403?'المفتاح مش صحيح أو مش مفعّل. انسخه كامل من aistudio.google.com/apikey':'Gemini رد بخطأ '+r.status);
@@ -2027,13 +2028,13 @@ function buildPrompt(a,sc,q){const d=scopeData(sc);if(a.edit&&d.kind==='all'&&a.
 function freeAct(q,edit){return{k:'free',ic:'💬',n:q.slice(0,40),sc:AI().sc||'scene',edit:edit?true:false,p:d=>edit?'نفّذ طلب الكاتب على هذا الجزء: «'+q+'». '+(d.kind==='sel'?'':FMT_NOTE()):'أجب عن طلب الكاتب بخصوص هذا العمل: «'+q+'». كن عمليًا ومحددًا بأمثلة من النص.',search:/ابحث|بحث|مصدر|تاريخ|حقيقي|معلومة|إحصائ/.test(q)}}
 async function run(a,q){if(RUN)return;const sc=a.sc==='all'?'all':(AI().sc||a.sc);const A=Object.assign({},a,{sc});const {prompt,d}=buildPrompt(A,sc,q);
  if(a.edit&&d.kind==='all'&&a.k!=='develop'&&a.k!=='ss_draft'){note('اضغط داخل المشهد/الفصل اللي عايز تشتغل عليه الأول، أو حدّد جزء منه');return}
- if(!gemKey()){RES={title:a.ic+' '+a.n,manual:prompt,edit:a.edit,d,a};showAI();return}
- const ac=new AbortController();RUN={ac,step:'🤖 بجهّز…',a,live:''};RES=null;showAI();
+ if(!gemKey()||manualMode()){RES={title:a.ic+' '+a.n,manual:prompt,edit:a.edit,d,a};showAI();return}
+ const ac=new AbortController();RUN={ac,step:'🤖 بجهّز…',a,live:'',prompt,d};RES=null;showAI();
  const upd=()=>{const s=document.getElementById('aist'),l=document.getElementById('ailive');if(s)s.textContent=RUN?RUN.step:'';if(l)l.textContent=RUN?RUN.live.slice(-600):''};
  try{const out=await gemRun(prompt,(t,live)=>{if(!RUN)return;RUN.step=t;if(live)RUN.live=live;upd()},{search:!!a.search,signal:ac.signal});
   RUN=null;RES={title:a.ic+' '+a.n,out,edit:a.edit,d,a,t:Date.now()};
   const H=AI().h;H.unshift({t:Date.now(),n:a.ic+' '+a.n,o:out.slice(0,6000)});H.length=Math.min(H.length,10);savePlan()}
- catch(e){RUN=null;RES={title:a.ic+' '+a.n,err:e.message,manual:prompt,edit:a.edit,d,a}}
+ catch(e){const sk=RUN&&RUN.skip;RUN=null;RES=sk?{title:a.ic+' '+a.n,manual:prompt,edit:a.edit,d,a}:{title:a.ic+' '+a.n,err:e.message,manual:prompt,edit:a.edit,d,a}}
  if(curTool==='ai'){renderTool();setTimeout(()=>{const r=document.getElementById('aires');r&&r.scrollIntoView({block:'start',behavior:'smooth'})},50)}else note('🤖 فريق الكتابة خلّص: '+a.n+' — افتح «فريق الكتابة» تشوف النتيجة')}
 /* تطبيق النتيجة على النص مع إمكانية التراجع */
 function applyRes(){if(!RES||!RES.edit)return;const raw=between(RES.out)||RES.out,d=RES.d;flush();commit(true);
@@ -2057,7 +2058,8 @@ function keyBox(){const inp=$('input',{type:'text',placeholder:'AIza… أو AQ.
   $('div',{className:'r'},$('button',{onclick(){const v=inp.value.trim();if(v.length<20||/\s/.test(v)){note('المفتاح ناقص أو فيه مسافات. انسخه كامل');return}ls(KK,v);ls(MK,null);note('✓ اتحفظ المفتاح');renderTool()}},'حفظ المفتاح'),$('a',{href:'https://aistudio.google.com/apikey',target:'_blank',rel:'noopener'},'افتح صفحة المفتاح')))}
 function rAI(b){const o=AI(),k=gemKey(),sp=gemSpeed();
  b.append(mu('فريقك: سيناريست وروائي ودراماتورج ومحرر ومدقق وباحث. اختار الأمر، أو اكتب طلبك، والنتيجة تقدر تطبقها في النص وترجع فيها بزر التراجع.'));
- if(!k)b.append(keyBox());
+ b.append($('div',{className:'r'},$('button',{onclick(){ls('hs_manual',manualMode()?null:'1');renderTool()}},manualMode()?'🔌 رجّع الشغل بـ Gemini':'✋ اشتغل يدوي (من غير Gemini)')),manualMode()?mu('الوضع اليدوي شغّال: كل أمر هيديك الطلب تنسخه وتلصقه في Gemini أو ChatGPT، وتلصق الرد هنا.'):'');
+ if(!k&&!manualMode())b.append(keyBox());
  /* النطاق والسرعة */
  const scB=(v,l)=>$('button',{className:'bigb'+((o.sc||'scene')===v?' on':''),style:'padding:8px 4px',onclick(){o.sc=v;savePlan();renderTool()}},l);
  const hasSel=SEL&&SEL.e.isConnected;b.append(card($('b',{},'يشتغل على:'),$('div',{className:'r'},scB('sel','✂️ التحديد'),scB('scene','📄 '+(MODE==='sp'?'المشهد':'الفصل')+' الحالي'),scB('all','📚 العمل كله')),
@@ -2067,7 +2069,7 @@ function rAI(b){const o=AI(),k=gemKey(),sp=gemSpeed();
  const ta=$('textarea',{rows:3,placeholder:'اكتب أي طلب… مثال: «خلي حوار فهيم أخف دم وصعيدي» أو «إيه أضعف حاجة في الفصل ده؟» أو «ابحث عن شكل القاهرة سنة ١٩٥٢»',value:o.q||'',oninput(e){o.q=e.target.value;savePlan()}});
  b.append(card($('b',{},'💬 اطلب أي حاجة'),ta,$('div',{className:'r'},micBtn(ta),$('button',{style:'flex:1;background:var(--ac);color:#fff;border:0',onclick(){const q=ta.value.trim();if(!q){note('اكتب طلبك الأول');return}run(freeAct(q,false),q)}},'❓ اسأل/حلّل'),$('button',{style:'flex:1',onclick(){const q=ta.value.trim();if(!q){note('اكتب طلبك الأول');return}run(freeAct(q,true),q)}},'✏️ عدّل النص'))));
  /* الحالة والنتيجة */
- if(RUN)b.append(card($('b',{id:'aist'},RUN.step),$('div',{id:'ailive',className:'mu',style:'white-space:pre-wrap;max-height:160px;overflow:auto'},RUN.live.slice(-600)),$('button',{onclick(){RUN&&RUN.ac.abort()}},'⏹ وقف')));
+ if(RUN)b.append(card($('b',{id:'aist'},RUN.step),$('div',{id:'ailive',className:'mu',style:'white-space:pre-wrap;max-height:160px;overflow:auto'},RUN.live.slice(-600)),$('div',{className:'r'},$('button',{onclick(){RUN&&RUN.ac.abort()}},'⏹ وقف'),$('button',{onclick(){if(RUN){RUN.skip=1;RUN.ac.abort()}}},'✋ تخطّي Gemini (يدوي)'))));
  if(RES)b.append(resCard());
  /* الأوامر */
  const grid=L=>$('div',{className:'hub'},...L.map(a=>$('button',{disabled:!!RUN,onclick(){run(a,a.ask?(ta.value.trim()||''):ta.value.trim())}},$('b',{},a.ic+' '+a.n),$('small',{},a.edit==='append'?'يضيف بعد الجزء الحالي':a.edit?'يعدّل الجزء الحالي':a.search?'بحث في جوجل':'تقرير عن العمل كله'))));
@@ -2087,8 +2089,8 @@ function resCard(){const R=RES,c=card($('b',{},R.title));c.id='aires';
  if(R.out){const shown=R.edit?(R.out.split(/===\s*بداية/)[0].trim()):R.out,fin=R.edit?(between(R.out)||R.out):'';
   if(shown)c.append(rich(shown));
   if(R.edit){c.append($('div',{className:'mu',style:'margin-top:6px'},R.edit==='append'?'هيتضاف بعد '+R.d.label+':':'هيحل مكان '+R.d.label+':'),$('div',{style:'border:1px dashed var(--bd);border-radius:10px;padding:8px;max-height:280px;overflow:auto;white-space:pre-wrap;font-size:14px;line-height:1.8;background:var(--bg)'},fin.replace(/^\[([^\]]{1,14})\]\s*/gm,(m,t)=>t==='شخصية'?'\n◆ ':t==='مشهد'?'\n▣ ':t==='فصل'?'\n▣ ':'')));
-   c.append($('div',{className:'r'},R.applied?$('span',{className:'mu'},'✓ اتطبق — للرجوع اضغط ↶ تراجع'):$('button',{style:'background:var(--ac);color:#fff;border:0',onclick:applyRes},R.edit==='append'?'➕ ضيفه في النص':'✓ طبّق في النص'),$('button',{onclick(){copyText(fin).then(ok=>note(ok?'اتنسخ':'تعذّر'))}},'📋 نسخ'),$('button',{onclick(){const a=R.a;RES=null;run(a,AI().q||'')}},'🔁 نسخة تانية'),$('button',{onclick(){RES=null;renderTool()}},'✕')))}
-  else c.append($('div',{className:'r'},$('button',{onclick(){copyText(R.out).then(ok=>note(ok?'اتنسخ':'تعذّر'))}},'📋 نسخ'),$('button',{onclick(){const a=R.a;RES=null;run(a,AI().q||'')}},'🔁 اعمل تاني'),$('button',{onclick(){RES=null;renderTool()}},'✕')))}
+   c.append($('div',{className:'r'},R.applied?$('span',{className:'mu'},'✓ اتطبق — للرجوع اضغط ↶ تراجع'):$('button',{style:'background:var(--ac);color:#fff;border:0',onclick:applyRes},R.edit==='append'?'➕ ضيفه في النص':'✓ طبّق في النص'),$('button',{onclick(){copyText(fin).then(ok=>note(ok?'اتنسخ':'تعذّر'))}},'📋 نسخ'),$('button',{onclick(){if(R.manual){RES=Object.assign({},R,{out:null,err:null,applied:false});renderTool();return}const a=R.a;RES=null;run(a,AI().q||'')}},'🔁 نسخة تانية'),$('button',{onclick(){RES=null;renderTool()}},'✕')))}
+  else c.append($('div',{className:'r'},$('button',{onclick(){copyText(R.out).then(ok=>note(ok?'اتنسخ':'تعذّر'))}},'📋 نسخ'),$('button',{onclick(){if(R.manual){RES=Object.assign({},R,{out:null,err:null,applied:false});renderTool();return}const a=R.a;RES=null;run(a,AI().q||'')}},'🔁 اعمل تاني'),$('button',{onclick(){RES=null;renderTool()}},'✕')))}
  return c}
 IC.ai='<path d="M12 3l1.8 4.2L18 9l-4.2 1.8L12 15l-1.8-4.2L6 9l4.2-1.8z"/><path d="M18.5 14.5l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/><path d="M5 16l.6 1.4L7 18l-1.4.6L5 20l-.6-1.4L3 18l1.4-.6z"/>';
 TOOLS.ai=['ai','فريق الكتابة',rAI];
@@ -2236,7 +2238,7 @@ try{buildRail();if(document.body.classList.contains('home'))renderHome();setMode
 const $=(t,a,...k)=>h(t,a||{},...k),mu=t=>$('div',{className:'mu'},t),card=(...k)=>$('div',{className:'card'},...k);
 const {HINFO,HT,NVOK}=window.__hub,AIx=window.__hkAI;
 const lg=k=>{try{return localStorage.getItem(k)}catch(e){return null}};
-const hasKey=()=>!!(lg('hs_gemkey')||'').trim();
+const hasKey=()=>!!(lg('hs_gemkey')||'').trim()&&lg('hs_manual')!=='1';
 const tcat=t=>!t?'—':/ليل|مساء|فجر/.test(t)?'ليل':/غروب|شروق/.test(t)?'شروق/غروب':'نهار';
 const safeN=s=>String(s).replace(/[\\/:*?"<>|]/g,'-');
 const backHub=b=>b.append($('button',{className:'pback',onclick(){openTool('pro')}},'→ كل الأدوات'));
